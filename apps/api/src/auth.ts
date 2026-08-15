@@ -14,6 +14,8 @@ export function createAuth(opts: {
     set: (key: string, value: string, ttl?: number) => Promise<void>;
     delete: (key: string) => Promise<void>;
   };
+  /** Test suites share one in-process limiter; disable so files can sign up freely. */
+  disableRateLimit?: boolean;
 }) {
   const secure = opts.appOrigin.startsWith("https");
   return betterAuth({
@@ -39,7 +41,7 @@ export function createAuth(opts: {
     },
     secondaryStorage: opts.secondaryStorage, // Worker: D1 table auth_rl; Node: undefined
     rateLimit: {
-      enabled: true,
+      enabled: opts.disableRateLimit !== true,
       window: 60,
       max: 10,
     },
