@@ -9,11 +9,11 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
 | Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** |
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **Done** |
-| Sprint 4 | Remaining API + web shell + CI gates | 11, 12, 13, 13.1, SRE 023/024/025 | **2 seniors** + 0.1 SM + SRE | **In progress** |
+| Sprint 4 | Remaining API + web shell + CI gates | 11, 12, 13, 13.1, SRE 023/024/025 | **2 seniors** + 0.1 SM + SRE | **Done** |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1, 2, and 3 are **Done** on `origin/main`. Sprint 4 is **In progress**. Sprints 5–6 stay Planned.
+Sprint 1, 2, 3, and 4 are **Done** on `origin/main`. Sprints 5–6 stay Planned. next: Sprint 5 Planned.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -245,13 +245,13 @@ No dedicated designer, native, ML, or QA hire for v1. Playwright + Vitest golden
 
 ## Sprint 4 — Remaining API + web shell + CI gates
 
-**Status: In progress**  
+**Status: Done** on `origin/main` (11, 12, 13, 13.1, 023, 024, 025 — peer PASS)  
 **Goal:** Health ingest + retain cron, GDPR export/delete/CLI, Vite login/register, settings, plus SRE CI harden + merge gates.  
 **PRs:** 11, 12, 13, 13.1, SRE 023/024/025  
 **Points:** 24 (product 18 + SRE 6)  
 **Assignment:** [`docs/dev/SPRINT4_ASSIGNMENT.md`](../dev/SPRINT4_ASSIGNMENT.md)
 
-**Team size: 2 seniors + 0.1 SM + SRE.** PO **not required**. 13 and 12 are on `main`; 13.1 (015) is **In progress**.
+**Team size: 2 seniors + 0.1 SM + SRE.** PO **not required**. All Sprint 4 product + SRE stories are **Done** on `origin/main`.
 
 | Requirement | Need |
 | --- | --- |
@@ -262,28 +262,28 @@ No dedicated designer, native, ML, or QA hire for v1. Playwright + Vitest golden
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-012 | Health ingest, consent, daily summaries, and retain job | 11 | Dev A | 5 | ARISE-008, ARISE-011 | **In review** — peer PASS, PR #3, rebasing onto main after 013 merge |
-| ARISE-013 | Progress, JSON export, account delete, and reset-password CLI | 12 | Dev A | 5 | ARISE-011 | **Done** — merged PR #6 |
-| ARISE-014 | Vite web shell with proxy, login, and register | 13 | Dev B | 5 | ARISE-009 | **Done** — merged PR #2 |
-| ARISE-015 | Settings: units, logout, delete, and export download | 13.1 | Dev B | 3 | ARISE-013, ARISE-014 | **In progress** — Dev B, unblocked (13+12 on main) |
-| ARISE-023 | Harden GitHub Actions CI for PRs and main | — | SRE | 3 | ARISE-002 | **Done** — merged PR #1 |
-| ARISE-024 | Merge gates for main | — | SRE | 2 | ARISE-023 | **Done** — protection live |
-| ARISE-025 | Document required GitHub check context as `ci` | — | SRE | 1 | ARISE-024 | **Done** — merged PR #5 (docs + template + gh api snippet use context `ci`) |
+| ARISE-012 | Health ingest, consent, daily summaries, and retain job | 11 | Dev A | 5 | ARISE-008, ARISE-011 | **Done** — peer PASS, on `origin/main` (PR #3) |
+| ARISE-013 | Progress, JSON export, account delete, and reset-password CLI | 12 | Dev A | 5 | ARISE-011 | **Done** — peer PASS, on `origin/main` (PR #6) |
+| ARISE-014 | Vite web shell with proxy, login, and register | 13 | Dev B | 5 | ARISE-009 | **Done** — peer PASS, on `origin/main` (PR #2) |
+| ARISE-015 | Settings: units, logout, delete, and export download | 13.1 | Dev B | 3 | ARISE-013, ARISE-014 | **Done** — peer PASS, on `origin/main` (PR #8) |
+| ARISE-023 | Harden GitHub Actions CI for PRs and main | — | SRE | 3 | ARISE-002 | **Done** — peer PASS, on `origin/main` (PR #1) |
+| ARISE-024 | Merge gates for main | — | SRE | 2 | ARISE-023 | **Done** — peer PASS, on `origin/main` (protection live) |
+| ARISE-025 | Document required GitHub check context as `ci` | — | SRE | 1 | ARISE-024 | **Done** — peer PASS, on `origin/main` (PR #5) |
 
-**Parallelism (now):** **013** is **Done** (merged PR #6). **014** is **Done** (merged PR #2). **012** is **In review** (peer PASS, PR #3; Dev A rebasing onto `origin/main` after the 013 merge). **015** is **In progress** (Dev B, unblocked now that 13+12 are on `origin/main`). **023**, **024**, and **025** are **Done** on `origin/main` (PRs #1 / protection / #5). Required check context is **`ci`**.
+**Parallelism:** All Sprint 4 stories landed with peer PASS on `origin/main`: **012** PR #3, **013** PR #6, **014** PR #2, **015** PR #8, **023/024** PR #1, **025** PR #5. Dev A PASS of PR 13.1 is in [`docs/dev/reviews/DEV_A_REVIEW_OF_PR131.md`](../dev/reviews/DEV_A_REVIEW_OF_PR131.md). Required check context is **`ci`**.
 
 **Sprint 4 exit:**
 
-- [ ] First health POST requires `{ "consent": true }` else **`403 HEALTH_CONSENT_REQUIRED`**. Samples max **200**.
-- [ ] Node cron `15 3 * * *` UTC: retain chunks of 500 + penalty catch-up **25 users/tick**. **No push job.**
+- [x] First health POST requires `{ "consent": true }` else **`403 HEALTH_CONSENT_REQUIRED`**. Samples max **200**. **012 Done** (PR #3).
+- [x] Node cron `15 3 * * *` UTC: retain chunks of 500 + penalty catch-up **25 users/tick**. **No push job.** **012 Done** (PR #3).
 - [x] `GET /me/export` attachment **`arise-export.json`**, no `accounts.password`. **013 Done** (PR #6).
 - [x] Forget-password **404** if `SMTP_URL` unset. CLI: `pnpm --filter api exec tsx src/cli/reset-password.ts --identifier USER --password -`. **013 Done** (PR #6).
 - [x] Vite `:5173` proxies `/api` → `http://127.0.0.1:8787`. `credentials: 'include'`. Relative `/api/v1/...`. **014 Done** (PR #2).
-- [ ] Settings: units (store metric), tz, logout, delete, export. Shared-phone IndexedDB warning present.
+- [x] Settings: units (store metric), tz, logout, delete, export. Shared-phone IndexedDB warning present. **015 Done** (PR #8; Dev A peer PASS).
 - [x] CI: concurrency cancel-in-progress; Node 22 + pnpm 9 store cache; frozen-lockfile; forbidden-string grep fail-closed; typecheck+test fail the job (no `--if-present` skip when scripts exist). **023 Done** on `origin/main` (PR #1).
 - [x] Branch protection live on `main`: PR required, required check context **`ci`**, reviews required 0, `enforce_admins: true`, no force-push. **024 Done.**
 - [x] Docs + PR template + operator `gh api` snippet name the required check context **`ci`** (not `CI / ci`) — **025 Done** (PR #5).
-- [ ] **No** `.github/workflows/deploy.yml`. **No** Workers / Caddy work.
+- [x] **No** `.github/workflows/deploy.yml`. **No** Workers / Caddy work.
 
 ### SRE intake
 
