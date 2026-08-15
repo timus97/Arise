@@ -180,10 +180,10 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **Planned** — Ready for A after 006 is on `main` (do not mix with 006) |
-| ARISE-006 | Engine XP, rank, recovery, safety, and effect helpers | 06a | Dev A | 5 | ARISE-003 | **In progress** — `feat/ARISE-006-engine-math` |
-| ARISE-007 | 16-template catalog, scorer, issuer, and planner | 06b | Dev A | 8 | ARISE-006 | **Planned** — start only after 006 peer PASS |
-| ARISE-008 | Normalize health samples, manual + small CSV, and unavailable stubs | 07 | Dev B | 5 | ARISE-003 | **In progress** — `feat/ARISE-008-health-csv` |
+| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **Ready** — 006 is on `main`; next after 007 or if A has bandwidth |
+| ARISE-006 | Engine XP, rank, recovery, safety, and effect helpers | 06a | Dev A | 5 | ARISE-003 | **Done** — peer PASS, on `main` |
+| ARISE-007 | 16-template catalog, scorer, issuer, and planner | 06b | Dev A | 8 | ARISE-006 | **In progress** — `feat/ARISE-007-catalog-issuer` |
+| ARISE-008 | Normalize health samples, manual + small CSV, and unavailable stubs | 07 | Dev B | 5 | ARISE-003 | **Done** — peer PASS, on `main` |
 
 **Parallelism (first slice, start now):** A starts **006** (`feat/ARISE-006-engine-math`, critical path to 06b). B starts **008** (`feat/ARISE-008-health-csv`). **004** after 006 is on `main` (or immediately after 006 is pushed if A has bandwidth — **do not mix 004 and 006 on one branch**). **007** only after 006 peer PASS.
 
