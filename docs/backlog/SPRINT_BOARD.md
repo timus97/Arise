@@ -8,12 +8,12 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | --- | --- | --- | --- | --- |
 | Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
 | Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** |
-| Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **In progress** |
+| Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **Done** |
 | Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1 and Sprint 2 are **Done** on `origin/main` (01–07 peer PASS; domain 20 / engine 78 / health 17 / db 4 tests + typecheck green). Sprint 3 is **In progress**. Sprints 4–6 stay Planned.
+Sprint 1, 2, and 3 are **Done** on `origin/main` (after this push). Sprints 4–6 stay Planned.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -200,7 +200,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ## Sprint 3 — API core
 
-**Status: In progress**  
+**Status: Done**  
 **Goal:** Node Hono + Better Auth (invite fail-closed, age 16+), onboarding/plan gates, ensure/complete/skip.  
 **PRs:** 08, 09, 10  
 **Points:** 21  
@@ -219,22 +219,22 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 | --- | --- | --- | --- | --- | --- | --- |
 | ARISE-009 | Hono Node API, Better Auth username + scrypt, and Workers Free spike | 08 | Dev A | 8 | ARISE-004, ARISE-005 | **Done** — peer PASS, on `main` |
 | ARISE-010 | Onboarding, plan preview/regenerate, pregnancy and loss-rate gates | 09 | Dev A | 5 | ARISE-007, ARISE-009 | **Done** — peer PASS, on `main` |
-| ARISE-011 | Issue today’s quests, complete, skip, and lazy fail | 10 | Dev A | 8 | ARISE-007, ARISE-010 | **In progress** — `feat/ARISE-011-ensure-quests` |
+| ARISE-011 | Issue today’s quests, complete, skip, and lazy fail | 10 | Dev A | 8 | ARISE-007, ARISE-010 | **Done** — peer PASS, on `main` |
 
-**Parallelism:** 08 landed. **A** implements **ARISE-010 / PR 09** now. **B** reviews 09 until PASS. **ARISE-011 / PR 10** only after 09 peer PASS + merge + push `main`. Do not staff a third.
+**Parallelism:** 08 → 09 → 10 all landed with peer PASS.
 
 **Sprint 3 exit:**
 
-- [ ] Cookie name **`arise.session`**. scrypt default. `minPasswordLength: 10`. Session 30 days, `updateAge` 1 day.
-- [ ] `age < 16` → **`400 AGE_RESTRICTED`**, **zero rows**.
-- [ ] Missing/empty `REGISTER_INVITE_CODE` → **`503 INVITE_UNCONFIGURED`** (fail-closed). Mismatch → **`403 INVITE_REQUIRED`**.
-- [ ] Worker without `ALLOW_WORKER_PASSWORD_AUTH=true` → **`501 AUTH_RUNTIME_UNSUPPORTED`**.
-- [ ] Spike: Free Worker sign-in CPU abort recorded in `apps/api/README.md`; deploy not left as production.
-- [ ] `GET /health` **no DB**, 30/min/IP. `GET /ready` is `SELECT 1`.
-- [ ] `parq.pregnancy === true` → **403 `PREGNANCY_HARD_STOP`**, no goal/habit/plan.
-- [ ] Implied loss > 1% BW/week → **400 `UNSAFE_LOSS_RATE`** + `details.maxKgPerWeek`.
-- [ ] `GET /me/today` **0 writes**. `POST /me/today/ensure` rejects non-today (`400 ENSURE_DATE_NOT_TODAY`). Issue+catch-up ≤ **12** statements. Complete ≤ **8**.
-- [ ] XP on `profiles.xp`. Partial = 50% XP. 3rd `busy` skip in ISO week → `failed`.
+- [x] Cookie name **`arise.session`**. scrypt default. `minPasswordLength: 10`. Session 30 days, `updateAge` 1 day.
+- [x] `age < 16` → **`400 AGE_RESTRICTED`**, **zero rows**.
+- [x] Missing/empty `REGISTER_INVITE_CODE` → **`503 INVITE_UNCONFIGURED`** (fail-closed). Mismatch → **`403 INVITE_REQUIRED`**.
+- [x] Worker without `ALLOW_WORKER_PASSWORD_AUTH=true` → **`501 AUTH_RUNTIME_UNSUPPORTED`**.
+- [x] Spike: Free Worker sign-in CPU abort recorded in `apps/api/README.md`; deploy not left as production.
+- [x] `GET /health` **no DB**, 30/min/IP. `GET /ready` is `SELECT 1`.
+- [x] `parq.pregnancy === true` → **403 `PREGNANCY_HARD_STOP`**, no goal/habit/plan.
+- [x] Implied loss > 1% BW/week → **400 `UNSAFE_LOSS_RATE`** + `details.maxKgPerWeek`.
+- [x] `GET /me/today` **0 writes**. `POST /me/today/ensure` rejects non-today (`400 ENSURE_DATE_NOT_TODAY`). Issue+catch-up ≤ **12** statements. Complete ≤ **8**.
+- [x] XP on `profiles.xp`. Partial = 50% XP. 3rd `busy` skip in ISO week → `failed`.
 
 ---
 
