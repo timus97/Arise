@@ -2,18 +2,18 @@
 
 Contract: [`docs/design.md`](../design.md) revision 4. Stories: [`USER_STORIES.md`](./USER_STORIES.md). Team DoD: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md).
 
-Two-senior team. Sprints are about **one week**. Package name **`arise`**. Chrome **SYSTEM**.
+Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **part-time Scrum Master**. Product Owner is async after the addendum, except Sprint 5 (polish copy) and Sprint 6 (launch sign-off). Sprints are about **one week**. Package name **`arise`**. Chrome **SYSTEM**.
 
-| Sprint | Theme | PRs | Status |
-| --- | --- | --- | --- |
-| Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **In progress** |
-| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | Planned |
-| Sprint 3 | API core | 08, 09, 10 | Planned |
-| Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | Planned |
-| Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | Planned |
-| Sprint 6 | E2E + Compose launch | 19, 20 | Planned |
+| Sprint | Theme | PRs | Team size | Status |
+| --- | --- | --- | --- | --- |
+| Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **In progress** |
+| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | Planned |
+| Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | Planned |
+| Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
+| Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
+| Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-**Sprint 1 is Ready — implementation starts now.** Sprints 2–6 stay Planned until the previous sprint’s merge gates pass.
+Sprint 1 is **in progress**. Sprints 2–6 stay Planned until the previous sprint’s merge gates pass. Staff each sprint from the **Team size** column and the requirement table under that sprint.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -98,20 +98,31 @@ Text form from the design (identical DAG):
 
 ---
 
-## Capacity
+## Capacity and staffing
 
 Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts/week.
 
-| Sprint | Points | Dev A | Dev B | Load |
-| --- | --- | --- | --- | --- |
-| 1 | 10 | 3 | 7 | Light — foundation |
-| 2 | 23 | 18 | 5 | Heavy — 06b is an 8 |
-| 3 | 21 | 21 | 0 | Heavy — A owns all three API PRs; B reviews + spike assist |
-| 4 | 18 | 10 | 8 | Balanced |
-| 5 | 24 | 0 | 24 | Heavy — B owns chrome; A reviews engine/API contracts |
-| 6 | 10 | 0 | 10 | Launch + e2e; A on-call for API defects |
+| Sprint | Points | Dev A | Dev B | Team size | Load |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 10 | 3 | 7 | 2 | Light — foundation |
+| 2 | 23 | 18 | 5 | 2 (3 optional) | Heavy — 06b is an 8 |
+| 3 | 21 | 21 | 0 | 2 | Heavy — A owns all three API PRs; B reviews + spike assist |
+| 4 | 18 | 10 | 8 | 2 | Balanced |
+| 5 | 24 | 0 | 24 | 2 (3 optional after 14) | Heavy — B owns chrome; A reviews engine/API contracts |
+| 6 | 10 | 0 | 10 | 2 | Launch + e2e; A on-call for API defects |
 
-**v1 committed: 22 stories, 106 points, 6 sprints.**
+**v1 committed: 22 stories, 106 points, 6 sprints. Default staff: 2 seniors.** Do not staff 4+ in any sprint — the DAG cannot keep them busy.
+
+### Standing roles (all sprints)
+
+| Role | Count | When they work |
+| --- | --- | --- |
+| Senior full-stack (Dev A) | 1 | Domain, engine, API. Reviews B’s PRs until PASS. |
+| Senior full-stack (Dev B) | 1 | Scaffold, CI, Docker, health adapters, web, PWA, e2e, launch. Reviews A’s PRs until PASS. |
+| Scrum Master | 0.1 FTE | Board, DoD, peer-review gate. Not an implementer. |
+| Product Owner | 0–0.25 FTE | Addendum already shipped. Needed in Sprint 5 (polish P1–P10) and Sprint 6 (launch accept). |
+
+No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest goldens are in the stories.
 
 ---
 
@@ -121,6 +132,15 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 **Goal:** `arise` monorepo, CI IP grep, domain types, and Compose file skeletons (no fake `/health` app).  
 **PRs:** 01, 02, 03, 05  
 **Points:** 10
+
+**Team size: 2 seniors** + part-time Scrum Master. A third engineer is idle after 01 lands.
+
+| Requirement | Need |
+| --- | --- |
+| Skills | TypeScript 5 strict monorepo, pnpm 9 + Turborepo, GitHub Actions, Docker Compose, Node 22 |
+| Tools on the machine | Node 22, pnpm 9.15.0, Git, Docker engine when touching Compose files |
+| Roles this sprint | Dev A (PR 03), Dev B (01/02/05 — 01 already done by A), SM (board only) |
+| Not required | React UI, Hono, Drizzle, Playwright, Better Auth, PO on daily standups |
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -148,6 +168,15 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 **PRs:** 04, 06a, 06b, 07  
 **Points:** 23
 
+**Team size: 2 seniors required.** A third senior is **optional** only if the calendar cannot absorb A’s 18 points (split PR 04 off A onto the third; do not split 06b).
+
+| Requirement | Need |
+| --- | --- |
+| Skills | Drizzle + SQLite, dual-runtime `atomic()` (better-sqlite3 vs D1 `batch`), closed-form XP/rank/recovery/safety, Vitest goldens, CSV parse + Zod |
+| Tools | Node 22, pnpm, Vitest, SQLite CLI |
+| Roles this sprint | Dev A (04, 06a, 06b), Dev B (07 + review A), SM |
+| Not required | React, PWA, Hono routes, Better Auth, Docker production image, PO |
+
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | Planned |
@@ -174,6 +203,15 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 **Goal:** Node Hono + Better Auth (invite fail-closed, age 16+), onboarding/plan gates, ensure/complete/skip.  
 **PRs:** 08, 09, 10  
 **Points:** 21
+
+**Team size: 2 seniors. Do not add a third** — 08 → 09 → 10 is serial on one API owner. Extra people wait.
+
+| Requirement | Need |
+| --- | --- |
+| Skills | Hono 4 on Node 22, Better Auth + username plugin + scrypt, cookie sessions, Zod façades, query-budget SQL, safety gates (age, invite, pregnancy, loss rate) |
+| Tools | Node 22, pnpm, optional Cloudflare account **only** for the required Free Worker spike note (not production) |
+| Roles this sprint | Dev A (08, 09, 10), Dev B (review + Free Worker spike assist + Vite proxy prep), SM |
+| Not required | SYSTEM UI, PWA, Playwright, third implementer, PO |
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -205,6 +243,15 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 **PRs:** 11, 12, 13, 13.1  
 **Points:** 18
 
+**Team size: 2 seniors.** Balanced load. A third person is unused (13 waits only on 08; 13.1 waits on 12).
+
+| Requirement | Need |
+| --- | --- |
+| Skills | Health ingest + consent, Node cron retain, GDPR export/delete, admin CLI, Vite 6 + React 19, TanStack Router, `credentials: 'include'` same-origin cookies |
+| Tools | Node 22, pnpm, Vite `:5173` → API `:8787` |
+| Roles this sprint | Dev A (11, 12), Dev B (13, 13.1), SM |
+| Not required | Full SYSTEM chrome, service worker, Playwright, Compose launch image, PO (Settings copy can use addendum P3/P8 as a checklist) |
+
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | ARISE-012 | Health ingest, consent, daily summaries, and retain job | 11 | Dev A | 5 | ARISE-008, ARISE-011 | Planned |
@@ -231,6 +278,15 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 **Goal:** SYSTEM window + onboarding/health/progress UI + PWA install/outbox. **No Web Push.**  
 **PRs:** 14, 15, 16, 17, 18a  
 **Points:** 24
+
+**Team size: 2 seniors required.** A third senior is **optional after PR 14 merges**, to run 15/16/17/18a in parallel. Before 14, a third sits idle.
+
+| Requirement | Need |
+| --- | --- |
+| Skills | React 19 SYSTEM UI (`packages/ui`), TanStack Query, six-step onboarding, CSV importer UX, PWA (`vite-plugin-pwa`, SW, IndexedDB outbox). **No** Web Push / VAPID |
+| Tools | Node 22, pnpm, browsers for install/outbox checks (desktop + a phone viewport) |
+| Roles this sprint | Dev B (14 then 15–18a), Dev A (contract review: 16 templates, `intl`, no `push` in `sw.ts`), **PO 0.25 FTE** for polish P1–P10 copy, SM |
+| Not required | Native, designer hire (addendum + design tokens), LLM, social |
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -261,6 +317,15 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 **Goal:** Playwright happy path and `docker compose up --build` on a **fresh** volume at `http://localhost:8080`.  
 **PRs:** 19, 20  
 **Points:** 10
+
+**Team size: 2 seniors** + PO launch sign-off. A third implementer is idle (19 then 20 is serial).
+
+| Requirement | Need |
+| --- | --- |
+| Skills | Playwright e2e, multi-stage Docker (`pnpm --filter api deploy --prod`), SPA fallback, sqlite `.backup` cron |
+| Tools | Node 22, pnpm, Playwright browsers, **Docker engine running** (Rancher Desktop / Compose), SQLite CLI |
+| Roles this sprint | Dev B (19, 20), Dev A (on-call for ensure/auth defects), SM, **PO** accepts PR 20 against the design’s launch checklist |
+| Not required | Cloudflare, Caddy, custom domain, wrangler, extra QA hire |
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |

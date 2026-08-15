@@ -26,6 +26,8 @@ This file is the index. **`design.md` wins** if anything here disagrees.
 
 ---
 
+Per-sprint **team size and skill requirements** live on [`backlog/SPRINT_BOARD.md`](./backlog/SPRINT_BOARD.md) (summary table + a block under each sprint). Default staff is **2 seniors**; a third is optional only in Sprint 2 and after PR 14 in Sprint 5.
+
 ## Team split
 
 | Person | Owns |
