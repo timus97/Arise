@@ -101,3 +101,31 @@ git push origin --delete feat/<STORY-ID>-<slug>
 Prepend Node 22 before any `pnpm` / `node` command:
 
 `C:\Users\Timus97\.nodejs\node-v22.23.2-win-x64`
+
+---
+
+## If `git push` is 403
+
+`gh repo view` can say **ADMIN** while `git push` still fails. The REST “viewer permission” is the **user’s** role on the repo, not what the **token** is allowed to write.
+
+This machine uses a fine-grained PAT (`github_pat_…` via `GH_TOKEN`). Git write needs:
+
+1. Token type: **Fine-grained** (or classic with `repo`).
+2. Resource owner: **timus97**.
+3. Repository access: **Only select** → include **`timus97/Arise`**.
+4. Repository permissions:
+   - **Contents: Read and write** (required for `git push` and creating blobs)
+   - **Metadata: Read**
+   - **Pull requests: Read and write** (when opening PRs)
+5. Save the token, then **replace** `GH_TOKEN` in the environment / Grok / Cursor with the new value. Editing an old token on GitHub does not update a copied secret until you paste it again.
+6. Retry:
+
+```powershell
+gh auth status
+gh api --method POST /repos/timus97/Arise/git/blobs -f content=dGVzdA== -f encoding=base64
+git push origin main
+```
+
+The blob call must return a `sha`, not `Resource not accessible by personal access token`.
+
+Do not run `gh auth status -t` in shared logs — it prints the raw token. Rotate the token if it was ever printed.

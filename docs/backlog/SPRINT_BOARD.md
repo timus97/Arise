@@ -7,13 +7,13 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | Sprint | Theme | PRs | Team size | Status |
 | --- | --- | --- | --- | --- |
 | Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
-| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **In progress** |
+| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** (local; push blocked) |
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | Planned |
 | Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1 is **Done** (01, 02, 03, 05 on `main`, peer PASS). **Sprint 2 is In progress** (first slice: 06a + 07). Sprints 3–6 stay Planned until the previous sprint’s merge gates pass. Staff each sprint from the **Team size** column and the requirement table under that sprint.
+Sprint 1 is **Done**. Sprint 2 is **Done** on local `main` (04, 06a, 06b, 07 peer PASS). **GitHub `origin/main` is still the initial commit** until Contents: Write is granted and we push. Sprints 3–6 stay Planned.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -163,7 +163,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ## Sprint 2 — Engine + DB
 
-**Status: In progress**  
+**Status: Done** (local `main`; GitHub push blocked until Contents: Write)  
 **Goal:** Schema + `atomic()`, closed-form XP/rank/safety, 16-template issuer, health adapters.  
 **PRs:** 04, 06a, 06b, 07  
 **Points:** 23  
@@ -180,7 +180,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **In progress** — `feat/ARISE-004-drizzle-atomic` |
+| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **Done** — peer PASS, on local `main` |
 | ARISE-006 | Engine XP, rank, recovery, safety, and effect helpers | 06a | Dev A | 5 | ARISE-003 | **Done** — peer PASS, on `main` |
 | ARISE-007 | 16-template catalog, scorer, issuer, and planner | 06b | Dev A | 8 | ARISE-006 | **Done** — peer PASS, on `main` |
 | ARISE-008 | Normalize health samples, manual + small CSV, and unavailable stubs | 07 | Dev B | 5 | ARISE-003 | **Done** — peer PASS, on `main` |
@@ -189,12 +189,12 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 **Sprint 2 exit:**
 
-- [ ] Mocked `batch` throw ⇒ `SELECT COUNT(*) FROM issuance_ledger` is **0**.
-- [ ] Goldens: `xpToNextLevel(1) === 100`, `(10) === 2239`, `(25) === 7713`, `(50) === 19661`.
-- [ ] Scorer: **`score === 80`** for `str_goblet_squat_l1` vs `muscle_gain` (empty history, remaining 40, recovery 80). `goalAlignment === 55`.
-- [ ] Exactly **16** template ids. No `habit_log_weight`. Empty-day fallback is `habit_sleep_window` + `cardio_zone2_walk` @ 10 min.
-- [ ] CSV ≤ **256 KB** / **200** rows. Stubs throw `unavailable_web` / `UNAVAILABLE_WEB`.
-- [ ] No `users` table. XP on `profiles` only. No `push_subscriptions`.
+- [x] Mocked `batch` throw ⇒ `SELECT COUNT(*) FROM issuance_ledger` is **0**.
+- [x] Goldens: `xpToNextLevel(1) === 100`, `(10) === 2239`, `(25) === 7713`, `(50) === 19661`.
+- [x] Scorer: **`score === 80`** for `str_goblet_squat_l1` vs `muscle_gain` (empty history, remaining 40, recovery 80). `goalAlignment === 55`.
+- [x] Exactly **16** template ids. No `habit_log_weight`. Empty-day fallback is `habit_sleep_window` + `cardio_zone2_walk` @ 10 min.
+- [x] CSV ≤ **256 KB** / **200** rows. Stubs throw `unavailable_web` / `UNAVAILABLE_WEB`.
+- [x] No `users` table. XP on `profiles` only. No `push_subscriptions`.
 
 ---
 
