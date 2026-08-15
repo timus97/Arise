@@ -528,7 +528,7 @@ describe("onboarding and plan gates", () => {
     );
   });
 
-  it("GET /me/today after complete onboarding returns a 0-write stub", async () => {
+  it("GET /me/today after complete onboarding is read-only with needsEnsure", async () => {
     const { app, sqlite } = openHarness();
     const { cookie } = await authedSession(app);
     const put = await app.request(`${ORIGIN}/api/v1/onboarding`, {
@@ -541,6 +541,7 @@ describe("onboarding and plan gates", () => {
       quests: countTable(sqlite, "daily_quests"),
       ledger: countTable(sqlite, "issuance_ledger"),
       plans: countTable(sqlite, "plans"),
+      changes: (sqlite.prepare("SELECT total_changes() AS n").get() as { n: number }).n,
     };
     const res = await app.request(`${ORIGIN}/api/v1/me/today`, {
       headers: { cookie, origin: ORIGIN },
@@ -551,26 +552,26 @@ describe("onboarding and plan gates", () => {
       needsEnsure: boolean;
       quests: unknown[];
       disclaimer: string;
+      player: { stats: { intl: number }; level: number };
+      pendingModifiers: unknown[];
+      suggestRegenerate: boolean;
     };
-    expect(json).toEqual({
-      needsEnsure: true,
-      quests: [],
-      disclaimer:
-        "Arise is not a medical device. Stop if you feel pain, chest pressure, or faintness.",
-    });
+    expect(json.needsEnsure).toBe(true);
+    expect(json.quests).toEqual([]);
+    expect(json.disclaimer).toBe(
+      "Arise is not a medical device. Stop if you feel pain, chest pressure, or faintness.",
+    );
+    expect(json.player.stats.intl).toBe(10);
+    expect(json.player.stats).not.toHaveProperty("int");
+    expect(json.player.level).toBe(1);
+    expect(json.pendingModifiers).toEqual([]);
+    expect(json.suggestRegenerate).toBe(false);
     expect(countTable(sqlite, "daily_quests")).toBe(before.quests);
     expect(countTable(sqlite, "issuance_ledger")).toBe(before.ledger);
     expect(countTable(sqlite, "plans")).toBe(before.plans);
-
-    const ensure = await app.request(`${ORIGIN}/api/v1/me/today/ensure`, {
-      method: "POST",
-      headers: jsonHeaders(cookie),
-      body: JSON.stringify({}),
-    });
-    expect(ensure.status).toBe(200);
-    expect((await ensure.json()) as { needsEnsure: boolean }).toMatchObject({ needsEnsure: true });
-    expect(countTable(sqlite, "daily_quests")).toBe(0);
-    expect(countTable(sqlite, "issuance_ledger")).toBe(0);
+    expect((sqlite.prepare("SELECT total_changes() AS n").get() as { n: number }).n).toBe(
+      before.changes,
+    );
   });
 
   it("returns 409 ONBOARDING_REQUIRED for a pending profile shell", async () => {
