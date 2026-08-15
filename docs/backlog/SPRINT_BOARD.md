@@ -6,14 +6,14 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 
 | Sprint | Theme | PRs | Team size | Status |
 | --- | --- | --- | --- | --- |
-| Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **In progress** |
+| Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
 | Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | Planned |
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | Planned |
 | Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1 is **in progress**. Sprints 2–6 stay Planned until the previous sprint’s merge gates pass. Staff each sprint from the **Team size** column and the requirement table under that sprint.
+Sprint 1 is **Done** (01, 02, 03, 05 on `main`, peer PASS). Sprints 2–6 stay Planned until the previous sprint’s merge gates pass. Staff each sprint from the **Team size** column and the requirement table under that sprint.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -128,7 +128,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ## Sprint 0 / Sprint 1 — Foundation
 
-**Status: In progress** (01, 02, 05 landed with peer PASS; 03 next)  
+**Status: Done** (01, 02, 03, 05 on `main` with peer PASS)  
 **Goal:** `arise` monorepo, CI IP grep, domain types, and Compose file skeletons (no fake `/health` app).  
 **PRs:** 01, 02, 03, 05  
 **Points:** 10
@@ -146,7 +146,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 | --- | --- | --- | --- | --- | --- | --- |
 | ARISE-001 | Scaffold the arise monorepo | 01 | Dev A (implemented; originally B) | 3 | — | **Done** — peer PASS |
 | ARISE-002 | CI lint, typecheck, test, and forbidden-string grep | 02 | Dev B | 2 | ARISE-001 | **Done** — peer PASS |
-| ARISE-003 | Domain Zod types for player, goal, quest, health, plan, effects | 03 | Dev A | 3 | ARISE-001 | Ready (next) |
+| ARISE-003 | Domain Zod types for player, goal, quest, health, plan, effects | 03 | Dev A | 3 | ARISE-001 | **Done** — peer PASS |
 | ARISE-005 | .env.example and Dockerfiles (no fake /health app) | 05 | Dev B | 2 | ARISE-001 | **Done** — peer PASS |
 
 **Parallelism:** After ARISE-001 merges, A does domain (03) while B does CI (02) and Docker/env (05).
@@ -155,7 +155,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 - [x] `package.json` `"name": "arise"`. `pnpm -r` works.
 - [x] CI greps `FORBIDDEN.txt` (`rg -i -f FORBIDDEN.txt --glob '!grok-design*' --glob '!.git/**'`) and fails the build on hits.
-- [ ] Domain types use **`intl` not `int`**. Ranks **E–S**. `RegisterBody` / `OnboardingBody` exist.
+- [x] Domain types use **`intl` not `int`**. Ranks **E–S**. `RegisterBody` / `OnboardingBody` exist.
 - [x] `docker-compose.yml` is one service; **no** Caddy; Compose `up` may fail until PR 08 — documented.
 - [x] No Solo Leveling IP strings. No v1.1 files (`push/`, Apple XML, `deploy.yml` as a deliverable).
 

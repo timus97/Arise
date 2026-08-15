@@ -59,9 +59,9 @@ PR **18b** (Web Push) is not a v1 sprint.
 | 01 Monorepo | ARISE-001 | Dev A | **PASS** (Dev B) | Yes |
 | 02 CI + IP grep | ARISE-002 | Dev B | **PASS** (Dev A, with 05) | Yes |
 | 05 Env + Dockerfiles | ARISE-005 | Dev B | **PASS** (Dev A) | Yes |
-| 03 Domain types | ARISE-003 | Dev A | Not started | No — next |
+| 03 Domain types | ARISE-003 | Dev A | **PASS** (Dev B) | Yes |
 
-Next story: **ARISE-003 / PR 03** — Zod domain types (`intl` not `int`).
+Sprint 1 is **complete**. Next: Sprint 2 — ARISE-004 / PR 04 (Dev A) and ARISE-008 / PR 07 (Dev B) after 03.
 
 ---
 
