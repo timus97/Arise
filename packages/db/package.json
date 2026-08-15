@@ -4,12 +4,28 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./tx": "./src/tx.ts",
+    "./client": "./src/client.ts",
+    "./migrate": "./src/migrate.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json --noEmit",
     "lint": "node -e \"process.exit(0)\"",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node -e \"process.exit(0)\""
+    "test": "vitest run",
+    "generate": "drizzle-kit generate"
+  },
+  "dependencies": {
+    "@arise/domain": "workspace:*",
+    "better-sqlite3": "^11.10.0",
+    "drizzle-orm": "^0.44.4"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "drizzle-kit": "^0.31.4",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
   }
 }
