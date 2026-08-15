@@ -7,12 +7,22 @@ A story is **not done** until every item below is true. Story-specific acceptanc
 
 ---
 
+## Git (mandatory)
+
+Full procedure: [`docs/dev/GIT_WORKFLOW.md`](../dev/GIT_WORKFLOW.md).
+
+- [ ] Started from a **pull of `origin/main`**, then a **new feature branch** (`feat/<STORY-ID>-<slug>`). Never implement on `main`.
+- [ ] Work is **committed** with the PR-plan title.
+- [ ] Branch is **pushed to GitHub** (`origin`) before the author stops and before review is requested.
+- [ ] After peer PASS, merge to `main` is **pushed to GitHub**. No story is Done if it exists only locally.
+
 ## Merge gate
 
 1. **Peer review must PASS before merge.** One approving review from the other senior (Dev A ↔ Dev B). The author does not self-merge on a failing or pending review.
 2. CI on the PR is green: lint, typecheck, tests for that PR, forbidden-string grep.
 3. The PR is independently reviewable and mapped to its backlog ID / PR number.
 4. No “fix in a follow-up” for load-bearing contract items (goldens, status codes, invite fail-closed, age 16+, query budgets, 16 template ids).
+5. Feature branch and (after PASS) `main` are on **GitHub**, not only a local worktree.
 
 ---
 
@@ -112,10 +122,13 @@ A story is **not done** until every item below is true. Story-specific acceptanc
 ## Reviewer checklist (paste into the PR)
 
 ```text
+- [ ] Started from pull of origin/main + feature branch (not main)
+- [ ] Committed and pushed to GitHub before review
 - [ ] Typecheck green
 - [ ] Tests for this PR green (goldens / status codes / file paths cited in the story)
 - [ ] Forbidden-string grep green (no Solo Leveling IP)
 - [ ] No v1.1/v2 scope (push, Bluetooth, Apple XML, LLM, social, Workers Paid, Caddy, custom domain)
 - [ ] Peer review PASS
+- [ ] After PASS, merge pushed to origin/main
 - [ ] Package name arise; chrome SYSTEM; intl not int
 ```

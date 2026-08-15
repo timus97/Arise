@@ -380,11 +380,14 @@ flowchart LR
 
 ---
 
-## WIP and review rules
+## WIP, git, and review rules
 
+Git procedure (mandatory): [`docs/dev/GIT_WORKFLOW.md`](../dev/GIT_WORKFLOW.md).
+
+- **Pull → feature branch → work → commit → push to GitHub.** Every story. No implementing on `main`. No “Done” that exists only in a worktree.
 - One in-flight PR per assignee unless a PR is blocked on review.
 - Engine tests before chrome (design PR plan). **PR 14 cannot merge before PR 06b and PR 10.**
-- Peer review must **PASS** before merge (see [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md)).
+- Peer review must **PASS** before merge (see [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md)). After PASS, merge is pushed to `origin/main`.
 - Invite-only and age 16+ are load-bearing from the first auth PR (08), not “later hardening.”
 - Compose is the only v1 topology. Do not accept cloud/Caddy/domain work in any sprint.
 

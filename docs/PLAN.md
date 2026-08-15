@@ -21,7 +21,8 @@ This file is the index. **`design.md` wins** if anything here disagrees.
 | [`product/FEATURE_DECISIONS.md`](./product/FEATURE_DECISIONS.md) | Feature verdicts: already-in-v1 / polish / v1.1 / v2 / reject |
 | [`backlog/USER_STORIES.md`](./backlog/USER_STORIES.md) | ARISE-001–022 mapped to PRs 01–20 |
 | [`backlog/SPRINT_BOARD.md`](./backlog/SPRINT_BOARD.md) | Six sprints, merge graph, Sprint 1 Ready |
-| [`backlog/DEFINITION_OF_DONE.md`](./backlog/DEFINITION_OF_DONE.md) | Typecheck, tests, no IP, no v1.1 creep, peer PASS |
+| [`backlog/DEFINITION_OF_DONE.md`](./backlog/DEFINITION_OF_DONE.md) | Typecheck, tests, no IP, no v1.1 creep, peer PASS, **push to GitHub** |
+| [`dev/GIT_WORKFLOW.md`](./dev/GIT_WORKFLOW.md) | Pull `main`, feature branch, commit, push — every story |
 | [`dev/reviews/`](./dev/reviews/) | Peer reviews for landed work |
 
 ---
@@ -34,7 +35,7 @@ Per-sprint **team size and skill requirements** live on [`backlog/SPRINT_BOARD.m
 | --- | --- |
 | **Dev A** | PR 03, 04, 06a, 06b, 08, 09, 10, 11, 12 (domain, engine, API) |
 | **Dev B** | PR 01, 02, 05, 07, 13, 13.1, 14–17, 18a, 19, 20 (scaffold, CI, Docker, health adapters, web, PWA, e2e, launch) |
-| **Both** | Implement, then review each other until **PASS** (0 blocking) before merge |
+| **Both** | Pull `main`, feature branch, implement, **commit + push**, then review each other until **PASS** before merge to `main` (also pushed) |
 | **PO polish** | P1–P10 from the addendum land **inside** UI PRs 13.1 / 14 / 15 / 16 / 18a — no new APIs |
 
 ---

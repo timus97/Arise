@@ -12,7 +12,7 @@ Assignees:
 
 Story points are Fibonacci **1–8**. **8 is used only for PR 06b, 08, 10, and 14.**
 
-Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Sprint board: [`SPRINT_BOARD.md`](./SPRINT_BOARD.md).
+Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Sprint board: [`SPRINT_BOARD.md`](./SPRINT_BOARD.md). Git: [`docs/dev/GIT_WORKFLOW.md`](../dev/GIT_WORKFLOW.md) — pull `main`, feature branch, commit, **push to GitHub** on every story.
 
 ---
 
