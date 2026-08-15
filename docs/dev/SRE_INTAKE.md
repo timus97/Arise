@@ -3,15 +3,20 @@
 Date: 2026-08-15  
 Story: ARISE-023 — harden Actions, PR template, merge-gate docs, `main` protection.
 
-## Backlog requests
+## Applied protection (live)
 
-**none** for admin-only work.
+`main` branch protection is on: required PR, required status check context **`ci`** (not `CI / ci`), `required_approving_review_count: 0`, `enforce_admins: true`, no force-push / no deletes.
 
-`main` branch protection was applied with this token (required pull request, required status check `CI / ci`, `enforce_admins: true`, force-push disabled). Do **not** add ARISE-025 unless an operator later removes those rules and a Contents-only token 403s on Administration.
+ARISE-024 (rewrite “After peer PASS” to GitHub PR merge) is implemented on PR 5 (`docs/git-workflow-pr-merge`).
 
-## Optional docs follow-up (not blocking this story)
+## Backlog request
 
-`docs/dev/GIT_WORKFLOW.md` “After peer PASS” still says local `git merge --no-ff` + `git push origin main`. Protection now rejects direct pushes to `main` (including admins). SM may add a small docs story (e.g. **ARISE-024**) to rewrite that section to: merge the GitHub PR into `main` after `CI / ci` green + peer PASS. Not required to close ARISE-023.
+**ARISE-025 — Document required check context as `ci`**
+
+- Why: live protection uses context `ci`. Docs/template still say `CI / ci`, which previously blocked merges (check never matched).
+- Scope: docs + PR template + operator `gh api` snippet only. No workflow behavior change if already on origin/main’s `ci.yml`.
+- Out of scope: `deploy.yml`, Cloudflare, Caddy.
+- **Implemented on PR 5** (`docs/git-workflow-pr-merge`): `docs/dev/CI.md`, `docs/dev/GIT_WORKFLOW.md`, `.github/pull_request_template.md`, this file. SM should still add ARISE-025 to the board as **In review / Done-when-merged**.
 
 ## Out of scope — do not add
 

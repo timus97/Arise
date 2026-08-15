@@ -22,7 +22,7 @@
 ## Merge gate
 
 - [ ] One approving review from the other senior (Dev A ↔ Dev B). Author does not self-merge on a failing or pending review.
-- [ ] CI on this PR is green: lint, typecheck, tests, forbidden-string grep.
+- [ ] Required GitHub check **`ci`** is green (workflow `CI`, job `ci`). Do not wait for a check named `CI / ci` — that is not the protection context.
 - [ ] No “fix in a follow-up” for load-bearing contract items.
 - [ ] No deploy.yml / Cloudflare / Pages / Workers / Caddy in this PR.
 

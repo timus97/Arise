@@ -12,7 +12,9 @@ Git procedure: [`docs/dev/GIT_WORKFLOW.md`](./GIT_WORKFLOW.md).
 
 Workflow **name:** `CI`  
 Job **id:** `ci`  
-**Required check name:** `CI / ci`
+**Required GitHub status check context (branch protection): `ci`**
+
+Some UIs show `CI / ci` (workflow name + job id). That string is **not** the protection context and must **not** be used in `required_status_checks.contexts`. Using `CI / ci` previously blocked merges because the check never matched.
 
 Triggers:
 
@@ -60,12 +62,12 @@ Manual review is not the IP mitigation. Excluding `FORBIDDEN.txt` is required (t
 
 1. Start from a pull of `origin/main`, then a feature branch (`feat/<STORY-ID>-<slug>`). Never implement on `main`.
 2. Open a **pull request into `main`**.
-3. Wait until required check **`CI / ci`** is green (lint, typecheck, tests, forbidden-string grep).
+3. Wait until required check **`ci`** is green (lint, typecheck, tests, forbidden-string grep). Do not wait for a check named `CI / ci`.
 4. Get **peer review PASS** from the other senior (Dev A ↔ Dev B). The author does not self-merge on a failing or pending review.
 5. Merge the PR. Push of the merge must reach GitHub.
 6. **Never force-push `main`.** Do not delete `main`. Feature-branch force-push only if you own the branch and it is not shared mid-review.
 
-Branch protection (when applied) enforces: pull request before merge, required status check `CI / ci`, no force-push to `main`.
+Branch protection enforces: pull request before merge, required status check context **`ci`**, `enforce_admins: true`, no force-push / no deletes on `main`. GitHub review count is 0 (peer PASS is in `docs/dev/reviews/`).
 
 v1 does **not** auto-deploy on merge. Launch path remains `docker compose up --build` on localhost.
 
@@ -73,7 +75,7 @@ v1 does **not** auto-deploy on merge. Launch path remains `docker compose up --b
 
 ## Operator must run
 
-**Status (ARISE-023):** applied on 2026-08-15. `GET repos/timus97/Arise/branches/main/protection` returned required PR + required check `CI / ci` + `enforce_admins` + `allow_force_pushes: false`. Re-run the PUT only if that GET is 404 or the rules were removed.
+**Status (ARISE-023 / live):** applied. `GET repos/timus97/Arise/branches/main/protection` must show required PR, required check context **`ci`** (not `CI / ci`), `required_approving_review_count: 0`, `enforce_admins: true`, `allow_force_pushes: false`, `allow_deletions: false`. Re-run the PUT only if that GET is 404 or the rules were removed.
 
 Branch protection needs the **Administration** permission. A Contents-write fine-grained PAT can push branches and still **403** on this endpoint. Do not fake a green gate.
 
@@ -83,18 +85,18 @@ Check current protection (expect 404 if unset):
 gh api repos/timus97/Arise/branches/main/protection
 ```
 
-Apply protection (required PR, required check `CI / ci`, no force-push):
+Apply protection (required PR, required check context `ci`, review count 0, no force-push):
 
 ```powershell
 @'
 {
   "required_status_checks": {
     "strict": true,
-    "contexts": ["CI / ci"]
+    "contexts": ["ci"]
   },
   "enforce_admins": true,
   "required_pull_request_reviews": {
-    "required_approving_review_count": 1,
+    "required_approving_review_count": 0,
     "dismiss_stale_reviews": true
   },
   "restrictions": null,
@@ -110,9 +112,9 @@ Equivalent with `gh` flags if you prefer not to pipe JSON:
 gh api -X PUT repos/timus97/Arise/branches/main/protection `
   -H "Accept: application/vnd.github+json" `
   -F required_status_checks[strict]=true `
-  -F 'required_status_checks[contexts][]=CI / ci' `
+  -F 'required_status_checks[contexts][]=ci' `
   -F enforce_admins=true `
-  -F required_pull_request_reviews[required_approving_review_count]=1 `
+  -F required_pull_request_reviews[required_approving_review_count]=0 `
   -F required_pull_request_reviews[dismiss_stale_reviews]=true `
   -F restrictions= `
   -F allow_force_pushes=false `
@@ -121,4 +123,4 @@ gh api -X PUT repos/timus97/Arise/branches/main/protection `
 
 Token needs: **Administration: Read and write** on `timus97/Arise` (in addition to Contents and Metadata). After saving a new PAT, replace `GH_TOKEN` in the environment — editing an existing token on GitHub does not update a copied secret.
 
-If the PUT returns **403** (`Resource not accessible by personal access token` or missing Administration), leave protection unset and file SM follow-up **ARISE-025** (apply `main` branch protection with an admin-capable token). See [`SRE_INTAKE.md`](./SRE_INTAKE.md).
+If the PUT returns **403** (`Resource not accessible by personal access token` or missing Administration), leave protection as-is and file SM follow-up for an admin-capable token. Do **not** put `CI / ci` in `contexts`. See [`SRE_INTAKE.md`](./SRE_INTAKE.md).
