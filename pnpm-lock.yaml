@@ -49,7 +49,21 @@ importers:
         specifier: ^3.0.5
         version: 3.2.7
 
-  packages/health: {}
+  packages/health:
+    dependencies:
+      '@arise/domain':
+        specifier: workspace:*
+        version: link:../domain
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.0.5
+        version: 3.2.7
 
   packages/ui: {}
 
