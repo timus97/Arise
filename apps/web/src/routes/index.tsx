@@ -43,6 +43,11 @@ function HomePage() {
           The daily window ships later. Cookies stay on this host — the browser
           never calls :8787.
         </p>
+        <div className="actions">
+          <Link to="/settings" className="btn">
+            Settings
+          </Link>
+        </div>
       </section>
     );
   }
