@@ -6,6 +6,7 @@ import {
   ensureToday,
   parseLocalDateParam,
   readTodayWindow,
+  recordEnsureDogfood,
   resetQueryBudget,
 } from "../today-service.js";
 import type { AppBindings, AppDeps } from "../types.js";
@@ -58,12 +59,14 @@ export function registerTodayRoutes(app: Hono<AppBindings>, deps: AppDeps): void
     if (parsed.data.date !== undefined && parsed.data.date !== today) {
       throw new ApiError(400, "ENSURE_DATE_NOT_TODAY", "Ensure can only issue the local today");
     }
+    const t0 = performance.now();
     const payload = await ensureToday({
       db: deps.db,
       profile,
       now: new Date(),
       budget,
     });
+    recordEnsureDogfood(Math.round(performance.now() - t0), budget.statements);
     noStore(c);
     return c.json(payload);
   });

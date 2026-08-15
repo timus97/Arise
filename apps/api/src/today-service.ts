@@ -42,9 +42,43 @@ export type QueryBudget = { statements: number };
 
 export let lastQueryBudget: QueryBudget = { statements: 0 };
 
+export type D1Meta = {
+  rowsRead: number;
+  rowsWritten: number;
+  queries: number;
+};
+
+export type EnsureDogfood = {
+  lastEnsureMs: number | null;
+  lastQueryCount: number;
+  lastD1Meta: D1Meta | null;
+};
+
+export const ensureDogfood: EnsureDogfood = {
+  lastEnsureMs: null,
+  lastQueryCount: 0,
+  lastD1Meta: null,
+};
+
 export function resetQueryBudget(): QueryBudget {
   lastQueryBudget = { statements: 0 };
   return lastQueryBudget;
+}
+
+export function recordEnsureDogfood(ms: number, queryCount: number): void {
+  ensureDogfood.lastEnsureMs = ms;
+  ensureDogfood.lastQueryCount = queryCount;
+  ensureDogfood.lastD1Meta = {
+    rowsRead: 0,
+    rowsWritten: 0,
+    queries: queryCount,
+  };
+}
+
+export function resetEnsureDogfood(): void {
+  ensureDogfood.lastEnsureMs = null;
+  ensureDogfood.lastQueryCount = 0;
+  ensureDogfood.lastD1Meta = null;
 }
 
 function track(budget: QueryBudget | undefined, n = 1): void {
