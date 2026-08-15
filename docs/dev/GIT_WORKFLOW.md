@@ -50,20 +50,17 @@ git push origin HEAD
 
 ## After peer PASS
 
-The orchestrator (or the author after PASS) merges to `main` and **pushes `main`**:
+`main` is protected: **PR required** + required check context **`ci`**. Do **not** `git push origin main` for feature work (admins included).
+
+Workflow name is `CI`; job id is `ci`. Some UIs show `CI / ci` — that string is **not** the branch-protection context. Operators must use `"contexts": ["ci"]`.
 
 ```powershell
-git checkout main
-git pull origin main
-git merge --no-ff feat/<STORY-ID>-<slug> -m "merge: <PR> <title> (peer PASS)"
-git push origin main
+gh pr create --base main --head feat/<STORY-ID>-<slug> --title "<pr title>" --body "Peer PASS: see docs/dev/reviews/..."
+# wait until required check `ci` is green (not `CI / ci`)
+gh pr merge --merge
 ```
 
-Then delete the feature branch if desired:
-
-```powershell
-git push origin --delete feat/<STORY-ID>-<slug>
-```
+Peer PASS still lives in `docs/dev/reviews/` (the other senior). GitHub approval count is 0 so a single operator can merge after CI.
 
 ---
 
