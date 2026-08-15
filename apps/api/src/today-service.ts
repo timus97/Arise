@@ -815,31 +815,35 @@ function issueInputFromBundle(args: {
   });
 }
 
-function modifierUpdateStmt(
+/** Persist one new modifier. `json_insert` appends; `json_each` blocks a second shrink. */
+export function questModifierUpdateStmt(
   quest: DailyQuest,
   mod: PlannedModifier,
   nowIso: string,
 ): SqlStatement {
-  const applied = [...quest.modifiersApplied, mod.key];
   const nextStatus = mod.next.status ?? quest.status;
   const nextPrescription = mod.next.prescription ?? quest.prescription;
   const nextPredicate = mod.next.healthPredicate ?? quest.healthPredicate;
   return stmt(
     `UPDATE daily_quests
-        SET modifiers_applied_json = ?,
+        SET modifiers_applied_json = json_insert(COALESCE(modifiers_applied_json, '[]'), '$[#]', ?),
             status = ?,
             prescription_json = ?,
             health_predicate_json = ?,
             updated_at = ?
-      WHERE id = ? AND user_id = ?`,
+      WHERE id = ? AND user_id = ?
+        AND NOT EXISTS (
+          SELECT 1 FROM json_each(COALESCE(modifiers_applied_json, '[]')) WHERE value = ?
+        )`,
     [
-      JSON.stringify(applied),
+      mod.key,
       nextStatus,
       JSON.stringify(nextPrescription),
       nextPredicate ? JSON.stringify(nextPredicate) : null,
       nowIso,
       quest.id,
       quest.userId,
+      mod.key,
     ],
   );
 }
@@ -915,7 +919,7 @@ export async function persistNewModifiers(
   for (const mod of planned) {
     const q = byId.get(mod.questId);
     if (!q || q.modifiersApplied.includes(mod.key)) continue;
-    statements.push(modifierUpdateStmt(q, mod, args.nowIso));
+    statements.push(questModifierUpdateStmt(q, mod, args.nowIso));
     const idx = nextQuests.findIndex((x) => x.id === q.id);
     if (idx >= 0) {
       const cur = nextQuests[idx];

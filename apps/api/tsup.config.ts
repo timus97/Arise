@@ -11,5 +11,5 @@ export default defineConfig({
   dts: false,
   splitting: false,
   external: ["better-sqlite3"],
-  noExternal: ["@arise/db", "@arise/domain", "@arise/engine"],
+  noExternal: ["@arise/db", "@arise/domain", "@arise/engine", "@arise/health"],
 });
