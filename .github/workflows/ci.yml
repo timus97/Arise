@@ -6,6 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -44,29 +51,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
-        # Tolerate missing pnpm-lock.yaml until the monorepo lock is committed.
-        run: |
-          if [ ! -f package.json ]; then
-            echo "No package.json yet — skip install"
-            exit 0
-          fi
-          if [ -f pnpm-lock.yaml ]; then
-            pnpm install --frozen-lockfile
-          else
-            echo "No pnpm-lock.yaml yet — install without --frozen-lockfile"
-            pnpm install
-          fi
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        if: hashFiles('package.json') != ''
-        run: pnpm run lint --if-present
+        run: pnpm run lint
 
       - name: Typecheck
-        if: hashFiles('package.json') != ''
-        run: pnpm run typecheck --if-present
+        run: pnpm run typecheck
 
       - name: Test
-        if: hashFiles('package.json') != ''
-        run: pnpm run test --if-present
+        run: pnpm run test
