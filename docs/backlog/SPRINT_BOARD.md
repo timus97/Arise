@@ -2,18 +2,18 @@
 
 Contract: [`docs/design.md`](../design.md) revision 4. Stories: [`USER_STORIES.md`](./USER_STORIES.md). Team DoD: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md).
 
-Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **part-time Scrum Master**. Product Owner is async after the addendum, except Sprint 5 (polish copy) and Sprint 6 (launch sign-off). Sprints are about **one week**. Package name **`arise`**. Chrome **SYSTEM**.
+Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **part-time Scrum Master**. Sprint 4 also staffs **SRE** for git CI + merge gates only. Product Owner is async after the addendum, except Sprint 5 (polish copy) and Sprint 6 (launch sign-off). Sprints are about **one week**. Package name **`arise`**. Chrome **SYSTEM**.
 
 | Sprint | Theme | PRs | Team size | Status |
 | --- | --- | --- | --- | --- |
 | Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
 | Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** |
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **Done** |
-| Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
+| Sprint 4 | Remaining API + web shell + CI gates | 11, 12, 13, 13.1, SRE 023/024 | **2 seniors** + 0.1 SM + SRE | **In progress** |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1, 2, and 3 are **Done** on `origin/main` (after this push). Sprints 4–6 stay Planned.
+Sprint 1, 2, and 3 are **Done** on `origin/main`. Sprint 4 is **In progress**. Sprints 5–6 stay Planned.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -60,6 +60,8 @@ flowchart TB
   PR07 --> PR11
   PR10 --> PR12
   PR08 --> PR13 --> PR131
+  PR02 --> CI023[ARISE-023 harden CI]
+  CI023 --> CI024[ARISE-024 merge gates]
   PR12 --> PR131
   PR10 --> PR14
   PR13 --> PR14
@@ -94,6 +96,7 @@ Text form from the design (identical DAG):
 10 + 14 → 18a
 15 + 14 → 19
 18a + 19 + 08 → 20
+02 → 023 → 024
 ```
 
 ---
@@ -107,11 +110,11 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 | 1 | 10 | 3 | 7 | 2 | Light — foundation |
 | 2 | 23 | 18 | 5 | 2 (3 optional) | Heavy — 06b is an 8 |
 | 3 | 21 | 21 | 0 | 2 | Heavy — A owns all three API PRs; B reviews + spike assist |
-| 4 | 18 | 10 | 8 | 2 | Balanced |
+| 4 | 23 | 10 | 8 | 2 + SRE | Balanced — A 10, B 8, SRE 5 |
 | 5 | 24 | 0 | 24 | 2 (3 optional after 14) | Heavy — B owns chrome; A reviews engine/API contracts |
 | 6 | 10 | 0 | 10 | 2 | Launch + e2e; A on-call for API defects |
 
-**v1 committed: 22 stories, 106 points, 6 sprints. Default staff: 2 seniors.** Do not staff 4+ in any sprint — the DAG cannot keep them busy.
+**v1 product: 22 stories, 106 points, 6 sprints.** **Plus SRE ops: 2 stories, 5 points (Sprint 4).** **Board total: 24 stories, 111 points.** Default staff: 2 seniors. Sprint 4 adds SRE. Do not staff 4+ product implementers in any sprint — the DAG cannot keep them busy.
 
 ### Standing roles (all sprints)
 
@@ -121,8 +124,9 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 | Senior full-stack (Dev B) | 1 | Scaffold, CI, Docker, health adapters, web, PWA, e2e, launch. Reviews A’s PRs until PASS. |
 | Scrum Master | 0.1 FTE | Board, DoD, peer-review gate. Not an implementer. |
 | Product Owner | 0–0.25 FTE | Addendum already shipped. Needed in Sprint 5 (polish P1–P10) and Sprint 6 (launch accept). |
+| Site Reliability (SRE) | 1 (Sprint 4) | Harden GitHub Actions + merge gates. **Not** Cloudflare `deploy.yml` / Workers / Caddy. |
 
-No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest goldens are in the stories.
+No dedicated designer, native, ML, or QA hire for v1. Playwright + Vitest goldens are in the stories. SRE is Sprint 4 only, git + merges — not a hosting hire.
 
 ---
 
@@ -238,30 +242,33 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ---
 
-## Sprint 4 — Remaining API + web shell
+## Sprint 4 — Remaining API + web shell + CI gates
 
-**Status: Planned**  
-**Goal:** Health ingest + retain cron, GDPR export/delete/CLI, Vite login/register, settings.  
-**PRs:** 11, 12, 13, 13.1  
-**Points:** 18
+**Status: In progress**  
+**Goal:** Health ingest + retain cron, GDPR export/delete/CLI, Vite login/register, settings, plus SRE CI harden + merge gates.  
+**PRs:** 11, 12, 13, 13.1, SRE 023/024  
+**Points:** 23 (product 18 + SRE 5)  
+**Assignment:** [`docs/dev/SPRINT4_ASSIGNMENT.md`](../dev/SPRINT4_ASSIGNMENT.md)
 
-**Team size: 2 seniors.** Balanced load. A third person is unused (13 waits only on 08; 13.1 waits on 12).
+**Team size: 2 seniors + 0.1 SM + SRE.** PO **not required**. A third product implementer is unused (13 waits only on 08, which is on `main`; 13.1 waits on 12).
 
 | Requirement | Need |
 | --- | --- |
-| Skills | Health ingest + consent, Node cron retain, GDPR export/delete, admin CLI, Vite 6 + React 19, TanStack Router, `credentials: 'include'` same-origin cookies |
-| Tools | Node 22, pnpm, Vite `:5173` → API `:8787` |
-| Roles this sprint | Dev A (11, 12), Dev B (13, 13.1), SM |
-| Not required | Full SYSTEM chrome, service worker, Playwright, Compose launch image, PO (Settings copy can use addendum P3/P8 as a checklist) |
+| Skills | Health ingest + consent, Node cron retain, GDPR export/delete, admin CLI, Vite 6 + React 19, TanStack Router, `credentials: 'include'` same-origin cookies, GitHub Actions cache/concurrency, branch protection via `gh` |
+| Tools | Node 22, pnpm, Vite `:5173` → API `:8787`, `gh` (Administration optional) |
+| Roles this sprint | Dev A (11, 12), Dev B (13, 13.1), **SRE** (023, 024), SM |
+| Not required | Full SYSTEM chrome, service worker, Playwright, Compose launch image, PO, Cloudflare `deploy.yml` / Workers / Caddy |
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-012 | Health ingest, consent, daily summaries, and retain job | 11 | Dev A | 5 | ARISE-008, ARISE-011 | Planned |
+| ARISE-012 | Health ingest, consent, daily summaries, and retain job | 11 | Dev A | 5 | ARISE-008, ARISE-011 | **In progress** |
 | ARISE-013 | Progress, JSON export, account delete, and reset-password CLI | 12 | Dev A | 5 | ARISE-011 | Planned |
-| ARISE-014 | Vite web shell with proxy, login, and register | 13 | Dev B | 5 | ARISE-009 | Planned |
+| ARISE-014 | Vite web shell with proxy, login, and register | 13 | Dev B | 5 | ARISE-009 | **In progress** |
 | ARISE-015 | Settings: units, logout, delete, and export download | 13.1 | Dev B | 3 | ARISE-013, ARISE-014 | Planned |
+| ARISE-023 | Harden GitHub Actions CI for PRs and main | — | SRE | 3 | ARISE-002 | **In progress** |
+| ARISE-024 | Merge gates for main | — | SRE | 2 | ARISE-023 | **In progress** |
 
-**Parallelism:** B can start 13 as soon as 08 is on `main` (does not wait for 11/12). 13.1 waits for 12 + 13. A: 11 ∥ 12 after 10.
+**Parallelism (first slice, start now):** A starts **012** (`feat/ARISE-012-health-ingest`). B starts **014** (`feat/ARISE-014-web-shell` — **08 is on `main`, unblocked**). SRE starts **023** (`chore/ARISE-023-harden-ci`) and **024** (PR template + `CI / ci` docs; protection after 023’s check exists). **013** on a **new** branch only after 012 is **pushed** — **do not mix 11 and 12**. **015 waits for 12 + 13**.
 
 **Sprint 4 exit:**
 
@@ -271,6 +278,17 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 - [ ] Forget-password **404** if `SMTP_URL` unset. CLI: `pnpm --filter api exec tsx src/cli/reset-password.ts --identifier USER --password -`.
 - [ ] Vite `:5173` proxies `/api` → `http://127.0.0.1:8787`. `credentials: 'include'`. Relative `/api/v1/...`.
 - [ ] Settings: units (store metric), tz, logout, delete, export. Shared-phone IndexedDB warning present.
+- [ ] CI: concurrency cancel-in-progress; Node 22 + pnpm 9 store cache; frozen-lockfile; forbidden-string grep fail-closed; typecheck+test fail the job (no `--if-present` skip when scripts exist).
+- [ ] Required check name **`CI / ci`** documented; PR template present; branch protection applied **or** the exact `gh api` command recorded (403 does not block the rest of Sprint 4).
+- [ ] **No** `.github/workflows/deploy.yml`. **No** Workers / Caddy work.
+
+### SRE intake
+
+SRE may file extra deps after they start. SM appends them here (next IDs after the current last story). Do not invent product scope.
+
+| ID | Title | Pts | Deps | Status | Notes |
+| --- | --- | --- | --- | --- | --- |
+| — | *(none yet)* | — | — | — | Leave empty until SRE files. |
 
 ---
 
@@ -377,6 +395,10 @@ flowchart LR
     B11[18a]
     B12[19]
     B13[20]
+  end
+  subgraph SRE[SRE — git CI + merge gates]
+    S1[023]
+    S2[024]
   end
 ```
 

@@ -3,12 +3,13 @@
 Implementation contract: [`docs/design.md`](../design.md) revision 4 (accepted 2026-08-14).  
 Package / repo name: **`arise`**. In-app chrome: **SYSTEM**. Language: English.
 
-This backlog maps **every v1 PR** (01–20, including 13.1). **PR 18b is not a v1 story.** v1.1 / v2 / Workers Paid / Caddy TLS live in [Later](#later-not-v1).
+This backlog maps **every v1 PR** (01–20, including 13.1) plus Sprint 4 SRE CI / merge-gate stories (**ARISE-023**, **ARISE-024**). **PR 18b is not a v1 story.** v1.1 / v2 / Workers Paid / Caddy TLS live in [Later](#later-not-v1).
 
 Assignees:
 
 - **Dev A** (domain / engine / API): PR 03, 04, 06a, 06b, 08, 09, 10, 11, 12
 - **Dev B** (scaffold / CI / docker / health adapters / web / PWA / e2e / launch): PR 01, 02, 05, 07, 13, 13.1, 14, 15, 16, 17, 18a, 19, 20
+- **SRE** (git CI + merge gates; **not** Cloudflare `deploy.yml` / Workers / Caddy): ARISE-023, ARISE-024
 
 Story points are Fibonacci **1–8**. **8 is used only for PR 06b, 08, 10, and 14.**
 
@@ -42,8 +43,10 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | [ARISE-020](#arise-020--pwa-install-service-worker-and-indexeddb-outbox-no-web-push) | PWA install, service worker, and IndexedDB outbox (no Web Push) | 18a | 5 | Dev B | 5 |
 | [ARISE-021](#arise-021--playwright-happy-path-register-onboard-ensure-complete) | Playwright happy path: register, onboard, ensure, complete | 19 | 6 | Dev B | 5 |
 | [ARISE-022](#arise-022--docker-compose-up---build-is-the-v1-launch-path) | docker compose up --build is the v1 launch path | 20 | 6 | Dev B | 5 |
+| [ARISE-023](#arise-023--harden-github-actions-ci-for-prs-and-main) | Harden GitHub Actions CI for PRs and main | — | 4 | SRE | 3 |
+| [ARISE-024](#arise-024--merge-gates-for-main) | Merge gates for main | — | 4 | SRE | 2 |
 
-**v1 total: 22 stories, 106 points.**
+**v1 product (PRs 01–20): 22 stories, 106 points.** **SRE ops (Sprint 4): 2 stories, 5 points.** **Board total: 24 stories, 111 points.**
 
 ---
 
@@ -632,7 +635,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want consented manual/CSV samples to upsert daily summaries and persist new step/sleep modifiers, so that today’s quests shrink or auto-complete from real data. |
 | **Mapped PR** | **11** — `feat(api): health ingest, consent, daily summaries, retain job` |
-| **Sprint** | Sprint 4 (Planned) |
+| **Sprint** | Sprint 4 (In progress) |
 | **Assignee** | **Dev A** |
 | **Story points** | 5 |
 | **Dependencies** | ARISE-008, ARISE-011 |
@@ -709,7 +712,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want a dark SYSTEM web app on Vite that registers (age + invite + disclaimer) and logs in against the same origin, so that cookies attach and I never call `:8787` from the browser. |
 | **Mapped PR** | **13** — `feat(web): vite, proxy, login/register (age+invite), credentials include` |
-| **Sprint** | Sprint 4 (Planned) |
+| **Sprint** | Sprint 4 (In progress) |
 | **Assignee** | **Dev B** |
 | **Story points** | 5 |
 | **Dependencies** | ARISE-009 |
@@ -1018,6 +1021,67 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 
 - [ ] Team DoD met.
 - [ ] Fresh-volume Compose acceptance executed (or recorded in the PR as the launch check).
+- [ ] Peer review **PASS** before merge.
+
+---
+
+## ARISE-023 — Harden GitHub Actions CI for PRs and main
+
+| Field | Value |
+| --- | --- |
+| **ID** | ARISE-023 |
+| **Title** | Harden GitHub Actions CI for PRs and main |
+| **Persona** | Engineer |
+| **Description** | As an Engineer, I want GitHub Actions CI on PRs and `main` to cancel stale runs, cache pnpm, install frozen, and fail closed on typecheck/test/forbidden-string grep, so that merges cannot skip the quality bar. |
+| **Mapped PR** | — (ops; not in 01–20) — `ci: harden Actions for PRs and main` |
+| **Sprint** | Sprint 4 (In progress) |
+| **Assignee** | **SRE** |
+| **Story points** | 3 |
+| **Dependencies** | ARISE-002 |
+
+### Acceptance criteria
+
+- [ ] Workflow remains `.github/workflows/ci.yml` only. **No** `.github/workflows/deploy.yml`. **No** Workers / Caddy / wrangler jobs.
+- [ ] `concurrency` is set so in-progress runs for the same ref are **cancelled** (`cancel-in-progress: true`).
+- [ ] Job uses **Node 22** + **pnpm 9** with the **pnpm store cache** (setup-node `cache: "pnpm"` or equivalent store-path cache).
+- [ ] Install is `pnpm install --frozen-lockfile`. Do not fall back to an unfrozen install when `pnpm-lock.yaml` exists.
+- [ ] Forbidden-string grep is still **required** and **fail-closed**: a match fails the job; a ripgrep error fails the job. Manual review is not the IP mitigation.
+- [ ] Typecheck and test **must fail the job** when those scripts exist. Do **not** use `pnpm run typecheck --if-present` / `pnpm run test --if-present` in a way that skips a missing-or-present script and still greens the job. If the root scripts exist, a failing typecheck or test is a red job.
+- [ ] No Cloudflare `deploy.yml`. No Workers Paid / Free deploy step. No Caddy.
+
+### Definition of Done
+
+- [ ] Team DoD met.
+- [ ] CI on a PR is green only when grep, typecheck, and test all pass.
+- [ ] Peer review **PASS** before merge.
+
+---
+
+## ARISE-024 — Merge gates for main
+
+| Field | Value |
+| --- | --- |
+| **ID** | ARISE-024 |
+| **Title** | Merge gates for main |
+| **Persona** | Operator |
+| **Description** | As an Operator, I want `main` protected by a required PR and the `CI / ci` status check, plus a PR template that names that check, so that unreviewed or red work cannot land on `main`. |
+| **Mapped PR** | — (ops; not in 01–20) — `chore: merge gates for main` |
+| **Sprint** | Sprint 4 (In progress) |
+| **Assignee** | **SRE** |
+| **Story points** | 2 |
+| **Dependencies** | ARISE-023 |
+
+### Acceptance criteria
+
+- [ ] Document the required check name exactly: **`CI / ci`** (workflow name `CI`, job id `ci`).
+- [ ] Add a pull-request template that tells authors the required check is `CI / ci` and that peer PASS is still required before merge.
+- [ ] Attempt to set GitHub branch protection on `main` via `gh` (require a pull request before merge + required status check `CI / ci`) **if** the token has Administration.
+- [ ] If the API returns **403**, record the **exact** `gh api` command for the operator in the story notes / assignment / PR description. **Do not block the rest of Sprint 4.**
+- [ ] No `deploy.yml`. No Workers / Caddy / custom-domain protection rules.
+
+### Definition of Done
+
+- [ ] Team DoD met (docs + template always; protection either applied or the 403 command recorded).
 - [ ] Peer review **PASS** before merge.
 
 ---
