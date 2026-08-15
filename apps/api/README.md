@@ -16,6 +16,16 @@ pnpm --filter api dev
 - `POST /api/v1/auth/sign-up/email` — façade checks age ≥ 16, invite, disclaimer, then Better Auth (scrypt, username plugin)
 - Session cookie name: `arise.session` (`HttpOnly`, `SameSite=Lax`, `Secure` only on https). Do not set `SameSite=None`.
 - `POST /api/v1/auth/forget-password` is **404** unless `SMTP_URL` is set
+- `GET /api/v1/progress` last 90 days (auth)
+- `GET /api/v1/me/export` attachment `arise-export.json` (no `account.password`)
+- `POST /api/v1/account/delete` cascade
+- `GET /api/v1/me/debug` dogfood (`lastEnsureMs`, `lastQueryCount`, `lastD1Meta`, `effects`, `recoveryParts`)
+- Reset password without SMTP (Node/Docker only):
+
+  ```bash
+  pnpm --filter api exec tsx src/cli/reset-password.ts --identifier USER --password -
+  ```
+
 - `RUNTIME=worker` without `ALLOW_WORKER_PASSWORD_AUTH=true` → `501 AUTH_RUNTIME_UNSUPPORTED`
 - Do not create a `profiles` row at register (onboarding is a later PR)
 

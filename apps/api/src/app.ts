@@ -1,11 +1,13 @@
 import { Hono } from "hono";
-import { requireSession } from "./middleware/auth.js";
 import { errorBody, handleError } from "./middleware/error.js";
 import { pingReady } from "./middleware/ready.js";
 import { timingMiddleware } from "./middleware/timing.js";
 import { registerAuthRoutes } from "./routes/auth.js";
+import { registerExportRoutes } from "./routes/export.js";
+import { registerMeRoutes } from "./routes/me.js";
 import { registerOnboardingRoutes } from "./routes/onboarding.js";
 import { registerPlanRoutes } from "./routes/plan.js";
+import { registerProgressRoutes } from "./routes/progress.js";
 import { registerQuestRoutes } from "./routes/quests.js";
 import { registerTodayRoutes } from "./routes/today.js";
 import type { AppBindings, AppDeps } from "./types.js";
@@ -50,10 +52,9 @@ export function createApp(deps: AppDeps): Hono<AppBindings> {
   registerPlanRoutes(app, deps);
   registerTodayRoutes(app, deps);
   registerQuestRoutes(app, deps);
-
-  app.get("/api/v1/me", requireSession(deps.auth), (c) => {
-    return c.json({ userId: c.get("userId") });
-  });
+  registerProgressRoutes(app, deps);
+  registerExportRoutes(app, deps);
+  registerMeRoutes(app, deps);
 
   return app;
 }
