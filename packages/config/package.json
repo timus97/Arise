@@ -1,0 +1,16 @@
+{
+  "name": "@arise/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./eslint.config.js": "./eslint.config.js",
+    "./tsconfig.react.json": "./tsconfig.react.json",
+    "./tsconfig.lib.json": "./tsconfig.lib.json"
+  },
+  "files": [
+    "eslint.config.js",
+    "tsconfig.react.json",
+    "tsconfig.lib.json"
+  ]
+}

@@ -1,0 +1,11 @@
+node_modules
+dist
+.turbo
+data/*.sqlite
+.env
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
