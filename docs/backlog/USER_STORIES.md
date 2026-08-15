@@ -636,7 +636,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want consented manual/CSV samples to upsert daily summaries and persist new step/sleep modifiers, so that today’s quests shrink or auto-complete from real data. |
 | **Mapped PR** | **11** — `feat(api): health ingest, consent, daily summaries, retain job` |
-| **Sprint** | Sprint 4 (In review) |
+| **Sprint** | Sprint 4 (Done) |
 | **Assignee** | **Dev A** |
 | **Story points** | 5 |
 | **Dependencies** | ARISE-008, ARISE-011 |
@@ -759,7 +759,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want settings for units, timezone, logout, account delete, and export download, so that I can operate my account without SMTP or a native store. |
 | **Mapped PR** | **13.1** — `feat(web): settings, units, logout, delete, export download` |
-| **Sprint** | Sprint 4 (In progress) |
+| **Sprint** | Sprint 4 (Done) |
 | **Assignee** | **Dev B** |
 | **Story points** | 3 |
 | **Dependencies** | ARISE-013, ARISE-014 |
