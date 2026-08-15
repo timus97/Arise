@@ -6,7 +6,7 @@ Two-senior team. Sprints are about **one week**. Package name **`arise`**. Chrom
 
 | Sprint | Theme | PRs | Status |
 | --- | --- | --- | --- |
-| Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **Ready** |
+| Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **In progress** |
 | Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | Planned |
 | Sprint 3 | API core | 08, 09, 10 | Planned |
 | Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | Planned |
@@ -117,27 +117,27 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 
 ## Sprint 0 / Sprint 1 — Foundation
 
-**Status: Ready**  
+**Status: In progress** (01, 02, 05 landed with peer PASS; 03 next)  
 **Goal:** `arise` monorepo, CI IP grep, domain types, and Compose file skeletons (no fake `/health` app).  
 **PRs:** 01, 02, 03, 05  
 **Points:** 10
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-001 | Scaffold the arise monorepo | 01 | Dev B | 3 | — | Ready |
-| ARISE-002 | CI lint, typecheck, test, and forbidden-string grep | 02 | Dev B | 2 | ARISE-001 | Ready |
-| ARISE-003 | Domain Zod types for player, goal, quest, health, plan, effects | 03 | Dev A | 3 | ARISE-001 | Ready |
-| ARISE-005 | .env.example and Dockerfiles (no fake /health app) | 05 | Dev B | 2 | ARISE-001 | Ready |
+| ARISE-001 | Scaffold the arise monorepo | 01 | Dev A (implemented; originally B) | 3 | — | **Done** — peer PASS |
+| ARISE-002 | CI lint, typecheck, test, and forbidden-string grep | 02 | Dev B | 2 | ARISE-001 | **Done** — peer PASS |
+| ARISE-003 | Domain Zod types for player, goal, quest, health, plan, effects | 03 | Dev A | 3 | ARISE-001 | Ready (next) |
+| ARISE-005 | .env.example and Dockerfiles (no fake /health app) | 05 | Dev B | 2 | ARISE-001 | **Done** — peer PASS |
 
 **Parallelism:** After ARISE-001 merges, A does domain (03) while B does CI (02) and Docker/env (05).
 
 **Sprint 1 exit:**
 
-- [ ] `package.json` `"name": "arise"`. `pnpm -r` works.
-- [ ] CI greps `FORBIDDEN.txt` (`rg -i -f FORBIDDEN.txt --glob '!grok-design*' --glob '!.git/**'`) and fails the build on hits.
+- [x] `package.json` `"name": "arise"`. `pnpm -r` works.
+- [x] CI greps `FORBIDDEN.txt` (`rg -i -f FORBIDDEN.txt --glob '!grok-design*' --glob '!.git/**'`) and fails the build on hits.
 - [ ] Domain types use **`intl` not `int`**. Ranks **E–S**. `RegisterBody` / `OnboardingBody` exist.
-- [ ] `docker-compose.yml` is one service; **no** Caddy; Compose `up` may fail until PR 08 — documented.
-- [ ] No Solo Leveling IP strings. No v1.1 files (`push/`, Apple XML, `deploy.yml` as a deliverable).
+- [x] `docker-compose.yml` is one service; **no** Caddy; Compose `up` may fail until PR 08 — documented.
+- [x] No Solo Leveling IP strings. No v1.1 files (`push/`, Apple XML, `deploy.yml` as a deliverable).
 
 ---
 
