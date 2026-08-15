@@ -1,0 +1,239 @@
+:root {
+  color-scheme: dark;
+  --bg: #050816;
+  --bg-elevated: #0a1228;
+  --bg-panel: rgba(8, 14, 36, 0.88);
+  --line: rgba(94, 234, 212, 0.22);
+  --line-strong: rgba(125, 211, 252, 0.42);
+  --text: #e8eefc;
+  --muted: #93a0c2;
+  --accent: #5eead4;
+  --accent-2: #7dd3fc;
+  --danger: #fb7185;
+  --ok: #86efac;
+  --shadow: 0 0 48px rgba(94, 234, 212, 0.08);
+  --font: "Segoe UI", "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "Cascadia Mono", "IBM Plex Mono", ui-monospace, monospace;
+  --radius: 14px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font);
+  background:
+    radial-gradient(1100px 520px at 50% -8%, rgba(125, 211, 252, 0.14), transparent 58%),
+    radial-gradient(720px 380px at 100% 110%, rgba(94, 234, 212, 0.08), transparent 52%),
+    var(--bg);
+}
+
+a {
+  color: var(--accent-2);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chrome {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.chrome-mark {
+  margin: 0;
+  letter-spacing: 0.42em;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-shadow: 0 0 18px rgba(94, 234, 212, 0.35);
+}
+
+.chrome-product {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.chrome-nav {
+  display: flex;
+  gap: 1rem;
+  padding: 0.7rem 1.4rem 0;
+  font-size: 0.9rem;
+}
+
+.chrome-nav a[aria-current="page"] {
+  color: var(--accent);
+}
+
+.main {
+  flex: 1;
+  width: min(34rem, calc(100% - 2rem));
+  margin: 1.6rem auto 2.4rem;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.35rem 1.4rem 1.5rem;
+}
+
+.panel h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.35rem;
+}
+
+.lede {
+  margin: 0 0 1.15rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.field span {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.field input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #050816;
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+}
+
+.field input:focus {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 1px;
+}
+
+.hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.banner {
+  border-radius: 10px;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.banner-error {
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  background: rgba(251, 113, 133, 0.1);
+  color: #fecdd3;
+}
+
+.banner-ok {
+  border: 1px solid rgba(134, 239, 172, 0.35);
+  background: rgba(134, 239, 172, 0.08);
+  color: var(--ok);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(180deg, rgba(94, 234, 212, 0.16), rgba(8, 14, 36, 0.4));
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.55rem 1.05rem;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.disclaimer {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  padding: 0.75rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(5, 8, 22, 0.65);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.disclaimer input {
+  margin-top: 0.2rem;
+}
+
+.disclaimer strong {
+  color: var(--text);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 0.86rem;
+}
+
+.footer-note {
+  margin-top: 1.2rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
