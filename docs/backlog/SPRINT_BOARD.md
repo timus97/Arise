@@ -7,13 +7,13 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | Sprint | Theme | PRs | Team size | Status |
 | --- | --- | --- | --- | --- |
 | Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
-| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | Planned |
+| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **In progress** |
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | Planned |
 | Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1 is **Done** (01, 02, 03, 05 on `main`, peer PASS). Sprints 2–6 stay Planned until the previous sprint’s merge gates pass. Staff each sprint from the **Team size** column and the requirement table under that sprint.
+Sprint 1 is **Done** (01, 02, 03, 05 on `main`, peer PASS). **Sprint 2 is In progress** (first slice: 06a + 07). Sprints 3–6 stay Planned until the previous sprint’s merge gates pass. Staff each sprint from the **Team size** column and the requirement table under that sprint.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -163,12 +163,13 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ## Sprint 2 — Engine + DB
 
-**Status: Planned**  
+**Status: In progress**  
 **Goal:** Schema + `atomic()`, closed-form XP/rank/safety, 16-template issuer, health adapters.  
 **PRs:** 04, 06a, 06b, 07  
-**Points:** 23
+**Points:** 23  
+**Assignment:** [`docs/dev/SPRINT2_ASSIGNMENT.md`](../dev/SPRINT2_ASSIGNMENT.md)
 
-**Team size: 2 seniors required.** A third senior is **optional** only if the calendar cannot absorb A’s 18 points (split PR 04 off A onto the third; do not split 06b).
+**Team size: 2 seniors required.** A third senior is **optional** only if the calendar cannot absorb A’s 18 points (split PR 04 off A onto the third; do not split 06b). **This kickoff does not staff a third** — 2 seniors + 0.1 SM. PO not required.
 
 | Requirement | Need |
 | --- | --- |
@@ -179,12 +180,12 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | Planned |
-| ARISE-006 | Engine XP, rank, recovery, safety, and effect helpers | 06a | Dev A | 5 | ARISE-003 | Planned |
-| ARISE-007 | 16-template catalog, scorer, issuer, and planner | 06b | Dev A | 8 | ARISE-006 | Planned |
-| ARISE-008 | Normalize health samples, manual + small CSV, and unavailable stubs | 07 | Dev B | 5 | ARISE-003 | Planned |
+| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **Planned** — Ready for A after 006 is on `main` (do not mix with 006) |
+| ARISE-006 | Engine XP, rank, recovery, safety, and effect helpers | 06a | Dev A | 5 | ARISE-003 | **In progress** — `feat/ARISE-006-engine-math` |
+| ARISE-007 | 16-template catalog, scorer, issuer, and planner | 06b | Dev A | 8 | ARISE-006 | **Planned** — start only after 006 peer PASS |
+| ARISE-008 | Normalize health samples, manual + small CSV, and unavailable stubs | 07 | Dev B | 5 | ARISE-003 | **In progress** — `feat/ARISE-008-health-csv` |
 
-**Parallelism:** A: 04 ∥ 06a, then 06b. B: 07 for the whole sprint. 04 and 06a both depend only on 03.
+**Parallelism (first slice, start now):** A starts **006** (`feat/ARISE-006-engine-math`, critical path to 06b). B starts **008** (`feat/ARISE-008-health-csv`). **004** after 006 is on `main` (or immediately after 006 is pushed if A has bandwidth — **do not mix 004 and 006 on one branch**). **007** only after 006 peer PASS.
 
 **Sprint 2 exit:**
 
