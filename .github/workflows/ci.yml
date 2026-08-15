@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Forbidden-string grep
+        run: |
+          set +e
+          rg -i -f FORBIDDEN.txt --glob "!docs/**" --glob "!grok-design*" --glob "!.git/**" --glob "!FORBIDDEN.txt"
+          status=$?
+          set -e
+          # rg exits 0 on matches, 1 on no match, 2+ on error. Matches must fail the job.
+          if [ "$status" -eq 0 ]; then
+            echo "::error::Forbidden IP strings found"
+            exit 1
+          fi
+          if [ "$status" -eq 1 ]; then
+            echo "No forbidden strings."
+            exit 0
+          fi
+          echo "::error::ripgrep failed with status $status"
+          exit "$status"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        # Tolerate missing pnpm-lock.yaml until the monorepo lock is committed.
+        run: |
+          if [ ! -f package.json ]; then
+            echo "No package.json yet — skip install"
+            exit 0
+          fi
+          if [ -f pnpm-lock.yaml ]; then
+            pnpm install --frozen-lockfile
+          else
+            echo "No pnpm-lock.yaml yet — install without --frozen-lockfile"
+            pnpm install
+          fi
+
+      - name: Lint
+        if: hashFiles('package.json') != ''
+        run: pnpm run lint --if-present
+
+      - name: Typecheck
+        if: hashFiles('package.json') != ''
+        run: pnpm run typecheck --if-present
+
+      - name: Test
+        if: hashFiles('package.json') != ''
+        run: pnpm run test --if-present

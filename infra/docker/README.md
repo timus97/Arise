@@ -1,0 +1,53 @@
+# Arise Compose runbook (v1 launch)
+
+v1 launch is **Docker Compose on localhost / the operator’s machine**. There is **no Caddy**, **no TLS**, and **no custom domain**. Open `http://localhost:8080`.
+
+`docker compose up` is **not expected to succeed** until the API (`apps/api`) and web build (`apps/web`) exist (PR 08+). This tree ships the image recipe and compose file only — there is no stub `/health` Node app here.
+
+## First run
+
+From the repository root:
+
+```bash
+cp .env.example .env
+# set BETTER_AUTH_SECRET and REGISTER_INVITE_CODE
+# APP_ORIGIN=http://localhost:8080
+# BETTER_AUTH_URL=http://localhost:8080
+docker compose up --build
+# open http://localhost:8080
+```
+
+Generate a secret with `openssl rand -base64 32`. `REGISTER_INVITE_CODE` is required in v1 (register is fail-closed if it is empty).
+
+Set these in `.env` for the published port:
+
+```bash
+APP_ORIGIN=http://localhost:8080
+BETTER_AUTH_URL=http://localhost:8080
+```
+
+Compose also injects `RUNTIME=node`, `SERVE_STATIC=true`, `WEB_DIST=/app/web`, and `DATABASE_PATH=/data/arise.sqlite`.
+
+## What this is (and is not)
+
+| In v1 | Not in v1 |
+| --- | --- |
+| One service `arise` | A `web` service, Caddy, or custom domain |
+| Port `8080:8787` (HTTP) | TLS termination |
+| Named volume `arise-data` → `/data` | Cloudflare Workers / Pages |
+| Image `HEALTHCHECK` via `wget` `GET /health` | `wrangler.toml`, `deploy.yml`, `web.Dockerfile` |
+
+Local/LAN uses the single container on **8080 (HTTP)**. `Secure` cookies stay off because `APP_ORIGIN` is `http://localhost:8080`.
+
+## Backups
+
+`backup-sqlite` (installed in the image) runs `sqlite3 .backup` into `/data/backups` and deletes copies older than 14 days. Copy `/data/backups` off-box (Syncthing, USB). D1 Time Travel is not a backup.
+
+## Leaving D1 for Compose
+
+```bash
+npx wrangler d1 export arise-db --remote --output=/tmp/arise.sql
+./infra/scripts/restore-d1-to-sqlite.sh /tmp/arise.sql /data/arise.sqlite
+```
+
+Password hashes transfer. Sessions may be invalid after the cookie host changes — users re-login. Do not share one live DB between topologies.
