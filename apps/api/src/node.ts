@@ -44,4 +44,4 @@ serve({
   hostname: "0.0.0.0",
 });
 
-startNodeCron();
+startNodeCron({ db, env });

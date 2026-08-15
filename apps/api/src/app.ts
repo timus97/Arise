@@ -4,6 +4,7 @@ import { pingReady } from "./middleware/ready.js";
 import { timingMiddleware } from "./middleware/timing.js";
 import { registerAuthRoutes } from "./routes/auth.js";
 import { registerExportRoutes } from "./routes/export.js";
+import { registerHealthRoutes } from "./routes/health.js";
 import { registerMeRoutes } from "./routes/me.js";
 import { registerOnboardingRoutes } from "./routes/onboarding.js";
 import { registerPlanRoutes } from "./routes/plan.js";
@@ -55,6 +56,7 @@ export function createApp(deps: AppDeps): Hono<AppBindings> {
   registerProgressRoutes(app, deps);
   registerExportRoutes(app, deps);
   registerMeRoutes(app, deps);
+  registerHealthRoutes(app, deps);
 
   return app;
 }
