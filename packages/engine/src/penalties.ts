@@ -85,6 +85,7 @@ export interface CatchUpQuest {
 export interface CatchUpInput {
   lastEnsuredLocalDate: string | null;
   today: string;
+  /** Must include last 3 local dates (already-failed required quests too), not only `[last, today)`. */
   existingQuests: CatchUpQuest[];
   now: Date;
   timeZone: string;
@@ -141,7 +142,7 @@ export function catchUpMissedDays(input: CatchUpInput): CatchUpResult {
 
   const last3 = [addCalendarDays(input.today, -1), addCalendarDays(input.today, -2), addCalendarDays(input.today, -3)];
   const last3DaysNewestFirst = last3.map((localDate) => ({
-    quests: afterFail.filter((q) => q.localDate === localDate && catchUpSet.has(localDate)),
+    quests: afterFail.filter((q) => q.localDate === localDate),
   }));
 
   const cautionVolume = cautionVolumeAfterThreeFails({

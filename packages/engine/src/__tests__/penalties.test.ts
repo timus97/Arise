@@ -65,6 +65,47 @@ describe("catch-up 3-day gap", () => {
     expect(result.penaltyOwed).toBe(true);
   });
 
+  it("already-failed last 3 days still insert caution_volume on next-day ensure", () => {
+    const yesterday = addCalendarDays(TODAY, -1);
+    const d2 = addCalendarDays(TODAY, -2);
+    const d3 = addCalendarDays(TODAY, -3);
+    const result = catchUpMissedDays({
+      lastEnsuredLocalDate: yesterday,
+      today: TODAY,
+      existingQuests: [
+        { localDate: yesterday, status: "issued", kind: "strength" },
+        { localDate: d2, status: "failed", kind: "strength" },
+        { localDate: d3, status: "failed", kind: "strength" },
+      ],
+      now: NOW,
+      timeZone: TZ,
+    });
+    expect(result.catchUpDates).toEqual([yesterday]);
+    expect(result.flippedDates).toEqual([yesterday]);
+    expect(result.cautionVolume?.kind).toBe("caution_volume");
+    expect(result.cautionVolume?.payload).toEqual({ volumeMul: 0.7 });
+    expect(result.questsToInsert).toEqual([]);
+  });
+
+  it("already-failed last 3 days insert caution_volume even with no new flips", () => {
+    const yesterday = addCalendarDays(TODAY, -1);
+    const result = catchUpMissedDays({
+      lastEnsuredLocalDate: yesterday,
+      today: TODAY,
+      existingQuests: [
+        { localDate: yesterday, status: "failed", kind: "strength" },
+        { localDate: addCalendarDays(TODAY, -2), status: "failed", kind: "cardio" },
+        { localDate: addCalendarDays(TODAY, -3), status: "failed", kind: "habit" },
+      ],
+      now: NOW,
+      timeZone: TZ,
+    });
+    expect(result.flippedDates).toEqual([]);
+    expect(result.cautionVolume?.kind).toBe("caution_volume");
+    expect(result.cautionVolume?.payload).toEqual({ volumeMul: 0.7 });
+    expect(result.questsToInsert).toEqual([]);
+  });
+
   it("three consecutive flipped dates insert caution_volume for 2 local days", () => {
     const d1 = addCalendarDays(TODAY, -1);
     const d2 = addCalendarDays(TODAY, -2);
