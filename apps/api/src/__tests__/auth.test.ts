@@ -58,6 +58,7 @@ function makeHarness(envOverrides: Partial<Env> = {}) {
     baseURL: env.BETTER_AUTH_URL,
     appOrigin: env.APP_ORIGIN,
     db: db.orm,
+    disableRateLimit: true,
     ...(env.RUNTIME === "worker"
       ? { secondaryStorage: createAuthRlStorage(db) }
       : {}),

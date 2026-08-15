@@ -4,6 +4,9 @@ import { errorBody, handleError } from "./middleware/error.js";
 import { pingReady } from "./middleware/ready.js";
 import { timingMiddleware } from "./middleware/timing.js";
 import { registerAuthRoutes } from "./routes/auth.js";
+import { registerOnboardingRoutes } from "./routes/onboarding.js";
+import { registerPlanRoutes } from "./routes/plan.js";
+import { registerTodayRoutes } from "./routes/today.js";
 import type { AppBindings, AppDeps } from "./types.js";
 
 const HEALTH_WINDOW_MS = 60_000;
@@ -42,6 +45,9 @@ export function createApp(deps: AppDeps): Hono<AppBindings> {
   });
 
   registerAuthRoutes(app, deps);
+  registerOnboardingRoutes(app, deps);
+  registerPlanRoutes(app, deps);
+  registerTodayRoutes(app, deps);
 
   app.get("/api/v1/me", requireSession(deps.auth), (c) => {
     return c.json({ userId: c.get("userId") });

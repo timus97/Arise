@@ -23,6 +23,9 @@ importers:
       '@arise/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@arise/engine':
+        specifier: workspace:*
+        version: link:../../packages/engine
       '@hono/node-server':
         specifier: ^1.19.0
         version: 1.19.17(hono@4.13.2)
