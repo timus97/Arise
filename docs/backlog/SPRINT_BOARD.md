@@ -218,8 +218,8 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | ARISE-009 | Hono Node API, Better Auth username + scrypt, and Workers Free spike | 08 | Dev A | 8 | ARISE-004, ARISE-005 | **Done** — peer PASS, on `main` |
-| ARISE-010 | Onboarding, plan preview/regenerate, pregnancy and loss-rate gates | 09 | Dev A | 5 | ARISE-007, ARISE-009 | **In progress** — `feat/ARISE-010-onboarding-plan` |
-| ARISE-011 | Issue today’s quests, complete, skip, and lazy fail | 10 | Dev A | 8 | ARISE-007, ARISE-010 | Planned — after 09 PASS |
+| ARISE-010 | Onboarding, plan preview/regenerate, pregnancy and loss-rate gates | 09 | Dev A | 5 | ARISE-007, ARISE-009 | **Done** — peer PASS, on `main` |
+| ARISE-011 | Issue today’s quests, complete, skip, and lazy fail | 10 | Dev A | 8 | ARISE-007, ARISE-010 | **In progress** — `feat/ARISE-011-ensure-quests` |
 
 **Parallelism:** 08 landed. **A** implements **ARISE-010 / PR 09** now. **B** reviews 09 until PASS. **ARISE-011 / PR 10** only after 09 peer PASS + merge + push `main`. Do not staff a third.
 
