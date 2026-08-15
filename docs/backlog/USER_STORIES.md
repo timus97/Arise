@@ -3,13 +3,13 @@
 Implementation contract: [`docs/design.md`](../design.md) revision 4 (accepted 2026-08-14).  
 Package / repo name: **`arise`**. In-app chrome: **SYSTEM**. Language: English.
 
-This backlog maps **every v1 PR** (01–20, including 13.1) plus Sprint 4 SRE CI / merge-gate stories (**ARISE-023**, **ARISE-024**). **PR 18b is not a v1 story.** v1.1 / v2 / Workers Paid / Caddy TLS live in [Later](#later-not-v1).
+This backlog maps **every v1 PR** (01–20, including 13.1) plus Sprint 4 SRE CI / merge-gate stories (**ARISE-023**, **ARISE-024**, **ARISE-025**). **PR 18b is not a v1 story.** v1.1 / v2 / Workers Paid / Caddy TLS live in [Later](#later-not-v1).
 
 Assignees:
 
 - **Dev A** (domain / engine / API): PR 03, 04, 06a, 06b, 08, 09, 10, 11, 12
 - **Dev B** (scaffold / CI / docker / health adapters / web / PWA / e2e / launch): PR 01, 02, 05, 07, 13, 13.1, 14, 15, 16, 17, 18a, 19, 20
-- **SRE** (git CI + merge gates; **not** Cloudflare `deploy.yml` / Workers / Caddy): ARISE-023, ARISE-024
+- **SRE** (git CI + merge gates; **not** Cloudflare `deploy.yml` / Workers / Caddy): ARISE-023, ARISE-024, ARISE-025
 
 Story points are Fibonacci **1–8**. **8 is used only for PR 06b, 08, 10, and 14.**
 
@@ -45,8 +45,9 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | [ARISE-022](#arise-022--docker-compose-up---build-is-the-v1-launch-path) | docker compose up --build is the v1 launch path | 20 | 6 | Dev B | 5 |
 | [ARISE-023](#arise-023--harden-github-actions-ci-for-prs-and-main) | Harden GitHub Actions CI for PRs and main | — | 4 | SRE | 3 |
 | [ARISE-024](#arise-024--merge-gates-for-main) | Merge gates for main | — | 4 | SRE | 2 |
+| [ARISE-025](#arise-025--document-required-github-check-context-as-ci) | Document required GitHub check context as `ci` | — | 4 | SRE | 1 |
 
-**v1 product (PRs 01–20): 22 stories, 106 points.** **SRE ops (Sprint 4): 2 stories, 5 points.** **Board total: 24 stories, 111 points.**
+**v1 product (PRs 01–20): 22 stories, 106 points.** **SRE ops (Sprint 4): 3 stories, 6 points.** **Board total: 25 stories, 112 points.**
 
 ---
 
@@ -635,7 +636,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want consented manual/CSV samples to upsert daily summaries and persist new step/sleep modifiers, so that today’s quests shrink or auto-complete from real data. |
 | **Mapped PR** | **11** — `feat(api): health ingest, consent, daily summaries, retain job` |
-| **Sprint** | Sprint 4 (In progress) |
+| **Sprint** | Sprint 4 (In review) |
 | **Assignee** | **Dev A** |
 | **Story points** | 5 |
 | **Dependencies** | ARISE-008, ARISE-011 |
@@ -674,7 +675,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want 90-day progress, a JSON export of my rows, and account deletion, so that I can review growth and exercise GDPR access/erasure. As an Operator, I want a reset-password CLI when SMTP is unset. |
 | **Mapped PR** | **12** — `feat(api): progress, JSON export, account delete, reset-password CLI` |
-| **Sprint** | Sprint 4 (Planned) |
+| **Sprint** | Sprint 4 (Done) |
 | **Assignee** | **Dev A** |
 | **Story points** | 5 |
 | **Dependencies** | ARISE-011 |
@@ -712,7 +713,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want a dark SYSTEM web app on Vite that registers (age + invite + disclaimer) and logs in against the same origin, so that cookies attach and I never call `:8787` from the browser. |
 | **Mapped PR** | **13** — `feat(web): vite, proxy, login/register (age+invite), credentials include` |
-| **Sprint** | Sprint 4 (In progress) |
+| **Sprint** | Sprint 4 (Done) |
 | **Assignee** | **Dev B** |
 | **Story points** | 5 |
 | **Dependencies** | ARISE-009 |
@@ -758,7 +759,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Player |
 | **Description** | As a Player, I want settings for units, timezone, logout, account delete, and export download, so that I can operate my account without SMTP or a native store. |
 | **Mapped PR** | **13.1** — `feat(web): settings, units, logout, delete, export download` |
-| **Sprint** | Sprint 4 (Planned) |
+| **Sprint** | Sprint 4 (In progress) |
 | **Assignee** | **Dev B** |
 | **Story points** | 3 |
 | **Dependencies** | ARISE-013, ARISE-014 |
@@ -1034,7 +1035,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Engineer |
 | **Description** | As an Engineer, I want GitHub Actions CI on PRs and `main` to cancel stale runs, cache pnpm, install frozen, and fail closed on typecheck/test/forbidden-string grep, so that merges cannot skip the quality bar. |
 | **Mapped PR** | — (ops; not in 01–20) — `ci: harden Actions for PRs and main` |
-| **Sprint** | Sprint 4 (In progress) |
+| **Sprint** | Sprint 4 (Done) |
 | **Assignee** | **SRE** |
 | **Story points** | 3 |
 | **Dependencies** | ARISE-002 |
@@ -1066,7 +1067,7 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 | **Persona** | Operator |
 | **Description** | As an Operator, I want `main` protected by a required PR and the `CI / ci` status check, plus a PR template that names that check, so that unreviewed or red work cannot land on `main`. |
 | **Mapped PR** | — (ops; not in 01–20) — `chore: merge gates for main` |
-| **Sprint** | Sprint 4 (In progress) |
+| **Sprint** | Sprint 4 (Done) |
 | **Assignee** | **SRE** |
 | **Story points** | 2 |
 | **Dependencies** | ARISE-023 |
@@ -1082,6 +1083,34 @@ Team Definition of Done: [`DEFINITION_OF_DONE.md`](./DEFINITION_OF_DONE.md). Spr
 ### Definition of Done
 
 - [ ] Team DoD met (docs + template always; protection either applied or the 403 command recorded).
+- [ ] Peer review **PASS** before merge.
+
+---
+
+## ARISE-025 — Document required GitHub check context as `ci`
+
+| Field | Value |
+| --- | --- |
+| **ID** | ARISE-025 |
+| **Title** | Document required GitHub check context as `ci` |
+| **Persona** | Operator |
+| **Description** | As an Operator, I want docs, the PR template, and the operator `gh api` snippet to name the required GitHub check context **`ci`** (not `CI / ci`), so that branch protection matches the live check and merges are not blocked. |
+| **Mapped PR** | — (ops; not in 01–20) — `docs: required check context is ci` |
+| **Sprint** | Sprint 4 (Done) |
+| **Assignee** | **SRE** |
+| **Story points** | 1 |
+| **Dependencies** | ARISE-024 |
+
+### Acceptance criteria
+
+- [ ] Why: live `main` protection uses required check context **`ci`**. Docs that say `CI / ci` previously blocked merges because the required check never matched.
+- [ ] Scope: docs (`docs/dev/CI.md`, `docs/dev/GIT_WORKFLOW.md`) + PR template + operator `gh api` snippet (`contexts: ["ci"]`).
+- [ ] **Not** a new workflow. **No** `.github/workflows/deploy.yml`.
+- [ ] No Cloudflare / Caddy / custom-domain work.
+
+### Definition of Done
+
+- [ ] Team DoD met (docs + template + operator snippet).
 - [ ] Peer review **PASS** before merge.
 
 ---

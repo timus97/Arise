@@ -1,10 +1,10 @@
 # Sprint 4 assignment — Remaining API + web shell + CI gates
 
-Sprint 4 is **In progress**. Assignment sheet only — do not treat this file as the contract. `docs/design.md` revision 4 wins. Full checklists: [`docs/backlog/USER_STORIES.md`](../backlog/USER_STORIES.md) ARISE-012 / 013 / 014 / 015 / 023 / 024.
+Sprint 4 is **In progress**. Assignment sheet only — do not treat this file as the contract. `docs/design.md` revision 4 wins. Full checklists: [`docs/backlog/USER_STORIES.md`](../backlog/USER_STORIES.md) ARISE-012 / 013 / 014 / 015 / 023 / 024 / 025.
 
 ## Sprint goal
 
-Ship the remaining API + first web slice: health ingest + consent + retain cron (**11** / ARISE-012), progress / JSON export / account delete / reset-password CLI (**12** / ARISE-013), Vite login/register (**13** / ARISE-014), settings (**13.1** / ARISE-015). In parallel, SRE hardens GitHub Actions (**ARISE-023**) and merge gates for `main` (**ARISE-024**).
+Ship the remaining API + first web slice: health ingest + consent + retain cron (**11** / ARISE-012), progress / JSON export / account delete / reset-password CLI (**12** / ARISE-013), Vite login/register (**13** / ARISE-014), settings (**13.1** / ARISE-015). **013** is **Done** (merged PR #6). **014** is **Done** (merged PR #2). **012** is **In review** (PR #3, peer PASS, rebasing onto main after 013). **015** is **In progress** (Dev B, unblocked). SRE CI harden (**ARISE-023**) and merge gates (**ARISE-024**) are **Done** on `origin/main` (PR #1). **ARISE-025** is **Done** (merged PR #5 — docs + template + `gh api` snippet use context `ci`).
 
 **Explicit non-goals:** no SYSTEM chrome, no PWA, no Playwright, no Compose launch image, no PO. **No `.github/workflows/deploy.yml`.** **No** Cloudflare Workers / wrangler / Caddy / custom domain (v1 non-goal).
 
@@ -12,14 +12,14 @@ Ship the remaining API + first web slice: health ingest + consent + retain cron 
 
 | Role | Person | This sprint |
 | --- | --- | --- |
-| Implement | **Dev A** | ARISE-012 now → ARISE-013 on a **new** branch after 012 is **pushed** (do not mix 11 and 12) |
-| Implement | **Dev B** | ARISE-014 now (`08` is on `main` — unblocked) → ARISE-015 **waits for 12 + 13** |
-| Implement | **SRE** | ARISE-023 now; ARISE-024 in parallel (template + `CI / ci` docs) — **new** branch, do not mix with 023. Protection attempt after 023’s check exists |
+| Implement | **Dev A** | ARISE-012 **In review** (GitHub PR #3, peer PASS, rebasing onto main after 013 merge) · ARISE-013 **Done** (merged PR #6) |
+| Implement | **Dev B** | ARISE-014 **Done** (merged PR #2) · ARISE-015 **In progress** (unblocked — 13+12 on origin/main) |
+| Implement | **SRE** | ARISE-023 **Done** (merged PR #1) · ARISE-024 **Done** (protection live) · ARISE-025 **Done** (merged PR #5; required context is `ci`) |
 | Peer review | **Other senior** (A ↔ B) | Reviews product PRs until Verdict **PASS** (0 blocking). Author does not self-merge |
 | Scrum Master | 0.1 | Board + this sheet. Not an implementer |
 | Product Owner | — | **Not required** this sprint |
 
-Team size: **2 seniors** + SM 0.1 + **SRE**. Do not add a third product implementer. Points: **23** (A 10 / B 8 / SRE 5).
+Team size: **2 seniors** + SM 0.1 + **SRE**. Do not add a third product implementer. Points: **24** (A 10 / B 8 / SRE 6).
 
 **Git (mandatory):** [`docs/dev/GIT_WORKFLOW.md`](./GIT_WORKFLOW.md)
 
@@ -53,7 +53,7 @@ Next (not this first-slice implement mix):
 | **After 012 is pushed** (new branch; do not mix 11 and 12) | ARISE-013 | 12 | `feat/ARISE-013-progress-export` | `feat(api): progress, JSON export, account delete, reset-password CLI` |
 | **After 12 + 13 are on `main`** | ARISE-015 | 13.1 | `feat/ARISE-015-settings` | `feat(web): settings, units, logout, delete, export download` |
 
-013 and 015 stay **Planned**. 015 is blocked on 12 + 13.
+012 is **In review** (peer PASS; GitHub PR #3; rebasing onto main after 013 merge). 013 **Done** (PR #6). 014 **Done** (PR #2). 015 **In progress** — unblocked (13+12 on `origin/main`). 023/024/025 **Done**.
 
 If SRE finds more deps, they file them. SM appends under **SRE intake** on [`SPRINT_BOARD.md`](../backlog/SPRINT_BOARD.md).
 
@@ -141,5 +141,5 @@ Contract: `docs/design.md` revision 4. Stories add the AC checklists.
 - The **other senior** reviews product PRs until Verdict **PASS** (0 blocking). Team DoD: [`docs/backlog/DEFINITION_OF_DONE.md`](../backlog/DEFINITION_OF_DONE.md).
 - Review the **remote** feature branch (`origin/feat/...` or `origin/chore/...`). Write the review under `docs/dev/reviews/`.
 - After PASS: merge to `main` and **push `main`**.
-- **ARISE-013 starts only after 012 is pushed (new branch).** **ARISE-015 starts only after 12 + 13 are on `origin/main`.**
+- **ARISE-013 is Done on `origin/main` (PR #6).** **ARISE-015 is In progress** (12 + 13 are on `origin/main`).
 - Do not implement TypeScript from this sheet — implement from the design + user-story AC.
