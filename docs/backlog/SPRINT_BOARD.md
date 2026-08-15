@@ -7,13 +7,13 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | Sprint | Theme | PRs | Team size | Status |
 | --- | --- | --- | --- | --- |
 | Sprint 0 / Sprint 1 | Foundation | 01, 02, 03, 05 | **2 seniors** + 0.1 SM | **Done** |
-| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** (local; push blocked) |
-| Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | Planned |
+| Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** |
+| Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **In progress** |
 | Sprint 4 | Remaining API + web shell | 11, 12, 13, 13.1 | **2 seniors** + 0.1 SM | Planned |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1 is **Done**. Sprint 2 is **Done** on local `main` (04, 06a, 06b, 07 peer PASS). **GitHub `origin/main` is still the initial commit** until Contents: Write is granted and we push. Sprints 3–6 stay Planned.
+Sprint 1 and Sprint 2 are **Done** on `origin/main` (01–07 peer PASS; domain 20 / engine 78 / health 17 / db 4 tests + typecheck green). Sprint 3 is **In progress**. Sprints 4–6 stay Planned.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -163,7 +163,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ## Sprint 2 — Engine + DB
 
-**Status: Done** (local `main`; GitHub push blocked until Contents: Write)  
+**Status: Done** on `origin/main`  
 **Goal:** Schema + `atomic()`, closed-form XP/rank/safety, 16-template issuer, health adapters.  
 **PRs:** 04, 06a, 06b, 07  
 **Points:** 23  
@@ -180,7 +180,7 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **Done** — peer PASS, on local `main` |
+| ARISE-004 | Drizzle schema, migrate, and atomic() wrapper | 04 | Dev A | 5 | ARISE-003 | **Done** — peer PASS, on `origin/main` |
 | ARISE-006 | Engine XP, rank, recovery, safety, and effect helpers | 06a | Dev A | 5 | ARISE-003 | **Done** — peer PASS, on `main` |
 | ARISE-007 | 16-template catalog, scorer, issuer, and planner | 06b | Dev A | 8 | ARISE-006 | **Done** — peer PASS, on `main` |
 | ARISE-008 | Normalize health samples, manual + small CSV, and unavailable stubs | 07 | Dev B | 5 | ARISE-003 | **Done** — peer PASS, on `main` |
@@ -200,10 +200,11 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 ## Sprint 3 — API core
 
-**Status: Planned**  
+**Status: In progress**  
 **Goal:** Node Hono + Better Auth (invite fail-closed, age 16+), onboarding/plan gates, ensure/complete/skip.  
 **PRs:** 08, 09, 10  
-**Points:** 21
+**Points:** 21  
+**Assignment:** [`docs/dev/SPRINT3_ASSIGNMENT.md`](../dev/SPRINT3_ASSIGNMENT.md)
 
 **Team size: 2 seniors. Do not add a third** — 08 → 09 → 10 is serial on one API owner. Extra people wait.
 
@@ -216,11 +217,11 @@ No dedicated designer, SRE, native, ML, or QA hire for v1. Playwright + Vitest g
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-009 | Hono Node API, Better Auth username + scrypt, and Workers Free spike | 08 | Dev A | 8 | ARISE-004, ARISE-005 | Planned |
+| ARISE-009 | Hono Node API, Better Auth username + scrypt, and Workers Free spike | 08 | Dev A | 8 | ARISE-004, ARISE-005 | **In progress** |
 | ARISE-010 | Onboarding, plan preview/regenerate, pregnancy and loss-rate gates | 09 | Dev A | 5 | ARISE-007, ARISE-009 | Planned |
 | ARISE-011 | Issue today’s quests, complete, skip, and lazy fail | 10 | Dev A | 8 | ARISE-007, ARISE-010 | Planned |
 
-**Parallelism:** Serial on Dev A (08 → 09 → 10). Dev B reviews, helps the **required** Free Worker spike note in `apps/api/README.md`, and prepares web spike against the Vite proxy.
+**Parallelism (first slice, start now):** Serial on Dev A. **A** implements **ARISE-009 / PR 08** now (`feat/ARISE-009-hono-auth`). **B** (1) quality-audits Sprint 1–2 packages, (2) reviews PR 08 until PASS. **ARISE-010 / PR 09** only after 08 peer PASS + merge + push `main`. **ARISE-011 / PR 10** only after 09 peer PASS + merge + push `main`. Do not staff a third.
 
 **Sprint 3 exit:**
 
