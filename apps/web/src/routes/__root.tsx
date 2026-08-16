@@ -40,7 +40,19 @@ function RootLayout() {
         >
           Settings
         </Link>
-        {signedIn ? null : (
+        {signedIn ? (
+          <>
+            <Link
+              to="/onboarding"
+              aria-current={pathname === "/onboarding" ? "page" : undefined}
+            >
+              Onboarding
+            </Link>
+            <Link to="/plan" aria-current={pathname === "/plan" ? "page" : undefined}>
+              Plan
+            </Link>
+          </>
+        ) : (
           <>
             <Link to="/login" aria-current={pathname === "/login" ? "page" : undefined}>
               Sign in

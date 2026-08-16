@@ -1,0 +1,63 @@
+.onb-steps {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.onb-step {
+  flex: 1;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: rgba(147, 160, 194, 0.22);
+}
+
+.onb-step[data-done="true"] {
+  background: rgba(94, 234, 212, 0.45);
+}
+
+.onb-step[aria-current="step"] {
+  background: var(--accent);
+}
+
+.field select,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #050816;
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+}
+
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 1px;
+}
+
+.plan-day {
+  display: grid;
+  grid-template-columns: 7.2rem 1fr auto;
+  gap: 0.45rem 0.7rem;
+  align-items: baseline;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.92rem;
+}
+
+.plan-day:last-child {
+  border-bottom: 0;
+}
+
+.plan-day strong {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.plan-day .meta {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
