@@ -24,7 +24,8 @@ COPY --from=build /out/api /app
 COPY --from=build /out/web /app/web
 COPY infra/scripts/backup-sqlite.sh /usr/local/bin/backup-sqlite
 COPY infra/docker/entrypoint.sh /usr/local/bin/entrypoint
-RUN chmod +x /usr/local/bin/backup-sqlite /usr/local/bin/entrypoint \
+RUN sed -i 's/\r$//' /usr/local/bin/backup-sqlite /usr/local/bin/entrypoint \
+  && chmod +x /usr/local/bin/backup-sqlite /usr/local/bin/entrypoint \
   && chown -R arise:arise /app
 # entrypoint starts as root, chowns /data, then gosu 10001
 EXPOSE 8787
