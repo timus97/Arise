@@ -58,6 +58,13 @@ export function createApp(deps: AppDeps): Hono<AppBindings> {
   registerMeRoutes(app, deps);
   registerHealthRoutes(app, deps);
 
+  app.notFound((c) => {
+    if (c.req.path.startsWith("/api")) {
+      return c.json(errorBody("NOT_FOUND", "Not found"), 404);
+    }
+    return c.text("404 Not Found", 404);
+  });
+
   return app;
 }
 

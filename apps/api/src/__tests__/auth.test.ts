@@ -104,6 +104,16 @@ afterEach(() => {
 });
 
 describe("auth façade", () => {
+  it("returns JSON NOT_FOUND for unknown /api/v1 paths", async () => {
+    const { app } = openHarness();
+    const res = await app.request(`${ORIGIN}/api/v1/does-not-exist`);
+    expect(res.status).toBe(404);
+    expect(res.headers.get("content-type") ?? "").toMatch(/application\/json/);
+    const json = (await res.json()) as { error: { code: string; message: string } };
+    expect(json.error.code).toBe("NOT_FOUND");
+    expect(json.error.message).toBe("Not found");
+  });
+
   it("returns 401 on GET /api/v1/me without a session", async () => {
     const { app } = openHarness();
     const res = await app.request(`${ORIGIN}/api/v1/me`);
