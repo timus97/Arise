@@ -4,7 +4,6 @@ import { rootRoute } from "./routes/__root.js";
 import { indexRoute } from "./routes/index.js";
 import { loginRoute } from "./routes/login.js";
 import { registerRoute } from "./routes/register.js";
-<<<<<<< HEAD
 import { progressRoute } from "./routes/progress.js";
 import { healthRoute } from "./routes/health.js";
 import { settingsRoute } from "./routes/settings.js";
