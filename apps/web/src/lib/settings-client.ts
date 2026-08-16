@@ -31,11 +31,14 @@ export type PlayableProbeResult =
   | { kind: "error"; error: ApiRequestError };
 
 export function signOut(): Promise<unknown> {
-  return api(SIGN_OUT_PATH, { method: "POST" });
+  return api(SIGN_OUT_PATH, { method: "POST", body: JSON.stringify({}) });
 }
 
 export function deleteAccount(): Promise<{ ok: true }> {
-  return api<{ ok: true }>(ACCOUNT_DELETE_PATH, { method: "POST" });
+  return api<{ ok: true }>(ACCOUNT_DELETE_PATH, {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
 }
 
 export function exportRequest(): { path: string; init: RequestInit } {
