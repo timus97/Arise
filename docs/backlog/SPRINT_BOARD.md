@@ -10,10 +10,10 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | Sprint 2 | Engine + DB | 04, 06a, 06b, 07 | **2 seniors** (3 optional) + 0.1 SM | **Done** |
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **Done** |
 | Sprint 4 | Remaining API + web shell + CI gates | 11, 12, 13, 13.1, SRE 023/024/025 | **2 seniors** + 0.1 SM + SRE | **Done** |
-| Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** (3 optional after PR 14) + 0.1 SM + PO | Planned |
+| Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** + 3rd + senior tester + SM + PO | **Done** |
 | Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
 
-Sprint 1, 2, 3, and 4 are **Done** on `origin/main`. Sprints 5–6 stay Planned. next: Sprint 5 Planned.
+Sprint 1–5 are **Done** on `origin/main`. Next: Sprint 6 Planned.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -125,6 +125,7 @@ Fibonacci points. **8 only for PR 06b, 08, 10, 14.** Two seniors ≈ 16–24 pts
 | Senior full-stack (Dev B) | 1 | Scaffold, CI, Docker, health adapters, web, PWA, e2e, launch. Reviews A’s PRs until PASS. |
 | Scrum Master | 0.1 FTE | Board, DoD, peer-review gate. Not an implementer. |
 | Product Owner | 0–0.25 FTE | Addendum already shipped. Needed in Sprint 5 (polish P1–P10) and Sprint 6 (launch accept). |
+| Senior tester | 1 (Sprint 5) | Live API + SYSTEM web. Files blockers. Agent `.grok/agents/senior-tester.md`. |
 | Site Reliability (SRE) | 1 (Sprint 4) | Harden GitHub Actions + merge gates + check-context docs. **Not** Cloudflare `deploy.yml` / Workers / Caddy. |
 
 No dedicated designer, native, ML, or QA hire for v1. Playwright + Vitest goldens are in the stories. SRE is Sprint 4 only, git + merges — not a hosting hire.
@@ -297,40 +298,40 @@ SRE may file extra deps after they start. SM appends them here (next IDs after t
 
 ## Sprint 5 — System UI + remaining web
 
-**Status: Planned**  
+**Status: Done** on `origin/main` (`c1614d0`)  
 **Goal:** SYSTEM window + onboarding/health/progress UI + PWA install/outbox. **No Web Push.**  
 **PRs:** 14, 15, 16, 17, 18a  
 **Points:** 24
 
-**Team size: 2 seniors required.** A third senior is **optional after PR 14 merges**, to run 15/16/17/18a in parallel. Before 14, a third sits idle.
+**Team size:** 2 seniors + third implementer + senior tester + PO + SM.
 
 | Requirement | Need |
 | --- | --- |
 | Skills | React 19 SYSTEM UI (`packages/ui`), TanStack Query, six-step onboarding, CSV importer UX, PWA (`vite-plugin-pwa`, SW, IndexedDB outbox). **No** Web Push / VAPID |
 | Tools | Node 22, pnpm, browsers for install/outbox checks (desktop + a phone viewport) |
-| Roles this sprint | Dev B (14 then 15–18a), Dev A (contract review: 16 templates, `intl`, no `push` in `sw.ts`), **PO 0.25 FTE** for polish P1–P10 copy, SM |
-| Not required | Native, designer hire (addendum + design tokens), LLM, social |
+| Roles this sprint | Dev B (14, 15), third senior (16, 17, 18a), Dev A (review), **senior tester**, **PO 0.25 FTE**, SM |
+| Not required | Native, LLM, social, Web Push |
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-016 | SYSTEM window: panels, quest cards, rank-up, and disclaimer | 14 | Dev B | 8 | ARISE-011, ARISE-014 | Planned |
-| ARISE-017 | Six-step onboarding wizard and plan preview | 15 | Dev B | 5 | ARISE-010, ARISE-016 | Planned |
-| ARISE-018 | Manual health entry and CSV importer UI | 16 | Dev B | 3 | ARISE-012, ARISE-016 | Planned |
-| ARISE-019 | Progress UI for XP, stats, and rank history | 17 | Dev B | 3 | ARISE-013, ARISE-016 | Planned |
-| ARISE-020 | PWA install, service worker, and IndexedDB outbox (no Web Push) | 18a | Dev B | 5 | ARISE-016, ARISE-011 | Planned |
+| ARISE-016 | SYSTEM window: panels, quest cards, rank-up, and disclaimer | 14 | Dev B | 8 | ARISE-011, ARISE-014 | **Done** — GitHub PR #12 |
+| ARISE-017 | Six-step onboarding wizard and plan preview | 15 | Dev B | 5 | ARISE-010, ARISE-016 | **Done** — GitHub PR #17 |
+| ARISE-018 | Manual health entry and CSV importer UI | 16 | Third senior | 3 | ARISE-012, ARISE-016 | **Done** — GitHub PR #15 |
+| ARISE-019 | Progress UI for XP, stats, and rank history | 17 | Third senior | 3 | ARISE-013, ARISE-016 | **Done** — GitHub PR #14 |
+| ARISE-020 | PWA install, service worker, and IndexedDB outbox (no Web Push) | 18a | Third senior | 5 | ARISE-016, ARISE-011 | **Done** — GitHub PR #16 |
 
 **Parallelism:** 14 is the gate. After 14: 15, 16, 17, 18a can proceed in any order (16 needs 11; 17 needs 12; both already in Sprint 4). Dev A reviews contract adherence (16 template ids, `intl`, no push in `sw.ts`).
 
 **Sprint 5 exit:**
 
-- [ ] Chrome says **SYSTEM**. Dark only. Disclaimer on every System window.
-- [ ] GET today; if `needsEnsure` then POST ensure; then render. Complete / partial / skip wired.
-- [ ] `suggestRegenerate` is a **button**, not auto-regenerate.
-- [ ] Six-step wizard; pregnancy **dead-end** + Delete account; preview is `POST /plan/preview` (0 writes).
-- [ ] CSV UI rejects `size > 262144` or `rows > 200` **before** parse.
-- [ ] Manifest name **“Arise”**, theme **`#050816`**, `display: standalone`.
-- [ ] **No** `push` event in `sw.ts`. No VAPID. PR 18b not merged.
-- [ ] Outbox drops item on `409 DAY_CLOSED` and shows “the day closed.”
+- [x] Chrome says **SYSTEM**. Dark only. Disclaimer on every System window.
+- [x] GET today; if `needsEnsure` then POST ensure; then render. Complete / partial / skip wired.
+- [x] `suggestRegenerate` is a **button**, not auto-regenerate.
+- [x] Six-step wizard; pregnancy **dead-end** + Delete account; preview is `POST /plan/preview` (0 writes).
+- [x] CSV UI rejects `size > 262144` or `rows > 200` **before** parse.
+- [x] Manifest name **“Arise”**, theme **`#050816`**, `display: standalone`.
+- [x] **No** `push` event in `sw.ts`. No VAPID. PR 18b not merged.
+- [x] Outbox drops item on `409 DAY_CLOSED` and shows “the day closed.”
 
 ---
 
