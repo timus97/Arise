@@ -208,6 +208,8 @@ describe("auth façade", () => {
     const health = await app.request("/health");
     expect(health.status).toBe(200);
     expect(health.headers.get("server-timing")).toMatch(/app;dur=/);
+    expect(health.headers.get("content-security-policy")).toContain("connect-src 'self'");
+    expect(health.headers.get("content-security-policy")).toContain("default-src 'self'");
     const healthBody = (await health.json()) as {
       ok: boolean;
       runtime: string;

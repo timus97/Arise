@@ -2,7 +2,7 @@
 
 v1 launch is **Docker Compose on localhost / the operator’s machine**. There is **no Caddy**, **no TLS**, and **no custom domain**. Open `http://localhost:8080`.
 
-`docker compose up` is **not expected to succeed** until the API (`apps/api`) and web build (`apps/web`) exist (PR 08+). This tree ships the image recipe and compose file only — there is no stub `/health` Node app here.
+`docker compose up --build` on a **fresh** `arise-data` volume is the v1 launch check. The image is `pnpm --filter api deploy --prod` plus `apps/web/dist` at `/app/web`. There is no stub `/health` app and no second web container.
 
 ## First run
 
@@ -41,7 +41,7 @@ Local/LAN uses the single container on **8080 (HTTP)**. `Secure` cookies stay of
 
 ## Backups
 
-`backup-sqlite` (installed in the image) runs `sqlite3 .backup` into `/data/backups` and deletes copies older than 14 days. Copy `/data/backups` off-box (Syncthing, USB). D1 Time Travel is not a backup.
+`backup-sqlite` (installed in the image) is spawned by Node cron at **`45 3 * * *` UTC**. It runs `sqlite3 .backup` into `/data/backups` and deletes copies older than 14 days. Copy `/data/backups` off-box (Syncthing, USB). D1 Time Travel is not a backup.
 
 ## Leaving D1 for Compose
 

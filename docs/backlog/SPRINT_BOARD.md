@@ -337,7 +337,7 @@ SRE may file extra deps after they start. SM appends them here (next IDs after t
 
 ## Sprint 6 — E2E + Compose launch
 
-**Status: In progress**  
+**Status: Done**  
 **Goal:** Playwright happy path and `docker compose up --build` on a **fresh** volume at `http://localhost:8080`.  
 **PRs:** 19, 20  
 **Points:** 10  
@@ -354,20 +354,20 @@ SRE may file extra deps after they start. SM appends them here (next IDs after t
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-021 | Playwright happy path: register, onboard, ensure, complete | 19 | Dev B | 5 | ARISE-017, ARISE-016 | **In progress** |
-| ARISE-022 | docker compose up --build is the v1 launch path | 20 | Dev B | 5 | ARISE-021, ARISE-020, ARISE-009 | Planned |
+| ARISE-021 | Playwright happy path: register, onboard, ensure, complete | 19 | Dev B | 5 | ARISE-017, ARISE-016 | **Done** |
+| ARISE-022 | docker compose up --build is the v1 launch path | 20 | Dev B | 5 | ARISE-021, ARISE-020, ARISE-009 | **Done** |
 
 **Parallelism:** 19 before 20. Dev A stands by for ensure/auth defects found in e2e or Compose.
 
 **Sprint 6 / v1 launch exit (PR 20 acceptance — only this):**
 
-- [ ] `docker compose up --build` on a **fresh** named volume.
-- [ ] Register from `http://localhost:8080/register` with the invite code (age ≥ 16).
-- [ ] Deep-link refresh of `/onboarding` returns the SPA (**not** 404).
-- [ ] Image contains `/app/web/index.html` and a working `node dist/node.js` (`pnpm deploy`, not workspace `node_modules`).
-- [ ] Playwright: register (**age 20**) → onboard → ensure → complete one → XP up.
-- [ ] Backup cron `45 3 * * *` spawns `backup-sqlite.sh` (14-day retain). D1 Time Travel is **not** a backup.
-- [ ] **Not in PR 20:** `wrangler.toml`, `deploy.yml`, `Caddyfile`, custom domains, Workers Paid. Those must not block merge.
+- [x] `docker compose up --build` on a **fresh** named volume.
+- [x] Register from `http://localhost:8080/register` with the invite code (age ≥ 16).
+- [x] Deep-link refresh of `/onboarding` returns the SPA (**not** 404).
+- [x] Image contains `/app/web/index.html` and a working `node dist/node.js` (`pnpm deploy`, not workspace `node_modules`).
+- [x] Playwright: register (**age 20**) → onboard → ensure → complete one → XP up.
+- [x] Backup cron `45 3 * * *` spawns `backup-sqlite.sh` (14-day retain). D1 Time Travel is **not** a backup.
+- [x] **Not in PR 20:** `wrangler.toml`, `deploy.yml`, `Caddyfile`, custom domains, Workers Paid. Those must not block merge.
 
 ---
 

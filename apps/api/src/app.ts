@@ -16,12 +16,27 @@ import type { AppBindings, AppDeps } from "./types.js";
 const HEALTH_WINDOW_MS = 60_000;
 const HEALTH_MAX_PER_WINDOW = 30;
 
+/** Same-origin CSP from design § Security. No workers.dev host. */
+export const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "connect-src 'self'",
+  "manifest-src 'self'",
+  "worker-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
 export function createApp(deps: AppDeps): Hono<AppBindings> {
   const app = new Hono<AppBindings>();
   const healthHits = new Map<string, number[]>();
 
   app.use("*", async (c, next) => {
     c.set("requestId", crypto.randomUUID());
+    c.header("Content-Security-Policy", CONTENT_SECURITY_POLICY);
     await next();
   });
   app.use("*", timingMiddleware(deps));
