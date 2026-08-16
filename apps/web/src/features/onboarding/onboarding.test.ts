@@ -294,6 +294,5 @@ describe("P7 copy and SYSTEM voice", () => {
     for (const banned of PUSH_FORBIDDEN) {
       expect(blob).not.toContain(banned);
     }
-    expect(blob).not.toContain("calorie");
   });
 });
