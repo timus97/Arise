@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, createRoute } from "@tanstack/react-router";
+import { SystemWindow } from "../features/system-window/SystemWindow.js";
 import { getSession, sessionQueryKey } from "../lib/auth-client.js";
 import { rootRoute } from "./__root.js";
 
@@ -32,24 +33,7 @@ function HomePage() {
   }
 
   if (session.data) {
-    return (
-      <section className="panel">
-        <h1>SYSTEM</h1>
-        <p className="lede">Session is attached on this origin.</p>
-        <p className="banner banner-ok">
-          Signed in. Player id <span className="mono">{session.data.userId}</span>
-        </p>
-        <p className="hint">
-          The daily window ships later. Cookies stay on this host — the browser
-          never calls :8787.
-        </p>
-        <div className="actions">
-          <Link to="/settings" className="btn">
-            Settings
-          </Link>
-        </div>
-      </section>
-    );
+    return <SystemWindow />;
   }
 
   return (

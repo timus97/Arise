@@ -75,6 +75,9 @@ importers:
       '@arise/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@arise/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@tanstack/react-query':
         specifier: ^5.75.5
         version: 5.101.4(react@19.2.8)
@@ -176,7 +179,17 @@ importers:
         specifier: ^3.0.5
         version: 3.2.7(@types/node@26.2.0)(tsx@4.23.12)
 
-  packages/ui: {}
+  packages/ui:
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.2
+        version: 19.2.18
+      react:
+        specifier: ^19.1.0
+        version: 19.2.8
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
 
 packages:
 
