@@ -38,6 +38,8 @@ Job steps (all required; a failure fails the job):
 
 Typecheck and test always run. Missing scripts or non-zero exits fail the job. There is no “skip if no `package.json`” path.
 
+A second job, **`e2e`**, is not a required merge context. It installs Playwright Chromium and runs `pnpm --filter web test:e2e` (register age 20 → onboard → ensure → complete → XP up). Failures still show on the PR. Required protection stays **`ci`** only.
+
 ### Forbidden-string grep
 
 `FORBIDDEN.txt` is the list. The step is **required** and **fail-closed**:

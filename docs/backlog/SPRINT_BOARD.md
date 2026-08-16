@@ -11,9 +11,9 @@ Standing v1 team is **2 senior full-stack engineers** (Dev A + Dev B) plus a **p
 | Sprint 3 | API core | 08, 09, 10 | **2 seniors** (do not add a 3rd) + 0.1 SM | **Done** |
 | Sprint 4 | Remaining API + web shell + CI gates | 11, 12, 13, 13.1, SRE 023/024/025 | **2 seniors** + 0.1 SM + SRE | **Done** |
 | Sprint 5 | System UI + remaining web | 14, 15, 16, 17, 18a | **2 seniors** + 3rd + senior tester + SM + PO | **Done** |
-| Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + 0.1 SM + PO sign-off | Planned |
+| Sprint 6 | E2E + Compose launch | 19, 20 | **2 seniors** + tester + 0.1 SM + PO | **In progress** |
 
-Sprint 1–5 are **Done** on `origin/main`. Next: Sprint 6 Planned.
+Sprint 1–5 are **Done** on `origin/main`. Sprint 6 is **In progress**.
 
 PR **18b** is **not** on this board. See [Later](#later-not-on-the-v1-board).
 
@@ -337,10 +337,11 @@ SRE may file extra deps after they start. SM appends them here (next IDs after t
 
 ## Sprint 6 — E2E + Compose launch
 
-**Status: Planned**  
+**Status: In progress**  
 **Goal:** Playwright happy path and `docker compose up --build` on a **fresh** volume at `http://localhost:8080`.  
 **PRs:** 19, 20  
-**Points:** 10
+**Points:** 10  
+**Assignment:** [`docs/dev/SPRINT6_ASSIGNMENT.md`](../dev/SPRINT6_ASSIGNMENT.md)
 
 **Team size: 2 seniors** + PO launch sign-off. A third implementer is idle (19 then 20 is serial).
 
@@ -353,7 +354,7 @@ SRE may file extra deps after they start. SM appends them here (next IDs after t
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-021 | Playwright happy path: register, onboard, ensure, complete | 19 | Dev B | 5 | ARISE-017, ARISE-016 | Planned |
+| ARISE-021 | Playwright happy path: register, onboard, ensure, complete | 19 | Dev B | 5 | ARISE-017, ARISE-016 | **In progress** |
 | ARISE-022 | docker compose up --build is the v1 launch path | 20 | Dev B | 5 | ARISE-021, ARISE-020, ARISE-009 | Planned |
 
 **Parallelism:** 19 before 20. Dev A stands by for ensure/auth defects found in e2e or Compose.
