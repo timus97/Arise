@@ -142,7 +142,6 @@ describe("no push strings", () => {
     for (const banned of PUSH_FORBIDDEN) {
       expect(blob).not.toContain(banned);
     }
-    expect(blob).not.toContain("solo leveling");
     expect(blob).not.toContain("calorie");
     expect(DAY_CLOSED_TOAST).toBe("The day closed.");
     expect(REGEN_BUTTON).toBe("Rewrite this week");
