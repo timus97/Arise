@@ -11,6 +11,8 @@ pnpm --filter api dev
 # http://127.0.0.1:8787  — browser never calls this; use Vite :5173
 ```
 
+`src/node.ts` loads the repo-root `.env` at boot (missing/empty keys only). Already-exported process env wins. Compose still uses `env_file: .env`.
+
 - `GET /health` — `{ ok, runtime, version }`, no DB, 30/min/IP in process memory
 - `GET /ready` — `SELECT 1`, 503 if DB fails
 - `POST /api/v1/auth/sign-up/email` — façade checks age ≥ 16, invite, disclaimer, then Better Auth (scrypt, username plugin)

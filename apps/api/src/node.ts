@@ -6,11 +6,12 @@ import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { createApp } from "./app.js";
 import { createAuth } from "./auth.js";
-import { parseEnv } from "./env.js";
+import { loadDotEnvFiles, parseEnv } from "./env.js";
 import { startNodeCron } from "./jobs/node-cron.js";
 
 const VERSION = "0.0.0";
 
+loadDotEnvFiles();
 const env = parseEnv();
 if (env.DATABASE_PATH !== ":memory:") {
   mkdirSync(dirname(env.DATABASE_PATH), { recursive: true });
