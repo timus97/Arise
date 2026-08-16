@@ -12,6 +12,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
 import { formatAuthError } from "../../lib/auth-client.js";
+import { completeQuestOrQueue, skipQuestOrQueue } from "../../lib/offline-queue.js";
+import { useOutboxDrain } from "../../lib/use-outbox-drain.js";
+import { InstallEducation } from "../pwa/InstallEducation.js";
 import { CompleteSheet } from "./CompleteSheet.js";
 import { SkipSheet } from "./SkipSheet.js";
 import {
@@ -43,12 +46,10 @@ import {
   xpIntoLevel,
 } from "./presentation.js";
 import {
-  completeQuest,
   ensureToday,
   getToday,
   isDayClosedError,
   regenerateWeek,
-  skipQuest,
   todayGateFromError,
   todayQueryKey,
 } from "./today-client.js";
@@ -87,6 +88,13 @@ export function SystemWindow() {
     setToasts((current) => [...current, { id, message }]);
   }
 
+  useOutboxDrain({
+    onDayClosed: () => pushToast(DAY_CLOSED_TOAST),
+    onDrained: () => {
+      void queryClient.invalidateQueries({ queryKey: todayQueryKey });
+    },
+  });
+
   function dismissToast(id: string) {
     setToasts((current) => current.filter((item) => item.id !== id));
   }
@@ -119,8 +127,14 @@ export function SystemWindow() {
 
   const completeMutation = useMutation({
     mutationFn: ({ quest, effort }: { quest: TodayQuest; effort: QuestEffort }) =>
-      completeQuest(quest.id, effort),
-    onSuccess: async (result) => {
+      completeQuestOrQueue(quest.id, effort),
+    onSuccess: async (outcome) => {
+      if (outcome.kind === "queued") {
+        setSheet(null);
+        setActionError(null);
+        return;
+      }
+      const result = outcome.result;
       const previous = queryClient.getQueryData<TodayPayload>(todayQueryKey);
       if (
         previous &&
@@ -152,10 +166,11 @@ export function SystemWindow() {
 
   const skipMutation = useMutation({
     mutationFn: ({ quest, reason }: { quest: TodayQuest; reason: SkipReason }) =>
-      skipQuest(quest.id, reason),
-    onSuccess: async () => {
+      skipQuestOrQueue(quest.id, reason),
+    onSuccess: async (outcome) => {
       setSheet(null);
       setActionError(null);
+      if (outcome.kind === "queued") return;
       await queryClient.invalidateQueries({ queryKey: todayQueryKey });
     },
     onError: (err) => {
@@ -246,6 +261,7 @@ export function SystemWindow() {
 
   return (
     <div className="sys-window">
+      <InstallEducation mode="first-visit" />
       <PlayerHeader today={today} />
       {today.needsEnsure ? (
         <EmptyEnsure
