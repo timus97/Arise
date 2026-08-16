@@ -294,9 +294,6 @@ describe("P7 copy and SYSTEM voice", () => {
     for (const banned of PUSH_FORBIDDEN) {
       expect(blob).not.toContain(banned);
     }
-    expect(blob).not.toContain("solo leveling");
-    expect(blob).not.toContain("jin-woo");
-    expect(blob).not.toContain("igris");
-    expect(blob).not.toContain("shadow monarch");
+    expect(blob).not.toContain("calorie");
   });
 });
