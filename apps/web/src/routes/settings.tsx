@@ -2,7 +2,10 @@ import type { Units } from "@arise/domain";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
+import { InstallEducation } from "../features/pwa/InstallEducation.js";
+import { DAY_CLOSED_TOAST } from "../features/system-window/copy.js";
 import { formatAuthError, getSession, sessionQueryKey } from "../lib/auth-client.js";
+import { useOutboxDrain } from "../lib/use-outbox-drain.js";
 import {
   EXPORT_FILENAME,
   PREGNANCY_HARD_STOP,
@@ -46,7 +49,12 @@ function SettingsPage() {
   const [timeZone, setTimeZone] = useState(() => readDisplayTimeZone());
   const [tzError, setTzError] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [outboxNotice, setOutboxNotice] = useState<string | null>(null);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+
+  useOutboxDrain({
+    onDayClosed: () => setOutboxNotice(DAY_CLOSED_TOAST),
+  });
 
   const session = useQuery({
     queryKey: sessionQueryKey,
@@ -218,6 +226,14 @@ function SettingsPage() {
           {error}
         </p>
       ) : null}
+
+      {outboxNotice ? (
+        <p className="banner banner-warn" role="status">
+          {outboxNotice}
+        </p>
+      ) : null}
+
+      <InstallEducation mode="settings" />
 
       {availability.units ? (
         <div className="section">
