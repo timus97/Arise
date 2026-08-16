@@ -6,6 +6,8 @@ import { loginRoute } from "./routes/login.js";
 import { registerRoute } from "./routes/register.js";
 import { progressRoute } from "./routes/progress.js";
 import { healthRoute } from "./routes/health.js";
+import { onboardingRoute } from "./routes/onboarding.js";
+import { planRoute } from "./routes/plan.js";
 import { settingsRoute } from "./routes/settings.js";
 
 const queryClient = new QueryClient({
@@ -22,8 +24,10 @@ const routeTree = rootRoute.addChildren([
   loginRoute,
   registerRoute,
   progressRoute,
-  settingsRoute,
   healthRoute,
+  onboardingRoute,
+  planRoute,
+  settingsRoute,
 ]);
 
 const router = createRouter({
