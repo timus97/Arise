@@ -1,0 +1,236 @@
+:root {
+  color-scheme: dark;
+  --bg: #050816;
+  --bg-elevated: #0a1228;
+  --bg-panel: rgba(8, 14, 36, 0.88);
+  --line: rgba(94, 234, 212, 0.22);
+  --line-strong: rgba(125, 211, 252, 0.42);
+  --text: #e8eefc;
+  --muted: #93a0c2;
+  --accent: #5eead4;
+  --accent-2: #7dd3fc;
+  --danger: #fb7185;
+  --ok: #86efac;
+  --warn: #fbbf24;
+  --rank: #fde68a;
+  --shadow: 0 0 48px rgba(94, 234, 212, 0.08);
+  --font: "Segoe UI", "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "Cascadia Mono", "IBM Plex Mono", ui-monospace, monospace;
+  --radius: 14px;
+}
+
+.sys-panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.15rem 1.15rem 1.25rem;
+}
+
+.sys-player {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.55rem;
+}
+
+.sys-rank-wrap {
+  position: relative;
+}
+
+.sys-rank {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid rgba(253, 230, 138, 0.45);
+  display: grid;
+  place-items: center;
+  color: var(--rank);
+  font-size: 1.35rem;
+  font-weight: 700;
+  background: rgba(5, 8, 22, 0.65);
+  text-shadow: 0 0 16px rgba(253, 230, 138, 0.35);
+  cursor: pointer;
+  padding: 0;
+}
+
+.sys-rank:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.sys-rank-tip {
+  position: absolute;
+  z-index: 8;
+  left: 0;
+  top: calc(100% + 0.4rem);
+  width: min(18rem, 70vw);
+  margin: 0;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  box-shadow: var(--shadow);
+}
+
+.sys-player-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sys-player-meta {
+  margin: 0.15rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.sys-streak {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent-2);
+}
+
+.sys-xp-wrap {
+  margin: 0.2rem 0 0.85rem;
+}
+
+.sys-xp-meta {
+  margin: 0 0 0.3rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.sys-xp {
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(147, 160, 194, 0.18);
+  overflow: hidden;
+}
+
+.sys-xp > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.sys-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.sys-stat {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.4rem 0.2rem;
+  text-align: center;
+  background: rgba(5, 8, 22, 0.5);
+}
+
+.sys-stat b {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.sys-stat small {
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  font-size: 0.62rem;
+}
+
+.sys-quest {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem 0.8rem;
+  margin: 0 0 0.55rem;
+  background: rgba(5, 8, 22, 0.45);
+}
+
+.sys-quest-penalty {
+  border-color: rgba(251, 113, 133, 0.4);
+}
+
+.sys-quest-habit {
+  border-color: rgba(125, 211, 252, 0.28);
+}
+
+.sys-quest-done {
+  opacity: 0.72;
+}
+
+.sys-quest h3 {
+  margin: 0 0 0.2rem;
+  font-size: 0.98rem;
+}
+
+.sys-quest-kind {
+  color: var(--accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sys-quest-penalty .sys-quest-kind {
+  color: var(--danger);
+}
+
+.sys-quest-status {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sys-quest-rx {
+  margin: 0.25rem 0 0.45rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.sys-quest-xp {
+  margin: 0 0 0.55rem;
+  color: var(--accent-2);
+  font-size: 0.78rem;
+}
+
+.sys-toast {
+  border: 1px solid var(--line-strong);
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.86rem;
+  box-shadow: var(--shadow);
+}
+
+.sys-toast-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.sys-toast-dismiss {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+.sys-rankup {
+  text-align: center;
+}
+
+.sys-rankup .sys-rank {
+  margin: 0 auto 0.7rem;
+  cursor: default;
+}

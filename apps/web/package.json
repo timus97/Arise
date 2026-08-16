@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@arise/domain": "workspace:*",
+    "@arise/ui": "workspace:*",
     "@tanstack/react-query": "^5.75.5",
     "@tanstack/react-router": "^1.120.20",
     "react": "^19.1.0",
