@@ -1,0 +1,17 @@
+.git
+.grok
+.playwright-mcp
+node_modules
+**/node_modules
+dist
+**/dist
+.turbo
+data
+**/*.sqlite
+apps/web/test-results
+apps/web/playwright-report
+.env
+*.md
+!README.md
+!infra/docker/README.md
+docs
