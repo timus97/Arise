@@ -31,6 +31,8 @@ import {
   SMTP_UNSET_COPY,
   TIMEZONE_HINT,
 } from "../lib/settings-copy.js";
+import { CSV_DOWNLOAD_CTA } from "../features/health/copy.js";
+import { downloadCsvTemplate } from "../features/health/health-client.js";
 import {
   formatLength,
   formatMass,
@@ -384,6 +386,11 @@ function SettingsPage() {
           CSV template header (Sprint 5):{" "}
           <span className="mono">{CSV_TEMPLATE_HEADER}</span>
         </p>
+        <div className="actions">
+          <button type="button" className="btn" onClick={downloadCsvTemplate}>
+            {CSV_DOWNLOAD_CTA}
+          </button>
+        </div>
       </div>
 
       <div className="section">

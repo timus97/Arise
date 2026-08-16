@@ -75,6 +75,9 @@ importers:
       '@arise/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@arise/health':
+        specifier: workspace:*
+        version: link:../../packages/health
       '@arise/ui':
         specifier: workspace:*
         version: link:../../packages/ui

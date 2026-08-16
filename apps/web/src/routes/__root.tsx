@@ -22,12 +22,17 @@ function RootLayout() {
           Home
         </Link>
         {signedIn ? (
-          <Link
-            to="/progress"
-            aria-current={pathname === "/progress" ? "page" : undefined}
-          >
-            Progress
-          </Link>
+          <>
+            <Link to="/health" aria-current={pathname === "/health" ? "page" : undefined}>
+              Health
+            </Link>
+            <Link
+              to="/progress"
+              aria-current={pathname === "/progress" ? "page" : undefined}
+            >
+              Progress
+            </Link>
+          </>
         ) : null}
         <Link
           to="/settings"
