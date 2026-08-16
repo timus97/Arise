@@ -90,6 +90,8 @@ describe("logout helper", () => {
       expect(String(input)).not.toMatch(/8787/);
       expect(init?.method).toBe("POST");
       expect(init?.credentials).toBe("include");
+      expect(init?.body).toBe("{}");
+      expect(new Headers(init?.headers).get("content-type")).toMatch(/application\/json/);
       return jsonResponse({ success: true });
     });
     vi.stubGlobal("fetch", fetchMock);
