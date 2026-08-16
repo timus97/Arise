@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 const here = dirname(fileURLToPath(import.meta.url));
 const webRoot = resolve(here, "../..");
 const swSource = readFileSync(resolve(here, "../sw.ts"), "utf8");
+const mainSource = readFileSync(resolve(here, "../main.tsx"), "utf8");
 const manifest = JSON.parse(
   readFileSync(resolve(webRoot, "public/manifest.webmanifest"), "utf8"),
 ) as {
@@ -28,6 +29,10 @@ describe("manifest", () => {
 });
 
 describe("service worker", () => {
+  it("does not import virtual:pwa-register from the app entry", () => {
+    expect(mainSource).not.toMatch(/from\s+["']virtual:pwa-register["']/);
+  });
+
   it("has no push handler, VAPID, or subscriptions", () => {
     expect(swSource).not.toMatch(/addEventListener\s*\(\s*['"`]push['"`]/);
     expect(swSource).not.toMatch(/onpush\s*=/);
