@@ -1,5 +1,5 @@
-# May fail `up` until the API exists (PR 08). No stub /health app in this PR.
-# v1 launch is localhost only — no Caddy, no custom domain.
+# v1 launch: docker compose up --build on a fresh named volume.
+# Localhost HTTP only — no Caddy, no custom domain, no Workers.
 services:
   arise:
     build:
@@ -11,8 +11,8 @@ services:
       SERVE_STATIC: "true"
       WEB_DIST: /app/web
       DATABASE_PATH: /data/arise.sqlite
-      APP_ORIGIN: ${APP_ORIGIN:-http://localhost:8080}
-      BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:8080}
+      APP_ORIGIN: http://localhost:8080
+      BETTER_AUTH_URL: http://localhost:8080
     volumes:
       - arise-data:/data
     ports:

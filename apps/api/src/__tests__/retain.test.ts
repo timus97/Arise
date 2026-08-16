@@ -4,7 +4,13 @@ import Database from "better-sqlite3";
 import { validate } from "node-cron";
 import { afterEach, describe, expect, it } from "vitest";
 import type { Env } from "../env.js";
-import { NIGHTLY_CRON, runNightlyJobs, startNodeCron } from "../jobs/node-cron.js";
+import {
+  BACKUP_CRON,
+  NIGHTLY_CRON,
+  runNightlyJobs,
+  runSqliteBackup,
+  startNodeCron,
+} from "../jobs/node-cron.js";
 import { deleteHealthSampleChunk, HEALTH_SAMPLE_DELETE_CHUNK, retain } from "../jobs/retain.js";
 
 const ORIGIN = "http://localhost:5173";
@@ -156,6 +162,31 @@ describe("node-cron wiring", () => {
     const handle = startNodeCron({ db, env });
     handle.stop();
     expect(NIGHTLY_CRON.includes("push")).toBe(false);
+  });
+
+  it("schedules 45 3 * * * sqlite backup and does not register a push job", () => {
+    expect(BACKUP_CRON).toBe("45 3 * * *");
+    expect(validate(BACKUP_CRON)).toBe(true);
+    expect(BACKUP_CRON.includes("push")).toBe(false);
+  });
+
+  it("spawns backup-sqlite with DATABASE_PATH", async () => {
+    const { env } = openDb();
+    const calls: Array<{ cmd: string; path: string | undefined }> = [];
+    await runSqliteBackup(env, (command, _args, options) => {
+      calls.push({
+        cmd: String(command),
+        path: options.env?.DATABASE_PATH,
+      });
+      const child = {
+        on(event: string, listener: (...args: unknown[]) => void) {
+          if (event === "close") queueMicrotask(() => listener(0));
+          return child;
+        },
+      };
+      return child as ReturnType<typeof import("node:child_process").spawn>;
+    });
+    expect(calls).toEqual([{ cmd: "backup-sqlite", path: env.DATABASE_PATH }]);
   });
 
   it("nightly tick retains then evaluate-penalties without issuing today", async () => {

@@ -354,8 +354,8 @@ SRE may file extra deps after they start. SM appends them here (next IDs after t
 
 | ID | Title | PR | Assignee | Pts | Deps | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| ARISE-021 | Playwright happy path: register, onboard, ensure, complete | 19 | Dev B | 5 | ARISE-017, ARISE-016 | **In progress** |
-| ARISE-022 | docker compose up --build is the v1 launch path | 20 | Dev B | 5 | ARISE-021, ARISE-020, ARISE-009 | Planned |
+| ARISE-021 | Playwright happy path: register, onboard, ensure, complete | 19 | Dev B | 5 | ARISE-017, ARISE-016 | **Done** |
+| ARISE-022 | docker compose up --build is the v1 launch path | 20 | Dev B | 5 | ARISE-021, ARISE-020, ARISE-009 | **In progress** |
 
 **Parallelism:** 19 before 20. Dev A stands by for ensure/auth defects found in e2e or Compose.
 
