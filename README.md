@@ -36,7 +36,20 @@ One Node 22 container serves the Hono API and the static PWA on **8080** (`8080:
 
 Nightly UTC cron: retain + penalties at `15 3 * * *`; `sqlite3 .backup` at `45 3 * * *` into `/data/backups` (14-day retain). Copy `/data/backups` off-box (Syncthing, USB). **D1 Time Travel is not a backup.**
 
-Friends on that origin (same machine, LAN, or Tailscale). Stop. Public cloud, Workers Paid, and open register are after v1.
+Friends on that origin (same machine, LAN, or Tailscale).
+
+## Friends-and-family public (approved overlay)
+
+Invite-only HTTPS for a few testers. Not open register. Not Workers / Vercel / app stores.
+
+1. Create the two free accounts in [`docs/dev/PUBLIC_ACCOUNTS.md`](docs/dev/PUBLIC_ACCOUNTS.md) (Oracle Always Free VM + DuckDNS).
+2. On that VM, clone this repo, fill `.env` with `https://yourname.duckdns.org` origins, then:
+
+```bash
+docker compose -f docker-compose.public.yml up --build -d
+```
+
+Caddy terminates TLS. Testers open the DuckDNS URL in Safari (iPhone) or Chrome (Android) and Add to Home Screen. Plan: [`docs/dev/PUBLIC_FF_HOSTING_PLAN.md`](docs/dev/PUBLIC_FF_HOSTING_PLAN.md).
 
 ## Medical notice
 

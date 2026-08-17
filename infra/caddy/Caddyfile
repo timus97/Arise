@@ -1,0 +1,5 @@
+# Friends-and-family public origin. ARISE_HOST is the DuckDNS name (no scheme).
+{$ARISE_HOST} {
+	encode gzip
+	reverse_proxy arise:8787
+}

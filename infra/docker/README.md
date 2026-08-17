@@ -51,3 +51,18 @@ npx wrangler d1 export arise-db --remote --output=/tmp/arise.sql
 ```
 
 Password hashes transfer. Sessions may be invalid after the cookie host changes — users re-login. Do not share one live DB between topologies.
+
+## Friends-and-family public overlay
+
+Do **not** merge `docker-compose.yml` with `docker-compose.public.yml`. The localhost file pins `:8080` and publishes that port.
+
+On the Oracle VM, after [`docs/dev/PUBLIC_ACCOUNTS.md`](../../docs/dev/PUBLIC_ACCOUNTS.md):
+
+```bash
+# .env must set ARISE_HOST, APP_ORIGIN=https://$ARISE_HOST, BETTER_AUTH_URL=same
+docker compose -f docker-compose.public.yml up --build -d
+# optional IP updater:
+# docker compose -f docker-compose.public.yml --profile duckdns up -d
+```
+
+Caddy (`caddy:2-alpine`) listens on 80/443 and reverse-proxies `arise:8787`. Port 8787 stays off the public interface. Open 80 and 443 on the Oracle security list or Let’s Encrypt cannot issue.

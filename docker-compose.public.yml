@@ -1,0 +1,66 @@
+# Friends-and-family public host. Do not merge with docker-compose.yml
+# (that file pins localhost:8080 and publishes 8080).
+#
+#   cp .env.example .env   # then set the public block
+#   docker compose -f docker-compose.public.yml up --build -d
+#
+# Required in .env: BETTER_AUTH_SECRET, REGISTER_INVITE_CODE,
+# ARISE_HOST, APP_ORIGIN=https://$ARISE_HOST, BETTER_AUTH_URL=same.
+
+name: arise-public
+
+services:
+  arise:
+    build:
+      context: .
+      dockerfile: infra/docker/api.Dockerfile
+    env_file: .env
+    environment:
+      RUNTIME: node
+      SERVE_STATIC: "true"
+      WEB_DIST: /app/web
+      DATABASE_PATH: /data/arise.sqlite
+      APP_ORIGIN: ${APP_ORIGIN}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+    volumes:
+      - arise-data:/data
+    expose:
+      - "8787"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8787/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      arise:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      ARISE_HOST: ${ARISE_HOST}
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    restart: unless-stopped
+    profiles: ["duckdns"]
+    environment:
+      SUBDOMAINS: ${DUCKDNS_SUBDOMAIN}
+      TOKEN: ${DUCKDNS_TOKEN}
+      UPDATE_IP: ipv4
+      LOG_FILE: "false"
+
+volumes:
+  arise-data:
+  caddy-data:
+  caddy-config:
