@@ -8,7 +8,7 @@ Do not put server IPs, SSH keys, hostnames, invite codes, `BETTER_AUTH_SECRET`, 
 
 | Field | Value |
 | --- | --- |
-| **Last updated** | 2026-08-18 (catalog + text guides) |
+| **Last updated** | 2026-08-18 (043 merged + public deploy) |
 | **Phase** | v1 sprints **done**. Friends-and-family **public host is live**. |
 | **GitHub** | https://github.com/timus97/Arise (`main` + overlay branch `feat/public-ff-host`) |
 | **Local workspace** | `C:\Users\Timus97\Desktop\grokAnalysis\Arise` |
@@ -40,11 +40,10 @@ JSON dogfood (signed-in): `/api/v1/me/debug`.
 
 ### Product / git
 
-- Sprints 1–6 (ARISE-001–025) are **Done** on `origin/main` (`ec6cfad`).
-- No open GitHub PRs or issues.
-- Public overlay (Caddy + `docker-compose.public.yml` + first-boot script + hosting docs) is on **`feat/public-ff-host`** (`2d92044`). Not merged to `main` yet.
+- Sprints 1–6 (ARISE-001–025) are **Done** on `origin/main`.
+- **Merged:** PR #26 (`feat/ARISE-043-exercise-guides` → `main`) at `0064de2`. Includes yoga/gym catalog, text guides, and travel/sick status (026–030).
+- Public overlay `feat/public-ff-host` is at `a0a7cf2` (043 merged in) and **deployed**.
 - Local extras not on GitHub: `docs/ux/`, `data/`, `.grok/`, `.playwright-mcp/`.
-- **In progress:** `feat/ARISE-043-exercise-guides` — 16 core text guides, 11 yoga + 16 gym templates, Guide sheet, age > 45 knee filter. Not merged / not deployed.
 
 ### Public host (live)
 
@@ -95,9 +94,9 @@ Oracle signup failed once; operator later used a working Always Free VM (details
 - [ ] Playwright onboard fixture date `2026-12-01` will fail the loss-rate gate around late Oct 2026.
 - [ ] Phone “app” without stores: **PWA is the app.** Plan in `docs/dev/PWA_OTA_PHONE_PLAN.md`. Harden OTA (`skipWaiting` + Reload banner) when owner says go. No Capacitor / stores / iOS sideload.
 - [ ] PO/BA scan: `docs/product/COMPETITIVE_FEATURE_SCAN.md`. Not a backlog. Owner has not picked any next-cut features yet.
-- [x] Wave 1 activity status implemented on `feat/ARISE-026-activity-status` (026–030). Not merged to `main` / not deployed to the public host yet.
+- [x] Wave 1 activity status (026–030) merged to `main` in PR #26 and deployed on the public host.
 - [ ] **Next cut remaining:** health sync waves 2–5 in `docs/backlog/NEXT_CUT_STORIES.md`. Live HealthKit/Fit from the PWA is **not** possible; waves 3–5 are zip / OAuth / native.
-- [x] Owner marked both review files. Text guides + yoga kind + 11 yoga + 16 gym variations implemented on `feat/ARISE-043-exercise-guides`. No `yoga_box_hold`. Full-body gym first; muscle-specific at exp ≥ 3 or player level ≥ 10. Age > 45 skips knees-heavy work. Sanskrit subtitles on yoga cards.
+- [x] Catalog + text guides (043–044, 047–048) merged to `main` (PR #26) and deployed. No `yoga_box_hold`. Full-body gym first; muscle-specific at exp ≥ 3 or player level ≥ 10. Age > 45 skips knees-heavy work. Sanskrit on yoga cards. Already-issued days keep their old templates until the next Issue / next local date.
 - [ ] Guide stills (ARISE-045/046) not started. No video.
 
 ---
