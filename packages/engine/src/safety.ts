@@ -271,7 +271,9 @@ export function hardBlockedByEffects(
   now: Date,
 ): boolean {
   return effects.some(
-    (e) => (e.kind === "pain_no_hard" || e.kind === "illness_rest") && effectActive(e, now),
+    (e) =>
+      (e.kind === "pain_no_hard" || e.kind === "illness_rest" || e.kind === "sick_window") &&
+      effectActive(e, now),
   );
 }
 
@@ -279,7 +281,87 @@ export function forceRestFromEffects(
   effects: Array<{ kind: EffectKind; startsAt: string; endsAt: string }>,
   now: Date,
 ): boolean {
-  return effects.some((e) => e.kind === "illness_rest" && effectActive(e, now));
+  return effects.some(
+    (e) => (e.kind === "illness_rest" || e.kind === "sick_window") && effectActive(e, now),
+  );
+}
+
+export const ACTIVITY_STATUS_MIN_DAYS = 1;
+export const ACTIVITY_STATUS_MAX_DAYS = 14;
+export const TRAVEL_EQUIPMENT = ["none", "bands"] as const;
+
+export function parseActivityDays(days: number): number {
+  if (
+    !Number.isInteger(days) ||
+    days < ACTIVITY_STATUS_MIN_DAYS ||
+    days > ACTIVITY_STATUS_MAX_DAYS
+  ) {
+    throw new Error("ACTIVITY_DAYS_INVALID");
+  }
+  return days;
+}
+
+export function travelEquipment(have: readonly string[]): Array<"none" | "bands"> {
+  const allowed = have.filter((e): e is "none" | "bands" => e === "none" || e === "bands");
+  return allowed.length > 0 ? allowed : ["none"];
+}
+
+export function travelActive(
+  effects: Array<{ kind: EffectKind; startsAt: string; endsAt: string }>,
+  now: Date,
+): boolean {
+  return effects.some((e) => e.kind === "travel_window" && effectActive(e, now));
+}
+
+/** Inclusive local dates: today through today+days-1. */
+export function activityStatusWindow(args: {
+  now: Date;
+  timeZone: string;
+  kind: "travel_window" | "sick_window";
+  days: number;
+}): EffectWindow {
+  const days = parseActivityDays(args.days);
+  const today = localDate(args.now, args.timeZone);
+  const endExclusive = addCalendarDays(today, days);
+  const endsOn = addCalendarDays(today, days - 1);
+  return {
+    kind: args.kind,
+    startsAt: zonedStartOfDayUtc(today, args.timeZone).toISOString(),
+    endsAt: zonedStartOfDayUtc(endExclusive, args.timeZone).toISOString(),
+    payload: { startsOn: today, endsOn, days },
+  };
+}
+
+export function activityStatusFromEffects(
+  effects: Array<{
+    kind: EffectKind;
+    startsAt: string;
+    endsAt: string;
+    payload?: UserEffect["payload"];
+  }>,
+  now: Date,
+): {
+  status: "training" | "travel" | "sick";
+  startsOn: string | null;
+  endsOn: string | null;
+  days: number | null;
+} {
+  const sick = effects.find((e) => e.kind === "sick_window" && effectActive(e, now));
+  const travel = effects.find((e) => e.kind === "travel_window" && effectActive(e, now));
+  const active = sick ?? travel;
+  if (!active) {
+    return { status: "training", startsOn: null, endsOn: null, days: null };
+  }
+  const payload = active.payload ?? {};
+  const startsOn = typeof payload.startsOn === "string" ? payload.startsOn : null;
+  const endsOn = typeof payload.endsOn === "string" ? payload.endsOn : null;
+  const days = typeof payload.days === "number" ? payload.days : null;
+  return {
+    status: active.kind === "sick_window" ? "sick" : "travel",
+    startsOn,
+    endsOn,
+    days,
+  };
 }
 
 export function localDate(now: Date, timeZone: string): string {

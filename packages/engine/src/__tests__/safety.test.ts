@@ -10,7 +10,12 @@ import {
   evaluateImpliedLoss,
   evaluateParq,
   fatLossCopy,
+  activityStatusFromEffects,
+  activityStatusWindow,
+  forceRestFromEffects,
   hardBlockedByEffects,
+  travelActive,
+  travelEquipment,
   hardDayCap,
   illnessRestAfterSecondDay,
   localDate,
@@ -170,6 +175,39 @@ describe("effect windows", () => {
         ],
       }),
     ).toBeNull();
+  });
+});
+
+describe("activity status windows", () => {
+  const tz = "Europe/Stockholm";
+  const now = new Date("2026-08-15T10:00:00.000Z");
+
+  it("rejects days 0 and 15; 1–14 cover inclusive local dates", () => {
+    expect(() =>
+      activityStatusWindow({ now, timeZone: tz, kind: "travel_window", days: 0 }),
+    ).toThrow("ACTIVITY_DAYS_INVALID");
+    expect(() =>
+      activityStatusWindow({ now, timeZone: tz, kind: "sick_window", days: 15 }),
+    ).toThrow("ACTIVITY_DAYS_INVALID");
+    const one = activityStatusWindow({ now, timeZone: tz, kind: "travel_window", days: 1 });
+    expect(one.payload).toEqual({ startsOn: "2026-08-15", endsOn: "2026-08-15", days: 1 });
+    expect(one.startsAt).toBe(zonedStartOfDayUtc("2026-08-15", tz).toISOString());
+    expect(one.endsAt).toBe(zonedStartOfDayUtc("2026-08-16", tz).toISOString());
+    const two = activityStatusWindow({ now, timeZone: tz, kind: "sick_window", days: 2 });
+    expect(two.payload.endsOn).toBe("2026-08-16");
+  });
+
+  it("sick_window forces rest and blocks hard; travel is living-room kit", () => {
+    const sick = activityStatusWindow({ now, timeZone: tz, kind: "sick_window", days: 1 });
+    expect(forceRestFromEffects([sick], now)).toBe(true);
+    expect(hardBlockedByEffects([sick], now)).toBe(true);
+    const travel = activityStatusWindow({ now, timeZone: tz, kind: "travel_window", days: 1 });
+    expect(travelActive([travel], now)).toBe(true);
+    expect(travelEquipment(["full_gym", "dumbbells"])).toEqual(["none"]);
+    expect(travelEquipment(["bands", "full_gym"])).toEqual(["bands"]);
+    expect(activityStatusFromEffects([sick], now).status).toBe("sick");
+    expect(activityStatusFromEffects([travel], now).status).toBe("travel");
+    expect(activityStatusFromEffects([], now).status).toBe("training");
   });
 });
 

@@ -18,6 +18,8 @@ import {
   allowsHardDay,
   forceRestFromEffects,
   hardBlockedByEffects,
+  travelActive,
+  travelEquipment,
   volumeMulFromEffects,
 } from "./safety.js";
 import { scaleXp } from "./xp.js";
@@ -73,6 +75,9 @@ export function issueToday(input: IssueTodayInput): IssueTodayResult {
   const volumeMul = volumeMulFromEffects(input.effects, input.now);
   const hardBlocked = hardBlockedByEffects(input.effects, input.now);
   const illnessRest = forceRestFromEffects(input.effects, input.now);
+  const equipment = travelActive(input.effects, input.now)
+    ? travelEquipment(input.equipment)
+    : input.equipment;
   const hardAllowed =
     input.planDay.hardAllowed &&
     allowsHardDay({
@@ -90,7 +95,7 @@ export function issueToday(input: IssueTodayInput): IssueTodayResult {
   const eligible = (t: QuestTemplate, remainingMinutes: number): boolean =>
     isTemplateEligible({
       t,
-      equipment: input.equipment,
+      equipment,
       injuries: input.injuries,
       experience: input.experience,
       remainingMinutes,

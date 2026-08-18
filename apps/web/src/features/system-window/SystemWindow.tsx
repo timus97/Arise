@@ -14,6 +14,8 @@ import { useEffect, useId, useRef, useState } from "react";
 import { formatAuthError } from "../../lib/auth-client.js";
 import { completeQuestOrQueue, skipQuestOrQueue } from "../../lib/offline-queue.js";
 import { useOutboxDrain } from "../../lib/use-outbox-drain.js";
+import { ActivityStatusPanel } from "../status/ActivityStatusPanel.js";
+import { formatStatusBanner } from "../../lib/activity-status.js";
 import { InstallEducation } from "../pwa/InstallEducation.js";
 import { CompleteSheet } from "./CompleteSheet.js";
 import { SkipSheet } from "./SkipSheet.js";
@@ -263,6 +265,12 @@ export function SystemWindow() {
     <div className="sys-window">
       <InstallEducation mode="first-visit" />
       <PlayerHeader today={today} />
+      {today.activityStatus && today.activityStatus.status !== "training" ? (
+        <p className="banner banner-warn" role="status">
+          {formatStatusBanner(today.activityStatus)}
+        </p>
+      ) : null}
+      <ActivityStatusPanel compact />
       {today.needsEnsure ? (
         <EmptyEnsure
           pending={ensureMutation.isPending}

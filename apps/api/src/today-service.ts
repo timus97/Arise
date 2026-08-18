@@ -2,6 +2,7 @@ import { atomic } from "@arise/db";
 import type { NodeDb, SqlStatement } from "@arise/db";
 import {
   CATALOG,
+  activityStatusFromEffects,
   buildWeeklyPlan,
   catchUpMissedDays,
   computeRank,
@@ -117,6 +118,12 @@ export type TodayPayload = {
   pendingModifiers: PlannedModifier[];
   suggestRegenerate: boolean;
   disclaimer: string;
+  activityStatus: {
+    status: "training" | "travel" | "sick";
+    startsOn: string | null;
+    endsOn: string | null;
+    days: number | null;
+  };
 };
 
 export type HabitBundle = {
@@ -155,7 +162,7 @@ export type TodayBundle = {
   recentQuests: RecentQuest[];
   effects: Array<{
     id: string;
-    kind: "pain_no_hard" | "illness_rest" | "caution_volume";
+    kind: "pain_no_hard" | "illness_rest" | "caution_volume" | "travel_window" | "sick_window";
     startsAt: string;
     endsAt: string;
     payload: Record<string, number | string>;
@@ -642,6 +649,7 @@ export function buildTodayPayload(args: {
     pendingModifiers: args.persistModifiers === true ? [] : pendingModifiers,
     suggestRegenerate: suggest,
     disclaimer: DISCLAIMER,
+    activityStatus: activityStatusFromEffects(args.bundle.effects, new Date()),
   };
 }
 

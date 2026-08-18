@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as Domain from "../index.js";
 import {
   DEFAULT_STATS,
+  ActivityStatusPut,
   EffectKind,
   Equipment,
   GOAL_STAT_WEIGHTS,
@@ -302,7 +303,18 @@ describe("closed enums", () => {
       "pain_no_hard",
       "illness_rest",
       "caution_volume",
+      "travel_window",
+      "sick_window",
     ]);
+  });
+
+  it("ActivityStatusPut requires days for travel and sick", () => {
+    expect(ActivityStatusPut.safeParse({ status: "training" }).success).toBe(true);
+    expect(ActivityStatusPut.safeParse({ status: "travel" }).success).toBe(false);
+    expect(ActivityStatusPut.safeParse({ status: "sick", days: 0 }).success).toBe(false);
+    expect(ActivityStatusPut.safeParse({ status: "sick", days: 15 }).success).toBe(false);
+    expect(ActivityStatusPut.safeParse({ status: "travel", days: 1 }).success).toBe(true);
+    expect(ActivityStatusPut.safeParse({ status: "sick", days: 14 }).success).toBe(true);
   });
 });
 

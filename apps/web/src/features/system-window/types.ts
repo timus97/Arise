@@ -99,6 +99,12 @@ export type TodayPayload = {
   suggestRegenerate: boolean;
   disclaimer: string;
   busySkipsWeek?: number;
+  activityStatus?: {
+    status: "training" | "travel" | "sick";
+    startsOn: string | null;
+    endsOn: string | null;
+    days: number | null;
+  };
 };
 
 export type QuestMutationResult = {

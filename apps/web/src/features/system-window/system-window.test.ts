@@ -76,6 +76,15 @@ function today(over: Partial<TodayPayload> = {}): TodayPayload {
   };
 }
 
+describe("activity status banner", () => {
+  it("uses STATUS travel/sick copy from the today payload", () => {
+    const travel = today({
+      activityStatus: { status: "travel", startsOn: "2026-08-17", endsOn: "2026-08-19", days: 3 },
+    });
+    expect(travel.activityStatus?.status).toBe("travel");
+  });
+});
+
 describe("needsEnsure empty CTA", () => {
   it("uses P5 empty-state copy", () => {
     expect(EMPTY_TITLE).toBe("No work issued");

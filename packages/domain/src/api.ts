@@ -55,3 +55,27 @@ export const OnboardingBody = z.object({
   }),
 });
 export type OnboardingBody = z.infer<typeof OnboardingBody>;
+
+export const ActivityStatusPut = z
+  .object({
+    status: z.enum(["training", "travel", "sick"]),
+    days: z.number().int().min(1).max(14).optional(),
+  })
+  .superRefine((body, ctx) => {
+    if (body.status !== "training" && body.days === undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["days"],
+        message: "days is required for travel and sick (1–14)",
+      });
+    }
+  });
+export type ActivityStatusPut = z.infer<typeof ActivityStatusPut>;
+
+export const ActivityStatusView = z.object({
+  status: z.enum(["training", "travel", "sick"]),
+  startsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+  endsOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+  days: z.number().int().min(1).max(14).nullable(),
+});
+export type ActivityStatusView = z.infer<typeof ActivityStatusView>;

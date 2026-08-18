@@ -96,6 +96,39 @@ describe("issuer slots and filters", () => {
     expect("FEATURE_LLM_PLANNER" in Engine).toBe(false);
   });
 
+  it("travel window does not issue gym-only templates", () => {
+    const { activityStatusWindow } = Engine;
+    const win = activityStatusWindow({
+      now: NOW,
+      timeZone: TZ,
+      kind: "travel_window",
+      days: 3,
+    });
+    const { quests } = issueToday(
+      args({
+        experience: 2,
+        equipment: ["full_gym", "dumbbells"],
+        effects: [win],
+      }),
+    );
+    expect(ids(quests)).not.toContain("str_gym_full_body_l2");
+  });
+
+  it("sick window is rest/easy only and skips penalty", () => {
+    const win = Engine.activityStatusWindow({
+      now: NOW,
+      timeZone: TZ,
+      kind: "sick_window",
+      days: 2,
+    });
+    const { quests } = issueToday(args({ effects: [win], penaltyOwed: true }));
+    expect(quests.every((q) => q.prescription.intensity === "rest" || q.prescription.intensity === "easy")).toBe(
+      true,
+    );
+    expect(quests.every((q) => (q.prescription.blocks[0]?.rpeMax ?? 0) <= 4)).toBe(true);
+    expect(ids(quests)).not.toContain("penalty_easy_walk");
+  });
+
   it("catalog is the only template source", () => {
     expect(CATALOG).toHaveLength(16);
     const issued = issueToday(args()).quests;

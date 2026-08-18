@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { errorBody, handleError } from "./middleware/error.js";
 import { pingReady } from "./middleware/ready.js";
 import { timingMiddleware } from "./middleware/timing.js";
+import { registerActivityRoutes } from "./routes/activity.js";
 import { registerAuthRoutes } from "./routes/auth.js";
 import { registerExportRoutes } from "./routes/export.js";
 import { registerHealthRoutes } from "./routes/health.js";
@@ -71,6 +72,7 @@ export function createApp(deps: AppDeps): Hono<AppBindings> {
   registerProgressRoutes(app, deps);
   registerExportRoutes(app, deps);
   registerMeRoutes(app, deps);
+  registerActivityRoutes(app, deps);
   registerHealthRoutes(app, deps);
 
   app.notFound((c) => {
