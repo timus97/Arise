@@ -8,7 +8,7 @@ Do not put server IPs, SSH keys, hostnames, invite codes, `BETTER_AUTH_SECRET`, 
 
 | Field | Value |
 | --- | --- |
-| **Last updated** | 2026-08-18 (043 merged + public deploy) |
+| **Last updated** | 2026-08-18 (session close: stills plan; local dev stopped) |
 | **Phase** | v1 sprints **done**. Friends-and-family **public host is live**. |
 | **GitHub** | https://github.com/timus97/Arise (`main` + overlay branch `feat/public-ff-host`) |
 | **Local workspace** | `C:\Users\Timus97\Desktop\grokAnalysis\Arise` |
@@ -40,9 +40,10 @@ JSON dogfood (signed-in): `/api/v1/me/debug`.
 
 ### Product / git
 
-- Sprints 1–6 (ARISE-001–025) are **Done** on `origin/main`.
-- **Merged:** PR #26 (`feat/ARISE-043-exercise-guides` → `main`) at `0064de2`. Includes yoga/gym catalog, text guides, and travel/sick status (026–030).
-- Public overlay `feat/public-ff-host` is at `a0a7cf2` (043 merged in) and **deployed**.
+- Sprints 1–6 (ARISE-001–025) are **Done** on `origin/main` (`0064de2` after PR #26).
+- **Merged + deployed:** PR #26 — yoga/gym catalog, text Guide sheet, travel/sick status (026–030). Feature branch `feat/ARISE-043-exercise-guides`.
+- Public overlay `feat/public-ff-host` is at `bff7f9a`. Live image was rebuilt from `a0a7cf2` (code is the same; later commit is session-knowledge only).
+- Local workspace branch at last close: `feat/public-ff-host`. Local Vite/API (`pnpm --filter web/api dev`) were **stopped**. Public Docker on the VM stays up.
 - Local extras not on GitHub: `docs/ux/`, `data/`, `.grok/`, `.playwright-mcp/`.
 
 ### Public host (live)
@@ -97,7 +98,7 @@ Oracle signup failed once; operator later used a working Always Free VM (details
 - [x] Wave 1 activity status (026–030) merged to `main` in PR #26 and deployed on the public host.
 - [ ] **Next cut remaining:** health sync waves 2–5 in `docs/backlog/NEXT_CUT_STORIES.md`. Live HealthKit/Fit from the PWA is **not** possible; waves 3–5 are zip / OAuth / native.
 - [x] Catalog + text guides (043–044, 047–048) merged to `main` (PR #26) and deployed. No `yoga_box_hold`. Full-body gym first; muscle-specific at exp ≥ 3 or player level ≥ 10. Age > 45 skips knees-heavy work. Sanskrit on yoga cards. Already-issued days keep their old templates until the next Issue / next local date.
-- [ ] Guide stills (ARISE-045/046) not started. No video.
+- [ ] **Guide stills next** (ARISE-045 generate, 046 wire into Guide sheet, 049 yoga+gym stills). Explained to owner: PNGs in `apps/web/public/guides/<id>-{setup,mid}.png`, then same Compose rebuild. No CDN, no video. Owner asked how to deploy; not started. Pick **core only** (~22 stills) or **core + yoga + gym** (~50) before generating.
 
 ---
 
@@ -132,6 +133,9 @@ Newest first. One line per meaningful turn.
 
 | When | What happened |
 | --- | --- |
+| 2026-08-18 | Stopped local Vite + API. Explained stills deploy path (public/guides + same Compose rebuild). Session close. |
+| 2026-08-18 | Merged PR #26 to `main` (`0064de2`). Merged 043 into `feat/public-ff-host`, rebuilt VM image, `/health` 200, Guide/yoga/Travel in live bundle. |
+| 2026-08-18 | Implemented owner-marked catalog + text guides: 11 yoga, 17 gym, Guide sheet, age > 45 knee filter, Sanskrit subtitles. Pushed `feat/ARISE-043-exercise-guides`. |
 | 2026-08-17 | Catalog expansion review: 11 yoga + 16 muscle-specific gym ids (`CATALOG_EXPANSION_REVIEW.md`). Stories 047–049. Waiting on owner marks. |
 | 2026-08-17 | Exercise guide plan + full 16-template review for owner check (`EXERCISE_GUIDE_PLAN.md`, `EXERCISE_GUIDE_REVIEW.md`, stories 043–046). |
 | 2026-08-17 | Implemented Wave 1 activity status (026–030) on `feat/ARISE-026-activity-status`: GET/PUT `/me/activity-status`, issuer travel/sick, Settings + SYSTEM UI. |
@@ -154,7 +158,8 @@ Newest first. One line per meaningful turn.
 ## Next session — start here
 
 1. Read this file and `.grok/HOSTING.local.md`.
-2. If they want host work: SSH using the host file, then `docker compose ps` and `/health`.
-3. If they completed a quest: confirm `xp_events` and quest `status` in SQLite.
-4. If they want a PR: open PR for `feat/public-ff-host` into `main`.
-5. Update this log (and the host file if IP/DNS/SSH changed) before ending.
+2. If they want stills: start ARISE-045/046 (and 049 if they want yoga+gym pictures). Confirm core-only vs full set. Generate into `apps/web/public/guides/`, wire Guide sheet, same public-host rebuild.
+3. If they want host work: SSH using the host file, then `docker compose ps` and `/health`. Phone users may need to close/reopen the PWA after a deploy.
+4. If they completed a quest: confirm `xp_events` and quest `status` in SQLite.
+5. Optional later: PR `feat/public-ff-host` into `main` so the VM can track `main`.
+6. Update this log (and the host file if IP/DNS/SSH changed) before ending.
