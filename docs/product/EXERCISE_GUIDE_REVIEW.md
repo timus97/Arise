@@ -1,11 +1,13 @@
 # Arise — Exercise inventory + form-guide review
 
-| Field | Value |
-| --- | --- |
-| **Status** | **Owner review.** Do not implement graphics until you mark each movement OK / change / drop. |
-| **Date** | 2026-08-17 |
-| **Source of truth** | `packages/engine/src/templates/catalog.ts` (exactly **16** templates) |
-| **Plan** | [`docs/dev/EXERCISE_GUIDE_PLAN.md`](../dev/EXERCISE_GUIDE_PLAN.md) |
+
+| Field               | Value                                                                                        |
+| ------------------- | -------------------------------------------------------------------------------------------- |
+| **Status**          | **Implemented (text guides).** Owner marked the 16 movements OK. Stills are ARISE-045. |
+| **Date**            | 2026-08-17                                                                                   |
+| **Source of truth** | `packages/engine/src/templates/catalog.ts` (exactly **16** templates)                        |
+| **Plan**            | `[docs/dev/EXERCISE_GUIDE_PLAN.md](../dev/EXERCISE_GUIDE_PLAN.md)`                           |
+
 
 These cues are **conservative coaching copy**, not physiotherapy. The existing medical disclaimer still applies. Stop if there is pain, chest pressure, or faintness.
 
@@ -15,24 +17,26 @@ These cues are **conservative coaching copy**, not physiotherapy. The existing m
 
 ## Catalog (16 quests)
 
-| # | Template id | Title | Kind | Intensity | Equipment | Skip if | Prescription (as coded) |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `str_sit_to_stand_l0` | Sit to Stand | strength | moderate | none | **knee** | 3×10, RPE ≤ 6, 60 s rest |
-| 2 | `str_incline_push_l0` | Incline Push | strength | moderate | none | **shoulder, wrist** | 3×8 incline push-up, RPE ≤ 6, 60 s |
-| 3 | `str_backpack_row_l0` | Backpack Row | strength | moderate | none | — | 3×10, RPE ≤ 6, 60 s |
-| 4 | `str_hip_hinge_l0` | Hip Hinge | strength | moderate | none | **spine** | 3×8 unloaded, RPE ≤ 6, 60 s |
-| 5 | `str_goblet_squat_l1` | Goblet Squat | strength | moderate | dumbbells **or** bands | **knee** | 3×8, RPE ≤ 7, 75 s |
-| 6 | `str_band_row_l1` | Band Row | strength | moderate | bands **or** dumbbells | — | 3×10, RPE ≤ 7, 60 s |
-| 7 | `str_gym_full_body_l2` | Gym Full Body | strength | **hard** | full_gym | — | Squat 3×5, hinge 3×5, press 3×6, row 3×8, RPE ≤ 7, 90 s |
-| 8 | `cardio_zone2_walk` | Zone 2 Walk | cardio | easy | none | — | 20 min, RPE ≤ 4 |
-| 9 | `steps_6k` | Six Thousand Steps | steps | easy | none | — | 6000 steps, RPE ≤ 3, auto-complete |
-| 10 | `steps_8k` | Eight Thousand Steps | steps | easy | none | — | 8000 steps, RPE ≤ 3, auto-complete |
-| 11 | `mob_hip_unload` | Hip Unload | mobility | easy | none | — | 2×30 s per side, RPE ≤ 3 |
-| 12 | `mob_tspine` | Thoracic Open Book | mobility | easy | none | — | 2×6 per side, RPE ≤ 3 |
-| 13 | `rec_nasal_breath` | Nasal Box Breath | recovery | rest | none | — | 5 min, RPE 1 |
-| 14 | `rec_full_rest` | Full Rest | recovery | rest | none | — | No load |
-| 15 | `habit_sleep_window` | Sleep Window | habit | rest | none | — | Protect the night window (auto) |
-| 16 | `penalty_easy_walk` | Easy Walk | penalty | easy | none | — | 15 min, RPE ≤ 4 |
+
+| #   | Template id            | Title                | Kind     | Intensity | Equipment              | Skip if             | Prescription (as coded)                                 |
+| --- | ---------------------- | -------------------- | -------- | --------- | ---------------------- | ------------------- | ------------------------------------------------------- |
+| 1   | `str_sit_to_stand_l0`  | Sit to Stand         | strength | moderate  | none                   | **knee**            | 3×10, RPE ≤ 6, 60 s rest                                |
+| 2   | `str_incline_push_l0`  | Incline Push         | strength | moderate  | none                   | **shoulder, wrist** | 3×8 incline push-up, RPE ≤ 6, 60 s                      |
+| 3   | `str_backpack_row_l0`  | Backpack Row         | strength | moderate  | none                   | —                   | 3×10, RPE ≤ 6, 60 s                                     |
+| 4   | `str_hip_hinge_l0`     | Hip Hinge            | strength | moderate  | none                   | **spine**           | 3×8 unloaded, RPE ≤ 6, 60 s                             |
+| 5   | `str_goblet_squat_l1`  | Goblet Squat         | strength | moderate  | dumbbells **or** bands | **knee**            | 3×8, RPE ≤ 7, 75 s                                      |
+| 6   | `str_band_row_l1`      | Band Row             | strength | moderate  | bands **or** dumbbells | —                   | 3×10, RPE ≤ 7, 60 s                                     |
+| 7   | `str_gym_full_body_l2` | Gym Full Body        | strength | **hard**  | full_gym               | —                   | Squat 3×5, hinge 3×5, press 3×6, row 3×8, RPE ≤ 7, 90 s |
+| 8   | `cardio_zone2_walk`    | Zone 2 Walk          | cardio   | easy      | none                   | —                   | 20 min, RPE ≤ 4                                         |
+| 9   | `steps_6k`             | Six Thousand Steps   | steps    | easy      | none                   | —                   | 6000 steps, RPE ≤ 3, auto-complete                      |
+| 10  | `steps_8k`             | Eight Thousand Steps | steps    | easy      | none                   | —                   | 8000 steps, RPE ≤ 3, auto-complete                      |
+| 11  | `mob_hip_unload`       | Hip Unload           | mobility | easy      | none                   | —                   | 2×30 s per side, RPE ≤ 3                                |
+| 12  | `mob_tspine`           | Thoracic Open Book   | mobility | easy      | none                   | —                   | 2×6 per side, RPE ≤ 3                                   |
+| 13  | `rec_nasal_breath`     | Nasal Box Breath     | recovery | rest      | none                   | —                   | 5 min, RPE 1                                            |
+| 14  | `rec_full_rest`        | Full Rest            | recovery | rest      | none                   | —                   | No load                                                 |
+| 15  | `habit_sleep_window`   | Sleep Window         | habit    | rest      | none                   | —                   | Protect the night window (auto)                         |
+| 16  | `penalty_easy_walk`    | Easy Walk            | penalty  | easy      | none                   | —                   | 15 min, RPE ≤ 4                                         |
+
 
 Unique **movements** to illustrate (11 drawings, reused across templates):
 
@@ -60,7 +64,7 @@ Each movement: setup → action → breathing → stop-if → graphic (2 stills:
 
 **Graphic.** Side view: seated ready / standing tall. Caption: “Whole foot. Slow sit.”
 
-**Your mark:** ________
+**Your mark:** _____OK___
 
 ---
 
@@ -78,7 +82,7 @@ Each movement: setup → action → breathing → stop-if → graphic (2 stills:
 
 **Graphic.** Side view at a counter: plank line / elbows bent.
 
-**Your mark:** ________
+**Your mark:** _____OK___
 
 ---
 
@@ -96,7 +100,7 @@ Each movement: setup → action → breathing → stop-if → graphic (2 stills:
 
 **Graphic.** Side hinge: arm hanging / bag at the ribs.
 
-**Your mark:** ________
+**Your mark:** ____OK____
 
 ---
 
@@ -114,7 +118,7 @@ Each movement: setup → action → breathing → stop-if → graphic (2 stills:
 
 **Graphic.** Side: tall / hips back, long spine.
 
-**Your mark:** ________
+**Your mark:** _____OK___
 
 ---
 
@@ -132,7 +136,7 @@ Each movement: setup → action → breathing → stop-if → graphic (2 stills:
 
 **Graphic.** Front + side: goblet hold / bottom of squat.
 
-**Your mark:** ________
+**Your mark:** _____OK___
 
 ---
 
@@ -150,7 +154,7 @@ Each movement: setup → action → breathing → stop-if → graphic (2 stills:
 
 **Graphic.** Same hinge family as backpack row; show band line or DB.
 
-**Your mark:** ________
+**Your mark:** ____OK____
 
 ---
 
@@ -212,7 +216,7 @@ Only issued with **full_gym** and experience ≥ 2. RPE ≤ 7. This is the hard 
 
 **Graphic.** Side walk: relaxed arms, easy stride. Caption: “Talk pace.”
 
-**Your mark:** ________
+**Your mark:** _____OK___
 
 ---
 
@@ -226,13 +230,13 @@ Only issued with **full_gym** and experience ≥ 2. RPE ≤ 7. This is the hard 
 
 **Graphic.** Simple step-count icon + “all-day total,” not a march drill.
 
-**Your mark:** ________
+**Your mark:** ____OK____
 
 ---
 
 ### 11. 90° hip openers — `mob_hip_unload`
 
-**Setup.** Sit on the floor. One shin in front (~90° at hip and knee), the other shin to the side (~90°). If the floor is too much, sit on a cushion.
+**Setup.** Sit on the floor. One shin in front (~~90° at hip and knee), the other shin to the side (~~90°). If the floor is too much, sit on a cushion.
 
 **Action.** Tall chest. Gently rotate the trunk toward the front shin, or stay still and breathe. 30 s, then switch. No forcing the knee.
 
@@ -242,7 +246,7 @@ Only issued with **full_gym** and experience ≥ 2. RPE ≤ 7. This is the hard 
 
 **Graphic.** Top-down 90/90 sit + “switch sides.”
 
-**Your mark:** ________
+**Your mark:** ___OK_____
 
 ---
 
@@ -258,7 +262,7 @@ Only issued with **full_gym** and experience ≥ 2. RPE ≤ 7. This is the hard 
 
 **Graphic.** Side-lying: arms stacked / open book.
 
-**Your mark:** ________
+**Your mark:** ____OK____
 
 ---
 
@@ -274,7 +278,7 @@ Only issued with **full_gym** and experience ≥ 2. RPE ≤ 7. This is the hard 
 
 **Graphic.** Four-box diagram (in / hold / out / hold). No yoga branding.
 
-**Your mark:** ________
+**Your mark:** _____OK___
 
 ---
 
@@ -284,7 +288,7 @@ No exercise. Issued rest is **required SYSTEM work** (streak rules as designed).
 
 **Copy.** “No training load today. Sleep, food, and easy walking around the house are enough.”
 
-**Your mark:** ________
+**Your mark:** ___OK_____
 
 ---
 
@@ -294,7 +298,7 @@ No exercise. Protect the planned night window. Auto-completes from sleep minutes
 
 **Copy.** “Dim lights, same window most nights. This is issued work, not a consolation prize.”
 
-**Your mark:** ________
+**Your mark:** ___OK_____
 
 ---
 
@@ -304,7 +308,7 @@ Same as Zone 2 walk, **shorter** (15 min), RPE ≤ 4. Not extra hard volume. Not
 
 **Graphic.** Reuse the walk stills. Caption: “Easy walk. RPE ≤ 4.”
 
-**Your mark:** ________
+**Your mark:** ____OK____
 
 ---
 
@@ -317,6 +321,7 @@ Same as Zone 2 walk, **shorter** (15 min), RPE ≤ 4. Not extra hard volume. Not
 
 ## What I need from you
 
-1. Mark each movement above.  
-2. Confirm gym day: keep four generic patterns (squat / hinge / press / row) vs name specific lifts (back squat, RDL, OHP, barbell row).  
+1. Mark each movement above.
+2. Confirm gym day: keep four generic patterns (squat / hinge / press / row) vs name specific lifts (back squat, RDL, OHP, barbell row).
 3. Confirm we **do not** add video. Stills + text only.
+

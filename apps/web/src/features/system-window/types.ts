@@ -66,6 +66,16 @@ export type TodayQuest = {
   modifiersApplied: string[];
   source: string;
   skipReason?: string | null;
+  guide?: {
+    templateId: string;
+    title: string;
+    subtitle?: string;
+    setup: string;
+    action: string;
+    breath?: string;
+    stopIf: string;
+    doNot?: string;
+  } | null;
 };
 
 export type PendingModifier = {

@@ -180,6 +180,28 @@ describe("quest presentation", () => {
     expect(sleep.kindChip).toBe("Habit · issued work");
     expect(sleep.prescription).toContain("issued SYSTEM work");
   });
+
+  it("shows yoga kind chip and Sanskrit subtitle from the guide", () => {
+    const view = presentQuest(
+      quest({
+        kind: "yoga",
+        templateId: "yoga_cat_cow",
+        title: "Cat–Cow",
+        flavor: "Slow spinal waves on hands and knees.",
+        guide: {
+          templateId: "yoga_cat_cow",
+          title: "Cat–Cow",
+          subtitle: "Marjaryasana–Bitilasana",
+          setup: "Hands under shoulders, knees under hips.",
+          action: "Inhale cow. Exhale cat.",
+          stopIf: "Sharp spine pain.",
+        },
+      }),
+    );
+    expect(view.kindChip).toBe("Yoga");
+    expect(view.title).toBe("Cat–Cow");
+    expect(view.subtitle).toBe("Marjaryasana–Bitilasana");
+  });
 });
 
 describe("recovery rewrite banner", () => {

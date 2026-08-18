@@ -1,15 +1,18 @@
 # Arise — Catalog expansion review (yoga + gym variations)
 
-| Field | Value |
-| --- | --- |
-| **Status** | **Owner review.** Mark each row `OK` / `CHANGE` / `DROP`. Do not code until this file is marked. |
-| **Date** | 2026-08-17 |
-| **Shipped v1** | Still exactly **16** templates in `catalog.ts`. See [`EXERCISE_GUIDE_REVIEW.md`](./EXERCISE_GUIDE_REVIEW.md). |
-| **This file** | **Proposed additions only.** No video. Stills + text later (ARISE-043–046). |
+
+| Field          | Value                                                                                                         |
+| -------------- | ------------------------------------------------------------------------------------------------------------- |
+| **Status**     | **Implemented.** Owner answers in §D. Yoga kind + 11 poses (no `yoga_box_hold`). Gym variations all OK. Full-body first, muscle-specific after level-up. Age > 45 skips knees-heavy work. |
+| **Date**       | 2026-08-17                                                                                                    |
+| **Shipped v1** | Still exactly **16** templates in `catalog.ts`. See `[EXERCISE_GUIDE_REVIEW.md](./EXERCISE_GUIDE_REVIEW.md)`. |
+| **This file**  | **Proposed additions only.** No video. Stills + text later (ARISE-043–046).                                   |
+
 
 v1 locked “16 templates.” This is a **next-cut catalog growth** you asked for: a yoga section, and muscle-specific gym work instead of one generic gym day.
 
 **Issuer idea (after you approve):**  
+
 - Yoga fills the mobility / recovery slot on rest, sick, travel, or mobility-goal days.  
 - Gym variations replace the single `str_gym_full_body_l2` *block list* when `full_gym` + experience ≥ 2: issuer picks **one primary lift** from the day’s focus (push / pull / legs / hinge / full_body mix), not 40 lifts in one quest.  
 - Injury keys still filter. Travel still strips `full_gym`. Sick still blocks hard.
@@ -22,20 +25,22 @@ Reply with marks on each id (or “all yoga OK except X”).
 
 New kind: `yoga` (or we keep `mobility` + tag `yoga` — your call in questions below). All `requiredAny: ["none"]`. Intensity easy or rest. RPE ≤ 3.
 
-| Id | Title | Minutes | Intensity | Skip if | Prescription | Your mark |
-| --- | --- | --- | --- | --- | --- | --- |
-| `yoga_cat_cow` | Cat–Cow | 5 | easy | spine (move gently or DROP for that user) | 2×8 slow cycles, RPE 2 | |
-| `yoga_child` | Child’s Pose | 4 | rest | knee | 2×45 s, hips toward heels, RPE 1 | |
-| `yoga_down_dog` | Downward Dog | 5 | easy | **wrist, shoulder** | 3×20–30 s, soft knees, RPE 3 | |
-| `yoga_mountain` | Mountain | 3 | rest | — | 60–90 s stand, long breath, RPE 1 | |
-| `yoga_warrior2` | Warrior II | 6 | easy | **knee** | 2×30 s per side, RPE 3 | |
-| `yoga_bridge` | Glute Bridge | 6 | easy | **spine** | 2×8, 2 s squeeze, RPE 3 | |
-| `yoga_supine_twist` | Supine Twist | 5 | easy | **spine** | 2×30 s per side, RPE 2 | |
-| `yoga_legs_wall` | Legs Up Wall | 6 | rest | — | 3–5 min, RPE 1 | |
-| `yoga_seated_fold` | Seated Fold | 5 | easy | **spine** | 2×30 s, long spine, RPE 2 | |
-| `yoga_sphinx` | Sphinx | 4 | easy | **spine** | 2×20–30 s, elbows under shoulders, RPE 2 | |
-| `yoga_thread_needle` | Thread the Needle | 5 | easy | **shoulder** | 2×4 per side, RPE 2 | |
-| `yoga_box_hold` | (reuse) Nasal Box Breath | — | — | — | **Do not duplicate** `rec_nasal_breath` | DROP as new id |
+
+| Id                   | Title                    | Minutes | Intensity | Skip if                                   | Prescription                             | Your mark      |
+| -------------------- | ------------------------ | ------- | --------- | ----------------------------------------- | ---------------------------------------- | -------------- |
+| `yoga_cat_cow`       | Cat–Cow                  | 5       | easy      | spine (move gently or DROP for that user) | 2×8 slow cycles, RPE 2                   |                |
+| `yoga_child`         | Child’s Pose             | 4       | rest      | knee                                      | 2×45 s, hips toward heels, RPE 1         |                |
+| `yoga_down_dog`      | Downward Dog             | 5       | easy      | **wrist, shoulder**                       | 3×20–30 s, soft knees, RPE 3             |                |
+| `yoga_mountain`      | Mountain                 | 3       | rest      | —                                         | 60–90 s stand, long breath, RPE 1        |                |
+| `yoga_warrior2`      | Warrior II               | 6       | easy      | **knee**                                  | 2×30 s per side, RPE 3                   |                |
+| `yoga_bridge`        | Glute Bridge             | 6       | easy      | **spine**                                 | 2×8, 2 s squeeze, RPE 3                  |                |
+| `yoga_supine_twist`  | Supine Twist             | 5       | easy      | **spine**                                 | 2×30 s per side, RPE 2                   |                |
+| `yoga_legs_wall`     | Legs Up Wall             | 6       | rest      | —                                         | 3–5 min, RPE 1                           |                |
+| `yoga_seated_fold`   | Seated Fold              | 5       | easy      | **spine**                                 | 2×30 s, long spine, RPE 2                |                |
+| `yoga_sphinx`        | Sphinx                   | 4       | easy      | **spine**                                 | 2×20–30 s, elbows under shoulders, RPE 2 |                |
+| `yoga_thread_needle` | Thread the Needle        | 5       | easy      | **shoulder**                              | 2×4 per side, RPE 2                      |                |
+| `yoga_box_hold`      | (reuse) Nasal Box Breath | —       | —         | —                                         | **Do not duplicate** `rec_nasal_breath`  | DROP as new id |
+
 
 ### Yoga form cues (proposed)
 
@@ -71,55 +76,69 @@ Keep `str_gym_full_body_l2` as a **fallback mix** or drop it after these exist. 
 
 ### Chest (push)
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_bench_press` | Bench Press | 3×5–6, RPE ≤ 7, 90 s | shoulder, wrist | |
-| `gym_incline_db_press` | Incline DB Press | 3×8, RPE ≤ 7, 75 s | shoulder | |
-| `gym_chest_supported` | (optional) Machine chest press | 3×8, RPE ≤ 7 | shoulder | |
+
+| Id                     | Title                          | Prescription         | Skip if         | Your mark |
+| ---------------------- | ------------------------------ | -------------------- | --------------- | --------- |
+| `gym_bench_press`      | Bench Press                    | 3×5–6, RPE ≤ 7, 90 s | shoulder, wrist | OK        |
+| `gym_incline_db_press` | Incline DB Press               | 3×8, RPE ≤ 7, 75 s   | shoulder        | OK        |
+| `gym_chest_supported`  | (optional) Machine chest press | 3×8, RPE ≤ 7         | shoulder        | OK        |
+
 
 ### Back (pull)
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_lat_pulldown` | Lat Pulldown | 3×8, RPE ≤ 7, 75 s | shoulder | |
-| `gym_seated_row` | Seated Cable Row | 3×8–10, RPE ≤ 7, 75 s | — | |
-| `gym_chest_row` | Chest-supported Row | 3×8, RPE ≤ 7 | — | |
+
+| Id                 | Title               | Prescription          | Skip if  | Your mark |
+| ------------------ | ------------------- | --------------------- | -------- | --------- |
+| `gym_lat_pulldown` | Lat Pulldown        | 3×8, RPE ≤ 7, 75 s    | shoulder | OK        |
+| `gym_seated_row`   | Seated Cable Row    | 3×8–10, RPE ≤ 7, 75 s | —        | OK        |
+| `gym_chest_row`    | Chest-supported Row | 3×8, RPE ≤ 7          | —        | OK        |
+
 
 ### Shoulders
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_ohp` | Overhead Press | 3×5–6, RPE ≤ 7, 90 s | shoulder | |
-| `gym_lateral_raise` | Lateral Raise | 2×10, RPE ≤ 6, 45 s | shoulder | |
+
+| Id                  | Title          | Prescription         | Skip if  | Your mark |
+| ------------------- | -------------- | -------------------- | -------- | --------- |
+| `gym_ohp`           | Overhead Press | 3×5–6, RPE ≤ 7, 90 s | shoulder | OK        |
+| `gym_lateral_raise` | Lateral Raise  | 2×10, RPE ≤ 6, 45 s  | shoulder | OK        |
+
 
 ### Legs — squat / quad
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_back_squat` | Back Squat | 3×5, RPE ≤ 7, 120 s | **knee**, spine | |
-| `gym_leg_press` | Leg Press | 3×8, RPE ≤ 7, 90 s | **knee** | |
-| `gym_lunge` | Walking Lunge | 2×8/side, RPE ≤ 6, 75 s | **knee** | |
+
+| Id               | Title         | Prescription            | Skip if         | Your mark |
+| ---------------- | ------------- | ----------------------- | --------------- | --------- |
+| `gym_back_squat` | Back Squat    | 3×5, RPE ≤ 7, 120 s     | **knee**, spine | OK        |
+| `gym_leg_press`  | Leg Press     | 3×8, RPE ≤ 7, 90 s      | **knee**        | OK        |
+| `gym_lunge`      | Walking Lunge | 2×8/side, RPE ≤ 6, 75 s | **knee**        | OK        |
+
 
 ### Legs — hinge / posterior
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_rdl` | Romanian Deadlift | 3×5–6, RPE ≤ 7, 90 s | **spine** | |
-| `gym_hip_thrust` | Hip Thrust | 3×6–8, RPE ≤ 7, 75 s | spine | |
+
+| Id               | Title             | Prescription         | Skip if   | Your mark |
+| ---------------- | ----------------- | -------------------- | --------- | --------- |
+| `gym_rdl`        | Romanian Deadlift | 3×5–6, RPE ≤ 7, 90 s | **spine** | OK        |
+| `gym_hip_thrust` | Hip Thrust        | 3×6–8, RPE ≤ 7, 75 s | spine     | OK        |
+
 
 ### Arms (accessories, easy–moderate, not a hard day by themselves)
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_curl` | DB Curl | 2×10, RPE ≤ 6, 45 s | — | |
-| `gym_tricep_pushdown` | Tricep Pushdown | 2×10, RPE ≤ 6, 45 s | shoulder, wrist | |
+
+| Id                    | Title           | Prescription        | Skip if         | Your mark |
+| --------------------- | --------------- | ------------------- | --------------- | --------- |
+| `gym_curl`            | DB Curl         | 2×10, RPE ≤ 6, 45 s | —               | OK        |
+| `gym_tricep_pushdown` | Tricep Pushdown | 2×10, RPE ≤ 6, 45 s | shoulder, wrist | OK        |
+
 
 ### Core (easy, can pair with yoga/rest)
 
-| Id | Title | Prescription | Skip if | Your mark |
-| --- | --- | --- | --- | --- |
-| `gym_dead_bug` | Dead Bug | 2×6/side, RPE ≤ 3 | spine | |
-| `gym_side_plank` | Side Plank | 2×20 s/side, RPE ≤ 3 | shoulder, spine | |
+
+| Id               | Title      | Prescription         | Skip if         | Your mark |
+| ---------------- | ---------- | -------------------- | --------------- | --------- |
+| `gym_dead_bug`   | Dead Bug   | 2×6/side, RPE ≤ 3    | spine           | OK        |
+| `gym_side_plank` | Side Plank | 2×20 s/side, RPE ≤ 3 | shoulder, spine | OK        |
+
 
 ### Gym form (short)
 
@@ -155,11 +174,13 @@ Keep `str_gym_full_body_l2` as a **fallback mix** or drop it after these exist. 
 
 ## C. Counts if you accept everything
 
-| Bucket | New ids | Notes |
-| --- | --- | --- |
-| Yoga | **11** | 12th is reuse of box breath |
-| Gym muscle-specific | **16** | plus optional machine chest |
-| **Total new** | **27** | v1 16 stay unless you DROP `str_gym_full_body_l2` |
+
+| Bucket              | New ids | Notes                                             |
+| ------------------- | ------- | ------------------------------------------------- |
+| Yoga                | **11**  | 12th is reuse of box breath                       |
+| Gym muscle-specific | **16**  | plus optional machine chest                       |
+| **Total new**       | **27**  | v1 16 stay unless you DROP `str_gym_full_body_l2` |
+
 
 Issuer does **not** dump 27 into one day. A typical day stays ~3–4 quests. Yoga or one gym primary + accessories over the week.
 
@@ -168,6 +189,11 @@ Issuer does **not** dump 27 into one day. A typical day stays ~3–4 quests. Yog
 ## D. Questions (answer with the marks)
 
 1. New quest kind `yoga`, or keep `mobility`?  
+new quest yoga
 2. Keep `str_gym_full_body_l2` as a mixed fallback, or retire it once B is in?  
+no start with the full body first and on level up move to B 
 3. Sanskrit subtitles on yoga cards? (Default: **English only**.)  
-4. Any DROP for knees-heavy yoga (Warrior II) if family testers are older?
+yes sanskrit will be fine with English also.
+4. Any DROP for knees-heavy yoga (Warrior II) if family testers are older?  
+decide it on the basis of the age if age >45 do not suggest knees heavy yoga or workout.
+

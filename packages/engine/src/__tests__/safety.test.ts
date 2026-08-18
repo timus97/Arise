@@ -20,6 +20,7 @@ import {
   illnessRestAfterSecondDay,
   localDate,
   painNoHardWindow,
+  kneeHeavyBlocked,
   parqAllowsTemplate,
   PENALTY_RPE_MAX,
   PREGNANCY_HARD_STOP,
@@ -54,6 +55,7 @@ describe("pregnancy hard-stop and PAR-Q whitelist", () => {
     expect(result).toEqual({ blocked: false, parqClear: false, easyOnly: true });
     expect(parqAllowsTemplate(false, "recovery", "easy")).toBe(true);
     expect(parqAllowsTemplate(false, "mobility", "rest")).toBe(true);
+    expect(parqAllowsTemplate(false, "yoga", "easy")).toBe(true);
     expect(parqAllowsTemplate(false, "habit", "easy")).toBe(true);
     expect(parqAllowsTemplate(false, "steps", "easy")).toBe(true);
     expect(parqAllowsTemplate(false, "strength", "easy")).toBe(false);
@@ -275,5 +277,15 @@ describe("stat tick", () => {
       effort: "partial",
     });
     expect(partial.sta).toBe(10.4);
+  });
+});
+
+describe("age knee-heavy filter", () => {
+  it("blocks after 45 and leaves age 45 eligible", () => {
+    expect(kneeHeavyBlocked(45, "yoga_warrior2")).toBe(false);
+    expect(kneeHeavyBlocked(46, "yoga_warrior2")).toBe(true);
+    expect(kneeHeavyBlocked(52, "yoga_child")).toBe(true);
+    expect(kneeHeavyBlocked(52, "yoga_mountain")).toBe(false);
+    expect(kneeHeavyBlocked(undefined, "gym_back_squat")).toBe(false);
   });
 });

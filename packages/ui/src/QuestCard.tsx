@@ -6,6 +6,7 @@ export type QuestCardProps = {
   title: string;
   kindChip: string;
   prescription: string;
+  subtitle?: string;
   xpLine?: string;
   status?: string;
   variant?: QuestCardVariant;
@@ -17,6 +18,7 @@ export function QuestCard({
   title,
   kindChip,
   prescription,
+  subtitle,
   variant = "training",
   done = false,
   children,
@@ -31,6 +33,7 @@ export function QuestCard({
     <article className={classes.join(" ")}>
       <div className="sys-quest-kind">{kindChip}</div>
       <h3>{title}</h3>
+      {subtitle ? <p className="sys-quest-subtitle">{subtitle}</p> : null}
       {rest.status && rest.status !== "issued" ? (
         <p className="sys-quest-status">{rest.status.replaceAll("_", " ")}</p>
       ) : null}

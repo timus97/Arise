@@ -49,6 +49,7 @@ export type QuestPresentation = {
   variant: QuestCardVariant;
   kindChip: string;
   title: string;
+  subtitle?: string;
   prescription: string;
   xpLine: string;
   done: boolean;
@@ -159,6 +160,7 @@ export function presentQuest(quest: TodayQuest): QuestPresentation {
     variant: "training",
     kindChip: kindLabel(quest.kind),
     title: quest.title,
+    ...(quest.guide?.subtitle ? { subtitle: quest.guide.subtitle } : {}),
     prescription: formatTrainingRx(quest),
     xpLine: `${quest.xpReward} XP`,
     done,

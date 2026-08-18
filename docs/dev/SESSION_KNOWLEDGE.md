@@ -8,7 +8,7 @@ Do not put server IPs, SSH keys, hostnames, invite codes, `BETTER_AUTH_SECRET`, 
 
 | Field | Value |
 | --- | --- |
-| **Last updated** | 2026-08-17 (exercise guide review) |
+| **Last updated** | 2026-08-18 (catalog + text guides) |
 | **Phase** | v1 sprints **done**. Friends-and-family **public host is live**. |
 | **GitHub** | https://github.com/timus97/Arise (`main` + overlay branch `feat/public-ff-host`) |
 | **Local workspace** | `C:\Users\Timus97\Desktop\grokAnalysis\Arise` |
@@ -36,7 +36,7 @@ JSON dogfood (signed-in): `/api/v1/me/debug`.
 
 ---
 
-## Current state (2026-08-17)
+## Current state (2026-08-18)
 
 ### Product / git
 
@@ -44,6 +44,7 @@ JSON dogfood (signed-in): `/api/v1/me/debug`.
 - No open GitHub PRs or issues.
 - Public overlay (Caddy + `docker-compose.public.yml` + first-boot script + hosting docs) is on **`feat/public-ff-host`** (`2d92044`). Not merged to `main` yet.
 - Local extras not on GitHub: `docs/ux/`, `data/`, `.grok/`, `.playwright-mcp/`.
+- **In progress:** `feat/ARISE-043-exercise-guides` — 16 core text guides, 11 yoga + 16 gym templates, Guide sheet, age > 45 knee filter. Not merged / not deployed.
 
 ### Public host (live)
 
@@ -96,7 +97,8 @@ Oracle signup failed once; operator later used a working Always Free VM (details
 - [ ] PO/BA scan: `docs/product/COMPETITIVE_FEATURE_SCAN.md`. Not a backlog. Owner has not picked any next-cut features yet.
 - [x] Wave 1 activity status implemented on `feat/ARISE-026-activity-status` (026–030). Not merged to `main` / not deployed to the public host yet.
 - [ ] **Next cut remaining:** health sync waves 2–5 in `docs/backlog/NEXT_CUT_STORIES.md`. Live HealthKit/Fit from the PWA is **not** possible; waves 3–5 are zip / OAuth / native.
-- [ ] Exercise guides: mark `docs/product/EXERCISE_GUIDE_REVIEW.md` (16 shipped) **and** `docs/product/CATALOG_EXPANSION_REVIEW.md` (yoga + gym variations) before 043–049. No video.
+- [x] Owner marked both review files. Text guides + yoga kind + 11 yoga + 16 gym variations implemented on `feat/ARISE-043-exercise-guides`. No `yoga_box_hold`. Full-body gym first; muscle-specific at exp ≥ 3 or player level ≥ 10. Age > 45 skips knees-heavy work. Sanskrit subtitles on yoga cards.
+- [ ] Guide stills (ARISE-045/046) not started. No video.
 
 ---
 

@@ -169,6 +169,13 @@
   font-size: 0.98rem;
 }
 
+.sys-quest-subtitle {
+  margin: 0 0 0.2rem;
+  color: var(--accent-2);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
 .sys-quest-kind {
   color: var(--accent);
   font-size: 0.68rem;

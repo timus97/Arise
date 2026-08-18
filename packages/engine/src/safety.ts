@@ -21,7 +21,7 @@ export const CAUTION_VOLUME_MUL = 0.7;
 export const CAUTION_VOLUME_LOCAL_DAYS = 2;
 export const PAIN_NO_HARD_MS = 24 * 60 * 60 * 1000;
 
-export const PARQ_EASY_KINDS = ["recovery", "mobility", "habit", "steps"] as const;
+export const PARQ_EASY_KINDS = ["recovery", "mobility", "yoga", "habit", "steps"] as const;
 export const PARQ_EASY_INTENSITIES = ["rest", "easy"] as const;
 
 const PARQ_EASY_KIND_SET: ReadonlySet<string> = new Set(PARQ_EASY_KINDS);
@@ -289,6 +289,23 @@ export function forceRestFromEffects(
 export const ACTIVITY_STATUS_MIN_DAYS = 1;
 export const ACTIVITY_STATUS_MAX_DAYS = 14;
 export const TRAVEL_EQUIPMENT = ["none", "bands"] as const;
+
+/** Owner: age > 45 → no knees-heavy yoga or lifts. */
+export const AGE_KNEE_HEAVY_LIMIT = 45;
+export const KNEE_HEAVY_TEMPLATE_IDS: readonly string[] = [
+  "str_sit_to_stand_l0",
+  "str_goblet_squat_l1",
+  "yoga_warrior2",
+  "yoga_child",
+  "gym_back_squat",
+  "gym_leg_press",
+  "gym_lunge",
+];
+
+export function kneeHeavyBlocked(age: number | undefined, templateId: string): boolean {
+  if (age === undefined || age <= AGE_KNEE_HEAVY_LIMIT) return false;
+  return KNEE_HEAVY_TEMPLATE_IDS.includes(templateId);
+}
 
 export function parseActivityDays(days: number): number {
   if (

@@ -13,6 +13,7 @@ import {
   EMPTY_DAY_FALLBACK_IDS,
   requireTemplate,
 } from "./templates/catalog.js";
+import { GYM_ACCESSORY_IDS, GYM_PRIMARY_BY_FOCUS } from "./templates/catalog-expansion.js";
 import { isTemplateEligible, scoreTemplate } from "./scorer.js";
 import {
   allowsHardDay,
@@ -29,10 +30,26 @@ const FALLBACK_WALK_MINUTES = 10;
 const PENALTY_BUDGET_MINUTES = 15;
 
 const LOCOMOTION_KINDS: QuestKind[] = ["steps", "cardio"];
-const VITALITY_KINDS: QuestKind[] = ["mobility"];
+const VITALITY_KINDS: QuestKind[] = ["mobility", "yoga"];
+const GYM_SPECIFIC_PREFIX = "gym_";
+const MUSCLE_GYM_LEVEL = 10;
 const HABIT_KINDS: QuestKind[] = ["habit", "recovery"];
 const GATE_KINDS: QuestKind[] = ["strength", "cardio"];
 const REST_LOAD_IDS = ["rec_full_rest", "cardio_zone2_walk"] as const;
+
+function useMuscleSpecificGym(input: IssueTodayInput): boolean {
+  return input.experience >= 3 || (input.playerLevel ?? 1) >= MUSCLE_GYM_LEVEL;
+}
+
+function strengthPool(input: IssueTodayInput, catalog: readonly QuestTemplate[]): QuestTemplate[] {
+  if (useMuscleSpecificGym(input) && input.equipment.includes("full_gym")) {
+    const focus = input.planDay.focus;
+    const ids = GYM_PRIMARY_BY_FOCUS[focus] ?? GYM_PRIMARY_BY_FOCUS.mixed;
+    const pool = catalog.filter((t) => (ids as readonly string[]).includes(t.id));
+    return pool.length > 0 ? [...pool] : catalog.filter((t) => t.kind === "strength");
+  }
+  return catalog.filter((t) => t.kind === "strength" && !t.id.startsWith(GYM_SPECIFIC_PREFIX));
+}
 
 export interface IssueTodayInput {
   userId: string;
@@ -41,6 +58,8 @@ export interface IssueTodayInput {
   planDay: PlanDay;
   goalType: GoalType;
   experience: number;
+  playerLevel?: number;
+  age?: number;
   equipment: Equipment[];
   injuries: readonly string[];
   parqClear: boolean;
@@ -103,6 +122,7 @@ export function issueToday(input: IssueTodayInput): IssueTodayResult {
       hardAllowed,
       parqClear: input.parqClear,
       hardBlocked,
+      ...(input.age !== undefined ? { age: input.age } : {}),
     });
 
   const scoreOf = (t: QuestTemplate, remainingMinutes: number): number =>
@@ -181,8 +201,16 @@ export function issueToday(input: IssueTodayInput): IssueTodayResult {
   } else {
     let afterPrimary = remaining;
     if (hardAllowed && !illnessRest) {
-      emitIfPicked(pickBest(catalog.filter((t) => t.kind === "strength"), remaining));
+      emitIfPicked(pickBest(strengthPool(input, catalog), remaining));
       afterPrimary = remaining;
+      if (useMuscleSpecificGym(input) && input.equipment.includes("full_gym")) {
+        emitIfPicked(
+          pickBest(
+            catalog.filter((t) => (GYM_ACCESSORY_IDS as readonly string[]).includes(t.id)),
+            remaining,
+          ),
+        );
+      }
     }
     const dropRest = afterPrimary < MIN_REMAINING_AFTER_PRIMARY && afterPrimary !== input.planDay.budgetMinutes;
     if (!dropRest) {

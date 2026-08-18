@@ -11,6 +11,7 @@ import {
   HealthSource,
   OnboardingBody,
   PlayerStats,
+  ExerciseGuide,
   QuestKind,
   QuestPrescription,
   QuestStatus,
@@ -258,12 +259,34 @@ describe("closed enums", () => {
     ]);
   });
 
+  it("ExerciseGuide requires setup, action, and stop-if", () => {
+    expect(
+      ExerciseGuide.safeParse({
+        templateId: "yoga_cat_cow",
+        title: "Cat–Cow",
+        subtitle: "Marjaryasana–Bitilasana",
+        setup: "Hands under shoulders.",
+        action: "Move with the breath.",
+        stopIf: "Sharp spine pain.",
+      }).success,
+    ).toBe(true);
+    expect(
+      ExerciseGuide.safeParse({
+        templateId: "yoga_cat_cow",
+        title: "Cat–Cow",
+        setup: "Hands under shoulders.",
+        action: "Move with the breath.",
+      }).success,
+    ).toBe(false);
+  });
+
   it("QuestKind and QuestStatus match §9.1", () => {
     expect(QuestKind.options).toEqual([
       "strength",
       "cardio",
       "steps",
       "mobility",
+      "yoga",
       "skill",
       "recovery",
       "habit",
