@@ -28,6 +28,10 @@ IDs continue from ARISE-025. Points Fibonacci 1–5 (no 8s in this cut).
 | ARISE-040 | Second vendor (Withings or Garmin) | 4 | 5 | 039 | P3 |
 | ARISE-041 | Android Health Connect adapter in a wrapper | 5 | 5 | 031 | P4 |
 | ARISE-042 | iOS HealthKit adapter (needs Apple distribution) | 5 | 5 | 041 | P4 |
+| ARISE-043 | Exercise guide copy for 16 templates | form | 3 | review file | P1 |
+| ARISE-044 | Quest-card Guide sheet (text) | form | 3 | 043 | P1 |
+| ARISE-045 | Original still graphics per unique movement | form | 5 | owner OK | P1 |
+| ARISE-046 | Wire stills into Guide sheet + tests | form | 2 | 044+045 | P1 |
 
 **Do not schedule:** Google Fit REST client (retired / replaced by Health Connect). Web Bluetooth. Calorie metrics.
 
@@ -323,3 +327,67 @@ IDs continue from ARISE-025. Points Fibonacci 1–5 (no 8s in this cut).
 4. **035 → 036** if iPhone testers want Apple data.  
 5. **037 → 038 → 039** if we want automatic pull without a store.  
 6. **040–042** only with an explicit owner go.
+
+---
+
+## Form guides (after owner marks the review file)
+
+Plan: [`docs/dev/EXERCISE_GUIDE_PLAN.md`](../dev/EXERCISE_GUIDE_PLAN.md). Review: [`docs/product/EXERCISE_GUIDE_REVIEW.md`](../product/EXERCISE_GUIDE_REVIEW.md).
+
+### ARISE-043 — Exercise guide copy for 16 templates
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Player |
+| **Description** | As a Player, I want written setup / action / stop-if cues for every issued template, so I can move safely without a video. |
+| **Points** | 3 |
+| **Deps** | Owner OK on `EXERCISE_GUIDE_REVIEW.md` |
+
+**Acceptance**
+
+- [ ] One guide object per template id (and per gym-day block). Fields: setup, action, breath, stopIf, doNot.
+- [ ] Rest and sleep are text-only (no fake lift).
+- [ ] No calorie language. No licensed IP. Tests lock the 16 ids.
+
+### ARISE-044 — Quest-card Guide sheet (text)
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Player |
+| **Description** | As a Player, I want a Guide control on the quest card that opens the cues without completing the quest. |
+| **Points** | 3 |
+| **Deps** | ARISE-043 |
+
+**Acceptance**
+
+- [ ] Guide on movement cards. Disclaimer on the sheet.
+- [ ] Close returns to the SYSTEM window. Complete / skip unchanged.
+- [ ] Works in standalone PWA.
+
+### ARISE-045 — Original still graphics
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Player |
+| **Description** | As a Player, I want 1–2 stills per unique movement so I can see start and mid positions. |
+| **Points** | 5 |
+| **Deps** | Owner OK on review + 043 |
+
+**Acceptance**
+
+- [ ] Stills for the unique movements listed in the review file. Walk shared. No video.
+- [ ] Dark SYSTEM style. No forbidden IP. Compressed `public/guides/`.
+
+### ARISE-046 — Wire stills + tests
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Engineer |
+| **Description** | As an Engineer, I want the sheet to show the stills and tests to lock no-push / 16 ids. |
+| **Points** | 2 |
+| **Deps** | ARISE-044, ARISE-045 |
+
+**Acceptance**
+
+- [ ] Sheet renders setup/mid images when present.
+- [ ] `sw.ts` still has no `push` handler. Forbidden-string grep green.
