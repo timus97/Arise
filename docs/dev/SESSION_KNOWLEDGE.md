@@ -96,7 +96,7 @@ Oracle signup failed once; operator later used a working Always Free VM (details
 - [ ] PO/BA scan: `docs/product/COMPETITIVE_FEATURE_SCAN.md`. Not a backlog. Owner has not picked any next-cut features yet.
 - [x] Wave 1 activity status implemented on `feat/ARISE-026-activity-status` (026–030). Not merged to `main` / not deployed to the public host yet.
 - [ ] **Next cut remaining:** health sync waves 2–5 in `docs/backlog/NEXT_CUT_STORIES.md`. Live HealthKit/Fit from the PWA is **not** possible; waves 3–5 are zip / OAuth / native.
-- [ ] Exercise guides: owner must mark `docs/product/EXERCISE_GUIDE_REVIEW.md` before ARISE-043–046 (text then stills, no video).
+- [ ] Exercise guides: mark `docs/product/EXERCISE_GUIDE_REVIEW.md` (16 shipped) **and** `docs/product/CATALOG_EXPANSION_REVIEW.md` (yoga + gym variations) before 043–049. No video.
 
 ---
 
@@ -131,6 +131,7 @@ Newest first. One line per meaningful turn.
 
 | When | What happened |
 | --- | --- |
+| 2026-08-17 | Catalog expansion review: 11 yoga + 16 muscle-specific gym ids (`CATALOG_EXPANSION_REVIEW.md`). Stories 047–049. Waiting on owner marks. |
 | 2026-08-17 | Exercise guide plan + full 16-template review for owner check (`EXERCISE_GUIDE_PLAN.md`, `EXERCISE_GUIDE_REVIEW.md`, stories 043–046). |
 | 2026-08-17 | Implemented Wave 1 activity status (026–030) on `feat/ARISE-026-activity-status`: GET/PUT `/me/activity-status`, issuer travel/sick, Settings + SYSTEM UI. |
 | 2026-08-17 | Planned activity status + health sync: `STATUS_AND_HEALTH_SYNC_PLAN.md` + stories 026–042. Wave 1 (travel/sick) first. Automatic Apple/Google live sync is not a PWA feature. |

@@ -32,6 +32,9 @@ IDs continue from ARISE-025. Points Fibonacci 1–5 (no 8s in this cut).
 | ARISE-044 | Quest-card Guide sheet (text) | form | 3 | 043 | P1 |
 | ARISE-045 | Original still graphics per unique movement | form | 5 | owner OK | P1 |
 | ARISE-046 | Wire stills into Guide sheet + tests | form | 2 | 044+045 | P1 |
+| ARISE-047 | Domain yoga kind + approved new template ids | catalog | 3 | expansion review | P1 |
+| ARISE-048 | Catalog + issuer: yoga slot, muscle-specific gym primary | catalog | 5 | 047 | P1 |
+| ARISE-049 | Guides/stills for new yoga + gym ids | catalog | 5 | 048, 046 | P1 |
 
 **Do not schedule:** Google Fit REST client (retired / replaced by Health Connect). Web Bluetooth. Calorie metrics.
 
@@ -391,3 +394,48 @@ Plan: [`docs/dev/EXERCISE_GUIDE_PLAN.md`](../dev/EXERCISE_GUIDE_PLAN.md). Review
 
 - [ ] Sheet renders setup/mid images when present.
 - [ ] `sw.ts` still has no `push` handler. Forbidden-string grep green.
+
+### ARISE-047 — Domain yoga kind + approved new template ids
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Player |
+| **Description** | As a Player, I want yoga and muscle-specific gym ids in the domain so the issuer can pick them after I approve the review list. |
+| **Points** | 3 |
+| **Deps** | Marked `CATALOG_EXPANSION_REVIEW.md` |
+
+**Acceptance**
+
+- [ ] Only **OK** ids from the expansion review are added. DROP stays out.
+- [ ] Optional `QuestKind` value `yoga` if the owner chose that over tagging `mobility`.
+- [ ] Tests lock the new id list. Catalog size is no longer hard-capped at 16.
+
+### ARISE-048 — Catalog + issuer: yoga slot, muscle-specific gym primary
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Player |
+| **Description** | As a Player, I want a yoga option on easy/rest days and one gym primary that matches the day’s focus, not sixteen lifts in one quest. |
+| **Points** | 5 |
+| **Deps** | ARISE-047 |
+
+**Acceptance**
+
+- [ ] Yoga templates eligible on rest / mobility / sick-easy / travel (bodyweight only).
+- [ ] `full_gym` + experience ≥ 2: issuer picks **one** approved gym primary from the plan-day focus (push/pull/legs/hinge). Optional one accessory. Not a 4-lift dump unless `str_gym_full_body_l2` is kept as fallback.
+- [ ] Injury keys, PAR-Q, travel equipment strip, sick rest still win.
+- [ ] Goldens: knee injury never issues back squat / lunge / warrior II; travel never issues `full_gym` ids.
+
+### ARISE-049 — Guides/stills for new yoga + gym ids
+
+| Field | Value |
+| --- | --- |
+| **Persona** | Player |
+| **Description** | As a Player, I want the same Guide sheet on new yoga and gym cards. |
+| **Points** | 5 |
+| **Deps** | ARISE-048, ARISE-044 |
+
+**Acceptance**
+
+- [ ] Guide copy + stills only for approved new ids. No video.
+- [ ] Same disclaimer and SYSTEM chrome.

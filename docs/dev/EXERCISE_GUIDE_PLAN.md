@@ -53,6 +53,20 @@ Do **not** start 045 until you have marked the review file.
 
 ---
 
+## Catalog growth (yoga + gym variations)
+
+Owner asked to enlarge the library. That is **not** v1’s 16-id lock; it is a next cut after the review in [`docs/product/CATALOG_EXPANSION_REVIEW.md`](../product/CATALOG_EXPANSION_REVIEW.md).
+
+| Story | What |
+| --- | --- |
+| **047** | Domain: optional `yoga` kind + new template ids (only those marked OK). |
+| **048** | Catalog + scorer/issuer: yoga slot; gym day picks **one** muscle-specific primary from the approved list (not 16 lifts in one quest). |
+| **049** | Guide copy + stills for the **new** ids (same sheet as 044/046). |
+
+Do not implement 047 until the expansion review is marked. No video. Injury keys and travel/sick filters still apply.
+
+---
+
 ## Graphics spec (when 045 starts)
 
 - Dark background `#050816`, teal/cyan line art or muted 3D, clothes on.  
