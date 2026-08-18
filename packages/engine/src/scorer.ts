@@ -8,7 +8,7 @@ import {
   type QuestTemplate,
 } from "@arise/domain";
 import { clamp } from "./recovery.js";
-import { parqAllowsTemplate } from "./safety.js";
+import { kneeHeavyBlocked, parqAllowsTemplate } from "./safety.js";
 import { equipmentOk } from "./templates/types.js";
 
 export const MAX_STAT_DELTA = 0.4;
@@ -122,6 +122,7 @@ export interface EligibilityArgs {
   hardAllowed: boolean;
   parqClear: boolean;
   hardBlocked: boolean;
+  age?: number;
 }
 
 export function isTemplateEligible(args: EligibilityArgs): boolean {
@@ -133,5 +134,6 @@ export function isTemplateEligible(args: EligibilityArgs): boolean {
   if (recoveryFit(t.intensity, args.recoveryScore) === 0) return false;
   if (t.intensity === "hard" && (!args.hardAllowed || args.hardBlocked)) return false;
   if (!parqAllowsTemplate(args.parqClear, t.kind, t.intensity)) return false;
+  if (kneeHeavyBlocked(args.age, t.id)) return false;
   return true;
 }

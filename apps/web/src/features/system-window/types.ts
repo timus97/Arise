@@ -66,6 +66,16 @@ export type TodayQuest = {
   modifiersApplied: string[];
   source: string;
   skipReason?: string | null;
+  guide?: {
+    templateId: string;
+    title: string;
+    subtitle?: string;
+    setup: string;
+    action: string;
+    breath?: string;
+    stopIf: string;
+    doNot?: string;
+  } | null;
 };
 
 export type PendingModifier = {
@@ -99,6 +109,12 @@ export type TodayPayload = {
   suggestRegenerate: boolean;
   disclaimer: string;
   busySkipsWeek?: number;
+  activityStatus?: {
+    status: "training" | "travel" | "sick";
+    startsOn: string | null;
+    endsOn: string | null;
+    days: number | null;
+  };
 };
 
 export type QuestMutationResult = {

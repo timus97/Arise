@@ -21,7 +21,7 @@ export const CAUTION_VOLUME_MUL = 0.7;
 export const CAUTION_VOLUME_LOCAL_DAYS = 2;
 export const PAIN_NO_HARD_MS = 24 * 60 * 60 * 1000;
 
-export const PARQ_EASY_KINDS = ["recovery", "mobility", "habit", "steps"] as const;
+export const PARQ_EASY_KINDS = ["recovery", "mobility", "yoga", "habit", "steps"] as const;
 export const PARQ_EASY_INTENSITIES = ["rest", "easy"] as const;
 
 const PARQ_EASY_KIND_SET: ReadonlySet<string> = new Set(PARQ_EASY_KINDS);
@@ -271,7 +271,9 @@ export function hardBlockedByEffects(
   now: Date,
 ): boolean {
   return effects.some(
-    (e) => (e.kind === "pain_no_hard" || e.kind === "illness_rest") && effectActive(e, now),
+    (e) =>
+      (e.kind === "pain_no_hard" || e.kind === "illness_rest" || e.kind === "sick_window") &&
+      effectActive(e, now),
   );
 }
 
@@ -279,7 +281,104 @@ export function forceRestFromEffects(
   effects: Array<{ kind: EffectKind; startsAt: string; endsAt: string }>,
   now: Date,
 ): boolean {
-  return effects.some((e) => e.kind === "illness_rest" && effectActive(e, now));
+  return effects.some(
+    (e) => (e.kind === "illness_rest" || e.kind === "sick_window") && effectActive(e, now),
+  );
+}
+
+export const ACTIVITY_STATUS_MIN_DAYS = 1;
+export const ACTIVITY_STATUS_MAX_DAYS = 14;
+export const TRAVEL_EQUIPMENT = ["none", "bands"] as const;
+
+/** Owner: age > 45 → no knees-heavy yoga or lifts. */
+export const AGE_KNEE_HEAVY_LIMIT = 45;
+export const KNEE_HEAVY_TEMPLATE_IDS: readonly string[] = [
+  "str_sit_to_stand_l0",
+  "str_goblet_squat_l1",
+  "yoga_warrior2",
+  "yoga_child",
+  "gym_back_squat",
+  "gym_leg_press",
+  "gym_lunge",
+];
+
+export function kneeHeavyBlocked(age: number | undefined, templateId: string): boolean {
+  if (age === undefined || age <= AGE_KNEE_HEAVY_LIMIT) return false;
+  return KNEE_HEAVY_TEMPLATE_IDS.includes(templateId);
+}
+
+export function parseActivityDays(days: number): number {
+  if (
+    !Number.isInteger(days) ||
+    days < ACTIVITY_STATUS_MIN_DAYS ||
+    days > ACTIVITY_STATUS_MAX_DAYS
+  ) {
+    throw new Error("ACTIVITY_DAYS_INVALID");
+  }
+  return days;
+}
+
+export function travelEquipment(have: readonly string[]): Array<"none" | "bands"> {
+  const allowed = have.filter((e): e is "none" | "bands" => e === "none" || e === "bands");
+  return allowed.length > 0 ? allowed : ["none"];
+}
+
+export function travelActive(
+  effects: Array<{ kind: EffectKind; startsAt: string; endsAt: string }>,
+  now: Date,
+): boolean {
+  return effects.some((e) => e.kind === "travel_window" && effectActive(e, now));
+}
+
+/** Inclusive local dates: today through today+days-1. */
+export function activityStatusWindow(args: {
+  now: Date;
+  timeZone: string;
+  kind: "travel_window" | "sick_window";
+  days: number;
+}): EffectWindow {
+  const days = parseActivityDays(args.days);
+  const today = localDate(args.now, args.timeZone);
+  const endExclusive = addCalendarDays(today, days);
+  const endsOn = addCalendarDays(today, days - 1);
+  return {
+    kind: args.kind,
+    startsAt: zonedStartOfDayUtc(today, args.timeZone).toISOString(),
+    endsAt: zonedStartOfDayUtc(endExclusive, args.timeZone).toISOString(),
+    payload: { startsOn: today, endsOn, days },
+  };
+}
+
+export function activityStatusFromEffects(
+  effects: Array<{
+    kind: EffectKind;
+    startsAt: string;
+    endsAt: string;
+    payload?: UserEffect["payload"];
+  }>,
+  now: Date,
+): {
+  status: "training" | "travel" | "sick";
+  startsOn: string | null;
+  endsOn: string | null;
+  days: number | null;
+} {
+  const sick = effects.find((e) => e.kind === "sick_window" && effectActive(e, now));
+  const travel = effects.find((e) => e.kind === "travel_window" && effectActive(e, now));
+  const active = sick ?? travel;
+  if (!active) {
+    return { status: "training", startsOn: null, endsOn: null, days: null };
+  }
+  const payload = active.payload ?? {};
+  const startsOn = typeof payload.startsOn === "string" ? payload.startsOn : null;
+  const endsOn = typeof payload.endsOn === "string" ? payload.endsOn : null;
+  const days = typeof payload.days === "number" ? payload.days : null;
+  return {
+    status: active.kind === "sick_window" ? "sick" : "travel",
+    startsOn,
+    endsOn,
+    days,
+  };
 }
 
 export function localDate(now: Date, timeZone: string): string {

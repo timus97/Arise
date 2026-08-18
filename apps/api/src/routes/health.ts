@@ -6,7 +6,7 @@ import {
   HealthMetric,
   type DailyQuest as DailyQuestT,
 } from "@arise/domain";
-import { planModifiers } from "@arise/engine";
+import { guideFor, planModifiers } from "@arise/engine";
 import {
   aggregateDailySummaries,
   ingestManual,
@@ -341,7 +341,7 @@ function toTodayQuest(row: QuestRow): TodayQuest {
     source: row.source,
     idempotencyKey: row.idempotency_key,
   });
-  return { ...parsed, skipReason: row.skip_reason };
+  return { ...parsed, skipReason: row.skip_reason, guide: guideFor(parsed.templateId) };
 }
 
 function loadQuestsForDates(db: NodeDb, userId: string, dates: readonly string[]): TodayQuest[] {

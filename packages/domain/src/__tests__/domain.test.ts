@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import * as Domain from "../index.js";
 import {
   DEFAULT_STATS,
+  ActivityStatusPut,
   EffectKind,
   Equipment,
   GOAL_STAT_WEIGHTS,
@@ -10,6 +11,7 @@ import {
   HealthSource,
   OnboardingBody,
   PlayerStats,
+  ExerciseGuide,
   QuestKind,
   QuestPrescription,
   QuestStatus,
@@ -257,12 +259,34 @@ describe("closed enums", () => {
     ]);
   });
 
+  it("ExerciseGuide requires setup, action, and stop-if", () => {
+    expect(
+      ExerciseGuide.safeParse({
+        templateId: "yoga_cat_cow",
+        title: "Cat–Cow",
+        subtitle: "Marjaryasana–Bitilasana",
+        setup: "Hands under shoulders.",
+        action: "Move with the breath.",
+        stopIf: "Sharp spine pain.",
+      }).success,
+    ).toBe(true);
+    expect(
+      ExerciseGuide.safeParse({
+        templateId: "yoga_cat_cow",
+        title: "Cat–Cow",
+        setup: "Hands under shoulders.",
+        action: "Move with the breath.",
+      }).success,
+    ).toBe(false);
+  });
+
   it("QuestKind and QuestStatus match §9.1", () => {
     expect(QuestKind.options).toEqual([
       "strength",
       "cardio",
       "steps",
       "mobility",
+      "yoga",
       "skill",
       "recovery",
       "habit",
@@ -302,7 +326,18 @@ describe("closed enums", () => {
       "pain_no_hard",
       "illness_rest",
       "caution_volume",
+      "travel_window",
+      "sick_window",
     ]);
+  });
+
+  it("ActivityStatusPut requires days for travel and sick", () => {
+    expect(ActivityStatusPut.safeParse({ status: "training" }).success).toBe(true);
+    expect(ActivityStatusPut.safeParse({ status: "travel" }).success).toBe(false);
+    expect(ActivityStatusPut.safeParse({ status: "sick", days: 0 }).success).toBe(false);
+    expect(ActivityStatusPut.safeParse({ status: "sick", days: 15 }).success).toBe(false);
+    expect(ActivityStatusPut.safeParse({ status: "travel", days: 1 }).success).toBe(true);
+    expect(ActivityStatusPut.safeParse({ status: "sick", days: 14 }).success).toBe(true);
   });
 });
 

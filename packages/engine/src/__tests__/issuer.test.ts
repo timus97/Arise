@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { DailyQuest, PlanDay } from "@arise/domain";
 import { issueToday, type IssueTodayInput } from "../issuer.js";
-import { CATALOG, requireTemplate } from "../templates/catalog.js";
+import { CATALOG, TEMPLATE_IDS, requireTemplate } from "../templates/catalog.js";
 import * as Engine from "../index.js";
 
 const TZ = "Europe/Stockholm";
@@ -74,7 +74,7 @@ describe("issuer slots and filters", () => {
 
   it("PAR-Q whitelist blocks strength and hard work", () => {
     const { quests } = issueToday(args({ parqClear: false, planDay: planDay({ focus: "full_body" }) }));
-    expect(quests.every((q) => ["recovery", "mobility", "habit", "steps"].includes(q.kind))).toBe(true);
+    expect(quests.every((q) => ["recovery", "mobility", "yoga", "habit", "steps"].includes(q.kind))).toBe(true);
     expect(quests.every((q) => q.prescription.intensity === "rest" || q.prescription.intensity === "easy")).toBe(
       true,
     );
@@ -96,8 +96,108 @@ describe("issuer slots and filters", () => {
     expect("FEATURE_LLM_PLANNER" in Engine).toBe(false);
   });
 
+  it("travel window does not issue gym-only templates", () => {
+    const { activityStatusWindow } = Engine;
+    const win = activityStatusWindow({
+      now: NOW,
+      timeZone: TZ,
+      kind: "travel_window",
+      days: 3,
+    });
+    const { quests } = issueToday(
+      args({
+        experience: 2,
+        equipment: ["full_gym", "dumbbells"],
+        effects: [win],
+      }),
+    );
+    expect(ids(quests)).not.toContain("str_gym_full_body_l2");
+  });
+
+  it("sick window is rest/easy only and skips penalty", () => {
+    const win = Engine.activityStatusWindow({
+      now: NOW,
+      timeZone: TZ,
+      kind: "sick_window",
+      days: 2,
+    });
+    const { quests } = issueToday(args({ effects: [win], penaltyOwed: true }));
+    expect(quests.every((q) => q.prescription.intensity === "rest" || q.prescription.intensity === "easy")).toBe(
+      true,
+    );
+    expect(quests.every((q) => (q.prescription.blocks[0]?.rpeMax ?? 0) <= 4)).toBe(true);
+    expect(ids(quests)).not.toContain("penalty_easy_walk");
+  });
+
+  it("age over 45 blocks knees-heavy templates", () => {
+    const { quests } = issueToday(
+      args({
+        age: 52,
+        experience: 3,
+        equipment: ["full_gym"],
+        playerLevel: 12,
+        planDay: planDay({ focus: "legs" }),
+      }),
+    );
+    expect(ids(quests)).not.toContain("gym_back_squat");
+    expect(ids(quests)).not.toContain("gym_lunge");
+    expect(ids(quests)).not.toContain("yoga_warrior2");
+    expect(ids(quests)).not.toContain("yoga_child");
+  });
+
+  it("experience 3 + full gym picks a muscle-specific primary, not the mega-day", () => {
+    const { quests } = issueToday(
+      args({
+        experience: 3,
+        playerLevel: 12,
+        equipment: ["full_gym"],
+        planDay: planDay({ focus: "push" }),
+      }),
+    );
+    expect(ids(quests)).not.toContain("str_gym_full_body_l2");
+    expect(quests.some((q) => q.templateId.startsWith("gym_"))).toBe(true);
+  });
+
+  it("starts with gym full body, then muscle-specific after level-up", () => {
+    const early = issueToday(
+      args({
+        experience: 2,
+        playerLevel: 4,
+        equipment: ["full_gym"],
+        planDay: planDay({ focus: "push" }),
+      }),
+    ).quests;
+    expect(ids(early)).toContain("str_gym_full_body_l2");
+    expect(early.some((q) => q.templateId.startsWith("gym_"))).toBe(false);
+
+    const leveled = issueToday(
+      args({
+        experience: 2,
+        playerLevel: 10,
+        equipment: ["full_gym"],
+        planDay: planDay({ focus: "push" }),
+      }),
+    ).quests;
+    expect(ids(leveled)).not.toContain("str_gym_full_body_l2");
+    expect(leveled.some((q) => q.templateId.startsWith("gym_"))).toBe(true);
+  });
+
+  it("can issue yoga on rest and keeps it as a yoga kind", () => {
+    const { quests } = issueToday(
+      args({
+        goalType: "mobility",
+        planDay: planDay({ focus: "rest", hardAllowed: false, budgetMinutes: 25 }),
+        last14TemplateIds: ["mob_hip_unload", "mob_tspine"],
+      }),
+    );
+    expect(quests.some((q) => q.kind === "yoga" || q.kind === "mobility" || q.kind === "recovery")).toBe(
+      true,
+    );
+    expect(quests.filter((q) => q.kind === "yoga").every((q) => q.title.length > 0)).toBe(true);
+  });
+
   it("catalog is the only template source", () => {
-    expect(CATALOG).toHaveLength(16);
+    expect(CATALOG.length).toBe(TEMPLATE_IDS.length);
     const issued = issueToday(args()).quests;
     for (const q of issued) {
       expect(CATALOG.some((t) => t.id === q.templateId)).toBe(true);

@@ -23,10 +23,12 @@ const SCORE_BASE = {
 };
 
 describe("v1 catalog", () => {
-  it("is exactly the 16 Appendix A ids and has no habit_log_weight", () => {
-    expect(TEMPLATE_IDS).toHaveLength(16);
-    expect(CATALOG).toHaveLength(16);
+  it("keeps the 16 core ids and adds yoga + gym expansions; no habit_log_weight", () => {
+    expect(TEMPLATE_IDS.filter((id) => !id.startsWith("yoga_") && !id.startsWith("gym_"))).toHaveLength(16);
     expect(CATALOG.map((t) => t.id)).toEqual([...TEMPLATE_IDS]);
+    expect(TEMPLATE_IDS).toContain("yoga_cat_cow");
+    expect(TEMPLATE_IDS).toContain("gym_bench_press");
+    expect(TEMPLATE_IDS).not.toContain("yoga_box_hold");
     expect(TEMPLATE_IDS).not.toContain("habit_log_weight");
     expect(CATALOG.some((t) => t.id === "habit_log_weight")).toBe(false);
     expect(CATALOG.every((t) => t.requiredAll.length === 0)).toBe(true);
@@ -100,6 +102,30 @@ describe("scorer goldens", () => {
         hardAllowed: true,
         parqClear: true,
         hardBlocked: false,
+      }),
+    ).toBe(true);
+  });
+
+  it("age over 45 blocks knees-heavy templates and age 45 still allows them", () => {
+    const warrior = requireTemplate("yoga_warrior2");
+    const base = {
+      t: warrior,
+      equipment: ["none"] as import("@arise/domain").Equipment[],
+      injuries: [],
+      experience: 0,
+      remainingMinutes: 40,
+      recoveryScore: 80,
+      hardAllowed: false,
+      parqClear: true,
+      hardBlocked: false,
+    };
+    expect(isTemplateEligible({ ...base, age: 45 })).toBe(true);
+    expect(isTemplateEligible({ ...base, age: 46 })).toBe(false);
+    expect(
+      isTemplateEligible({
+        ...base,
+        t: requireTemplate("yoga_mountain"),
+        age: 52,
       }),
     ).toBe(true);
   });

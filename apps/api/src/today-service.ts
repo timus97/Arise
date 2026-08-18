@@ -2,12 +2,14 @@ import { atomic } from "@arise/db";
 import type { NodeDb, SqlStatement } from "@arise/db";
 import {
   CATALOG,
+  activityStatusFromEffects,
   buildWeeklyPlan,
   catchUpMissedDays,
   computeRank,
   computeRecovery,
   countHardDays,
   isoWeekStart,
+  guideFor,
   issueToday,
   planModifiers,
   rankEventIfDestabilized,
@@ -99,7 +101,10 @@ export type TodayPlayer = {
   penaltyPoints30d: number;
 };
 
-export type TodayQuest = DailyQuest & { skipReason: string | null };
+export type TodayQuest = DailyQuest & {
+  skipReason: string | null;
+  guide?: ReturnType<typeof guideFor>;
+};
 
 export type TodayPayload = {
   date: string;
@@ -117,6 +122,12 @@ export type TodayPayload = {
   pendingModifiers: PlannedModifier[];
   suggestRegenerate: boolean;
   disclaimer: string;
+  activityStatus: {
+    status: "training" | "travel" | "sick";
+    startsOn: string | null;
+    endsOn: string | null;
+    days: number | null;
+  };
 };
 
 export type HabitBundle = {
@@ -155,7 +166,7 @@ export type TodayBundle = {
   recentQuests: RecentQuest[];
   effects: Array<{
     id: string;
-    kind: "pain_no_hard" | "illness_rest" | "caution_volume";
+    kind: "pain_no_hard" | "illness_rest" | "caution_volume" | "travel_window" | "sick_window";
     startsAt: string;
     endsAt: string;
     payload: Record<string, number | string>;
@@ -334,6 +345,7 @@ function toTodayQuest(raw: Record<string, unknown>): TodayQuest {
   return {
     ...parsed,
     skipReason: typeof skip === "string" ? skip : null,
+    guide: guideFor(parsed.templateId),
   };
 }
 
@@ -642,6 +654,7 @@ export function buildTodayPayload(args: {
     pendingModifiers: args.persistModifiers === true ? [] : pendingModifiers,
     suggestRegenerate: suggest,
     disclaimer: DISCLAIMER,
+    activityStatus: activityStatusFromEffects(args.bundle.effects, new Date()),
   };
 }
 
@@ -788,6 +801,8 @@ function issueInputFromBundle(args: {
     planDay: args.planDay,
     goalType: GoalType.parse(goal.type),
     experience: habit.experience,
+    playerLevel: args.profile.level,
+    age: args.profile.age,
     equipment: habit.equipment.map((e) => Equipment.parse(e)),
     injuries: habit.injuries,
     parqClear: args.profile.parq_clear === 1,
@@ -1104,7 +1119,11 @@ export async function ensureToday(args: {
   }
 
   const nextProfile = { ...profile, ...rankFields(rank, streakDays, penaltyPoints30d, today) };
-  const todayQuests: TodayQuest[] = issued.quests.map((q) => ({ ...q, skipReason: null }));
+  const todayQuests: TodayQuest[] = issued.quests.map((q) => ({
+    ...q,
+    skipReason: null,
+    guide: guideFor(q.templateId),
+  }));
   return buildTodayPayload({
     date: today,
     today,

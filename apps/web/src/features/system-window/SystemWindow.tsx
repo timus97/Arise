@@ -14,7 +14,10 @@ import { useEffect, useId, useRef, useState } from "react";
 import { formatAuthError } from "../../lib/auth-client.js";
 import { completeQuestOrQueue, skipQuestOrQueue } from "../../lib/offline-queue.js";
 import { useOutboxDrain } from "../../lib/use-outbox-drain.js";
+import { ActivityStatusPanel } from "../status/ActivityStatusPanel.js";
+import { formatStatusBanner } from "../../lib/activity-status.js";
 import { InstallEducation } from "../pwa/InstallEducation.js";
+import { GuideSheet } from "../guides/GuideSheet.js";
 import { CompleteSheet } from "./CompleteSheet.js";
 import { SkipSheet } from "./SkipSheet.js";
 import {
@@ -57,7 +60,8 @@ import type { QuestEffort, SkipReason, TodayPayload, TodayQuest } from "./types.
 
 type Sheet =
   | { kind: "complete"; quest: TodayQuest }
-  | { kind: "skip"; quest: TodayQuest };
+  | { kind: "skip"; quest: TodayQuest }
+  | { kind: "guide"; quest: TodayQuest };
 
 type RankUpState = {
   fromRank: RankLetter;
@@ -263,6 +267,12 @@ export function SystemWindow() {
     <div className="sys-window">
       <InstallEducation mode="first-visit" />
       <PlayerHeader today={today} />
+      {today.activityStatus && today.activityStatus.status !== "training" ? (
+        <p className="banner banner-warn" role="status">
+          {formatStatusBanner(today.activityStatus)}
+        </p>
+      ) : null}
+      <ActivityStatusPanel compact />
       {today.needsEnsure ? (
         <EmptyEnsure
           pending={ensureMutation.isPending}
@@ -279,6 +289,10 @@ export function SystemWindow() {
             setActionError(null);
             setSheet({ kind: "complete", quest });
           }}
+          onGuide={(quest) => {
+            setActionError(null);
+            setSheet({ kind: "guide", quest });
+          }}
           onSkip={(quest) => {
             setActionError(null);
             setSheet({ kind: "skip", quest });
@@ -293,6 +307,9 @@ export function SystemWindow() {
           onConfirm={(effort) => completeMutation.mutate({ quest: sheet.quest, effort })}
           onCancel={() => setSheet(null)}
         />
+      ) : null}
+      {sheet?.kind === "guide" ? (
+        <GuideSheet quest={sheet.quest} onClose={() => setSheet(null)} />
       ) : null}
       {sheet?.kind === "skip" ? (
         <SkipSheet
@@ -382,6 +399,7 @@ function IssuedDay({
   error,
   regenPending,
   onComplete,
+  onGuide,
   onSkip,
   onRegenerate,
 }: {
@@ -389,6 +407,7 @@ function IssuedDay({
   error: string | null;
   regenPending: boolean;
   onComplete: (quest: TodayQuest) => void;
+  onGuide: (quest: TodayQuest) => void;
   onSkip: (quest: TodayQuest) => void;
   onRegenerate: () => void;
 }) {
@@ -444,11 +463,15 @@ function IssuedDay({
               title={view.title}
               kindChip={view.kindChip}
               prescription={view.prescription}
+              {...(view.subtitle ? { subtitle: view.subtitle } : {})}
               xpLine={view.xpLine}
               status={quest.status}
               variant={view.variant}
               done={view.done}
             >
+              <button type="button" className="btn" onClick={() => onGuide(quest)}>
+                Guide
+              </button>
               {quest.status === "issued" ? (
                 <>
                   <button
