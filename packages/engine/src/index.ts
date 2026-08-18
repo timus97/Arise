@@ -10,3 +10,5 @@ export * from "./penalties.js";
 export * from "./modifiers.js";
 export * from "./templates/types.js";
 export * from "./templates/catalog.js";
+export * from "./templates/catalog-expansion.js";
+export * from "./templates/guides.js";

@@ -76,6 +76,15 @@ function today(over: Partial<TodayPayload> = {}): TodayPayload {
   };
 }
 
+describe("activity status banner", () => {
+  it("uses STATUS travel/sick copy from the today payload", () => {
+    const travel = today({
+      activityStatus: { status: "travel", startsOn: "2026-08-17", endsOn: "2026-08-19", days: 3 },
+    });
+    expect(travel.activityStatus?.status).toBe("travel");
+  });
+});
+
 describe("needsEnsure empty CTA", () => {
   it("uses P5 empty-state copy", () => {
     expect(EMPTY_TITLE).toBe("No work issued");
@@ -170,6 +179,28 @@ describe("quest presentation", () => {
     const sleep = presentQuest(quest({ kind: "habit", templateId: "habit_sleep_window" }));
     expect(sleep.kindChip).toBe("Habit · issued work");
     expect(sleep.prescription).toContain("issued SYSTEM work");
+  });
+
+  it("shows yoga kind chip and Sanskrit subtitle from the guide", () => {
+    const view = presentQuest(
+      quest({
+        kind: "yoga",
+        templateId: "yoga_cat_cow",
+        title: "Cat–Cow",
+        flavor: "Slow spinal waves on hands and knees.",
+        guide: {
+          templateId: "yoga_cat_cow",
+          title: "Cat–Cow",
+          subtitle: "Marjaryasana–Bitilasana",
+          setup: "Hands under shoulders, knees under hips.",
+          action: "Inhale cow. Exhale cat.",
+          stopIf: "Sharp spine pain.",
+        },
+      }),
+    );
+    expect(view.kindChip).toBe("Yoga");
+    expect(view.title).toBe("Cat–Cow");
+    expect(view.subtitle).toBe("Marjaryasana–Bitilasana");
   });
 });
 

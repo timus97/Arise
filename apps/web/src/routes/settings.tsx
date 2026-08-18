@@ -2,6 +2,7 @@ import type { Units } from "@arise/domain";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
+import { ActivityStatusPanel } from "../features/status/ActivityStatusPanel.js";
 import { InstallEducation } from "../features/pwa/InstallEducation.js";
 import { DAY_CLOSED_TOAST } from "../features/system-window/copy.js";
 import { formatAuthError, getSession, sessionQueryKey } from "../lib/auth-client.js";
@@ -236,6 +237,8 @@ function SettingsPage() {
       ) : null}
 
       <InstallEducation mode="settings" />
+
+      {pregnancyHardStop ? null : <ActivityStatusPanel />}
 
       {availability.units ? (
         <div className="section">

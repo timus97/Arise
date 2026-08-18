@@ -13,8 +13,9 @@ import {
   experienceTagsFor,
   type BuildArgs,
 } from "./types.js";
+import { EXPANSION_IDS, EXPANSION_SPECS } from "./catalog-expansion.js";
 
-export const TEMPLATE_IDS = [
+export const CORE_TEMPLATE_IDS = [
   "str_sit_to_stand_l0",
   "str_incline_push_l0",
   "str_backpack_row_l0",
@@ -33,6 +34,7 @@ export const TEMPLATE_IDS = [
   "penalty_easy_walk",
 ] as const;
 
+export const TEMPLATE_IDS = [...CORE_TEMPLATE_IDS, ...EXPANSION_IDS] as const;
 export type TemplateId = (typeof TEMPLATE_IDS)[number];
 
 export const EMPTY_DAY_FALLBACK_IDS = ["habit_sleep_window", "cardio_zone2_walk"] as const;
@@ -91,7 +93,7 @@ const STEPS_6K_GOALS: GoalType[] = ["fat_loss", "endurance", "general_fitness"];
 const STEPS_8K_GOALS: GoalType[] = ["fat_loss", "endurance"];
 const MOB_GOALS: GoalType[] = ["mobility", "general_fitness"];
 
-const SPECS: TemplateSpec[] = [
+const CORE_SPECS: TemplateSpec[] = [
   {
     id: "str_sit_to_stand_l0",
     kind: "strength",
@@ -374,6 +376,8 @@ const SPECS: TemplateSpec[] = [
     blocks: [{ name: "Easy walk", seconds: 900, rpeMax: 4 }],
   },
 ];
+
+const SPECS: TemplateSpec[] = [...CORE_SPECS, ...(EXPANSION_SPECS as TemplateSpec[])];
 
 export const CATALOG: readonly QuestTemplate[] = SPECS.map(defineTemplate);
 

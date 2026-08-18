@@ -4,6 +4,11 @@ dist
 data/*.sqlite
 .env
 
+# Operator host/SSH/DNS — never push
+.grok/HOSTING.local.md
+HOSTING.local.md
+docs/dev/HOSTING.local.md
+
 # Playwright
 test-results/
 playwright-report/

@@ -7,6 +7,7 @@ export const QuestKind = z.enum([
   "cardio",
   "steps",
   "mobility",
+  "yoga",
   "skill",
   "recovery",
   "habit",
@@ -42,6 +43,7 @@ export const PatternTag = z.enum([
   "mobility_tspine",
   "mobility_ankle",
   "breath",
+  "yoga",
 ]);
 export type PatternTag = z.infer<typeof PatternTag>;
 
@@ -135,3 +137,16 @@ export interface QuestTemplate {
     volumeMul: number;
   }): QuestPrescription;
 }
+
+export const ExerciseGuide = z.object({
+  templateId: z.string().min(1),
+  title: z.string().min(1),
+  subtitle: z.string().optional(),
+  setup: z.string().min(1),
+  action: z.string().min(1),
+  breath: z.string().optional(),
+  stopIf: z.string().min(1),
+  doNot: z.string().optional(),
+  graphicHint: z.string().optional(),
+});
+export type ExerciseGuide = z.infer<typeof ExerciseGuide>;
